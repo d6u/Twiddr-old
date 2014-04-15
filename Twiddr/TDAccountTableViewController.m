@@ -27,6 +27,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     self.twitterAccounts = [[NSMutableArray alloc] init];
     
     NSArray *accounts = [SSKeychain accountsForService:@"TwiddrOauthTokenService"];
