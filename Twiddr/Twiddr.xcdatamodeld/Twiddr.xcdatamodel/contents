@@ -27,6 +27,7 @@
         <attribute name="created_at" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="default_profile" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="default_profile_image" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="description_tw" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="entities" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="favourites_count" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="follow_request_sent" optional="YES" attributeType="Boolean" syncable="YES"/>
@@ -34,8 +35,9 @@
         <attribute name="following" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="friends_count" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="geo_enabled" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="id_str" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="id_tw" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="is_translation_enabled" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="is_translator" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="lang" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="listed_count" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
@@ -46,6 +48,7 @@
         <attribute name="profile_background_image_url" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="profile_background_image_url_https" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="profile_background_tile" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="profile_banner_url" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="profile_image_url" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="profile_image_url_https" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="profile_link_color" optional="YES" attributeType="Transformable" syncable="YES"/>
@@ -55,16 +58,14 @@
         <attribute name="profile_use_background_image" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="protected" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="screen_name" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="show_all_inline_media" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="statuses_count" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="time_zone" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="tw_description" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="url" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="utc_offset" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="verified" optional="YES" attributeType="Boolean" syncable="YES"/>
     </entity>
     <elements>
         <element name="Tweet" positionX="-11790" positionY="-7740" width="128" height="345"/>
-        <element name="User" positionX="-11790" positionY="-7587" width="128" height="628"/>
+        <element name="User" positionX="-11790" positionY="-7587" width="128" height="645"/>
     </elements>
 </model>

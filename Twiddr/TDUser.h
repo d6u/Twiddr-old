@@ -10,7 +10,7 @@
 #import <CoreData/CoreData.h>
 
 
-@interface User : NSManagedObject
+@interface TDUser : NSManagedObject
 
 @property (nonatomic, strong) id profile_sidebar_fill_color;
 @property (nonatomic, strong) id profile_sidebar_border_color;
@@ -30,7 +30,7 @@
 @property (nonatomic, strong) NSString * url;
 @property (nonatomic, strong) NSString * profile_image_url_https;
 @property (nonatomic, strong) NSNumber * utc_offset;
-@property (nonatomic, strong) NSNumber * id;
+@property (nonatomic, strong) NSNumber * id_tw;
 @property (nonatomic, strong) NSNumber * profile_use_background_image;
 @property (nonatomic, strong) NSNumber * listed_count;
 @property (nonatomic, strong) id profile_text_color;
@@ -43,7 +43,7 @@
 @property (nonatomic, strong) NSNumber * verified;
 @property (nonatomic, strong) NSNumber * geo_enabled;
 @property (nonatomic, strong) NSString * time_zone;
-@property (nonatomic, strong) NSString * tw_description;
+@property (nonatomic, strong) NSString * description_tw;
 @property (nonatomic, strong) NSNumber * default_profile_image;
 @property (nonatomic, strong) NSString * profile_background_image_url;
 @property (nonatomic, strong) NSNumber * statuses_count;
@@ -51,5 +51,7 @@
 @property (nonatomic, strong) NSNumber * following;
 @property (nonatomic, strong) NSNumber * show_all_inline_media;
 @property (nonatomic, strong) NSString * screen_name;
+@property (nonatomic, strong) NSString *profile_banner_url;
+@property (nonatomic, strong) NSNumber *is_translation_enabled;
 
 @end

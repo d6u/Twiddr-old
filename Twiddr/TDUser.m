@@ -6,10 +6,10 @@
 //  Copyright (c) 2014 Daiwei Lu. All rights reserved.
 //
 
-#import "User.h"
+#import "TDUser.h"
 
 
-@implementation User
+@implementation TDUser
 
 @dynamic profile_sidebar_fill_color;
 @dynamic profile_sidebar_border_color;
@@ -29,7 +29,7 @@
 @dynamic url;
 @dynamic profile_image_url_https;
 @dynamic utc_offset;
-@dynamic id;
+@dynamic id_tw;
 @dynamic profile_use_background_image;
 @dynamic listed_count;
 @dynamic profile_text_color;
@@ -42,7 +42,7 @@
 @dynamic verified;
 @dynamic geo_enabled;
 @dynamic time_zone;
-@dynamic tw_description;
+@dynamic description_tw;
 @dynamic default_profile_image;
 @dynamic profile_background_image_url;
 @dynamic statuses_count;
@@ -50,5 +50,7 @@
 @dynamic following;
 @dynamic show_all_inline_media;
 @dynamic screen_name;
+@dynamic profile_banner_url;
+@dynamic is_translation_enabled;
 
 @end

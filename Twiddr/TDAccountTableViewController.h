@@ -13,6 +13,8 @@
 
 @interface TDAccountTableViewController : UITableViewController <UITableViewDelegate>
 
+@property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
+
 @property (strong, nonatomic) NSMutableArray *twitterAccounts;
 
 - (IBAction)addAccount:(id)sender;
