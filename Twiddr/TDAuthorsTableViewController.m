@@ -32,28 +32,7 @@
     self.authorTweets = [[NSMutableDictionary alloc] init];
     
     [self loadMoreAuthor:nil];
-    
-    // Update timeline
-    [self.account.twitterApi getStatusesHomeTimelineWithCount:@"200"
-                                                      sinceID:nil
-                                                        maxID:nil
-                                                     trimUser:@(NO)
-                                               excludeReplies:@(NO)
-                                           contributorDetails:@(NO)
-                                              includeEntities:@(YES)
-                                                 successBlock:^(NSArray *statuses) {
-        for (NSDictionary *tweet in statuses) {
-            NSString *screenName = tweet[@"user"][@"screen_name"];
-            if (!self.authorTweets[screenName]) {
-                NSMutableArray *tweets = [NSMutableArray arrayWithObject:tweet];
-                self.authorTweets[screenName] = tweets;
-            } else {
-                [self.authorTweets[screenName] addObject:tweet];
-            }
-        }
-    } errorBlock:^(NSError *error) {
-        NSLog(@"--- Error: %@", error);
-    }];
+    [self loadTimeline];
 }
 
 
@@ -108,10 +87,9 @@
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"User"
                                               inManagedObjectContext:self.managedObjectContext];
+    [fetchRequest setEntity:entity];
     
     NSError *error;
-    
-    [fetchRequest setEntity:entity];
     NSArray *fetchedObject = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
     
     if (error) {
@@ -137,9 +115,7 @@
             [self cacheAuthors:users];
             
             for (NSDictionary *user in users) {
-                NSString *screenName = user[@"screen_name"];
-                
-                [self downloadImageFromUrlString:user[@"profile_image_url"] forScreenName:screenName];
+                [self downloadImageFromUrlString:user[@"profile_image_url"] forScreenName:user[@"screen_name"]];
             }
         }
         if ([users count] == 200) {
@@ -158,19 +134,9 @@
 {
     NSMutableArray *newAuthors = [[NSMutableArray alloc] init];
     
-    for (NSDictionary *author in authors) {
-        
-        TDUser *oldUser;
-
-        for (TDUser *user in self.authors) {
-            
-            NSLog(@"This is a user: %@", user);
-            
-            if (user.id_tw == [author objectForKey:@"id"]) {
-                oldUser = user;
-                break;
-            }
-        }
+    for (NSDictionary *author in authors)
+    {
+        TDUser *oldUser = [self findAuthorById:author[@"id"]];
         
         if (oldUser == nil) {
             TDUser *newUser = [NSEntityDescription insertNewObjectForEntityForName:@"User"
@@ -178,7 +144,6 @@
             [newUser setValuesForKeysWithDictionary:[self transformAuthorDictToUserDict:author]];
             
             NSError *error;
-            
             if (![self.managedObjectContext save:&error]) {
                 NSLog(@"Whoops, couldn't save: %@", [error localizedDescription]);
             }
@@ -190,20 +155,17 @@
     }
     
     [self.authors addObjectsFromArray:newAuthors];
-    
     [[self tableView] reloadData];
 }
 
 
 - (void)downloadImageFromUrlString:(NSString *)urlString forScreenName:(NSString *)screenName
 {
-    NSURL *url = [NSURL URLWithString:urlString];
-    
     NSURLSession *session = [NSURLSession sharedSession];
     
     NSURLSessionDownloadTask *task =
-    [session downloadTaskWithURL:url
-               completionHandler:^(NSURL *location, NSURLResponse *response, NSError *error)
+            [session downloadTaskWithURL:[NSURL URLWithString:urlString]
+                       completionHandler:^(NSURL *location, NSURLResponse *response, NSError *error)
     {
         if (error) {
             NSLog(@"-- ERROR: %@", error);
@@ -224,10 +186,10 @@
 
 - (NSDictionary *)transformAuthorDictToUserDict:(NSDictionary *)author
 {
-    NSMutableDictionary *user = [NSMutableDictionary dictionaryWithDictionary:author];
-    
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"EEE MMM dd HH:mm:ss Z yyyy"];
+    
+    NSMutableDictionary *user = [NSMutableDictionary dictionaryWithDictionary:author];
     
     user[@"created_at"] = [formatter dateFromString:author[@"created_at"]];
     user[@"description_tw"] = author[@"description"];
@@ -237,6 +199,45 @@
     [user removeObjectForKey:@"id"];
     
     return user;
+}
+
+
+- (void)loadTimeline
+{
+    [self.account.twitterApi getStatusesHomeTimelineWithCount:@"200"
+                                                      sinceID:nil
+                                                        maxID:nil
+                                                     trimUser:@(NO)
+                                               excludeReplies:@(NO)
+                                           contributorDetails:@(NO)
+                                              includeEntities:@(YES)
+                                                 successBlock:^(NSArray *statuses)
+    {
+        for (NSDictionary *tweet in statuses) {
+            NSString *screenName = tweet[@"user"][@"screen_name"];
+            if (!self.authorTweets[screenName]) {
+                NSMutableArray *tweets = [NSMutableArray arrayWithObject:tweet];
+                self.authorTweets[screenName] = tweets;
+            } else {
+                [self.authorTweets[screenName] addObject:tweet];
+            }
+        }
+    } errorBlock:^(NSError *error) {
+        NSLog(@"--- Error: %@", error);
+    }];
+}
+
+
+- (TDUser *)findAuthorById:(NSNumber *)authorId
+{
+    TDUser *target;
+    for (TDUser *user in self.authors) {
+        if (user.id_tw == authorId) {
+            target = user;
+            break;
+        }
+    }
+    return target;
 }
 
 

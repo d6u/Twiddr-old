@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @class TDTwitterAccount;
+@class TDUser;
 
 
 @interface TDAuthorsTableViewController : UITableViewController <UITableViewDataSource>
@@ -25,5 +26,7 @@
 - (void)cacheAuthors:(NSArray *) authors;
 - (void)downloadImageFromUrlString:(NSString *)urlString forScreenName:(NSString *)screenName;
 - (NSDictionary *)transformAuthorDictToUserDict:(NSDictionary *) author;
+- (void)loadTimeline;
+- (TDUser *)findAuthorById:(NSNumber *)authorId;
 
 @end
