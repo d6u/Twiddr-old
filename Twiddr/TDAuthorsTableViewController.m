@@ -186,27 +186,6 @@
              [self.tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
          }
      }];
-    
-//    NSURLSession *session = [NSURLSession sharedSession];
-//    
-//    NSURLSessionDownloadTask *task =
-//            [session downloadTaskWithURL:[NSURL URLWithString:urlString]
-//                       completionHandler:^(NSURL *location, NSURLResponse *response, NSError *error)
-//    {
-//        if (error) {
-//            NSLog(@"-- ERROR: %@", error);
-//        }
-//        NSData *data = [NSData dataWithContentsOfURL:location];
-//        UIImage *profileImage = [UIImage imageWithData:data];
-//        self.authorImages[screenName] = profileImage;
-//        
-//        // Refresh table view cell images
-//        if ([self.authorImages count] == [self.authors count]) {
-//            [self.tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
-//        }
-//    }];
-//    
-//    [task resume];
 }
 
 
