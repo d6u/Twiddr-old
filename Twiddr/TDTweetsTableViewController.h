@@ -9,12 +9,15 @@
 #import <UIKit/UIKit.h>
 
 @class TDTwitterAccount;
+@class TDUser;
 
 
 @interface TDTweetsTableViewController : UITableViewController
 
+@property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
+
 @property (strong, nonatomic) TDTwitterAccount *account;
-@property (strong, nonatomic) NSDictionary *author;
+@property (strong, nonatomic) TDUser *author;
 @property (strong, nonatomic) NSMutableArray *tweets;
 
 @end

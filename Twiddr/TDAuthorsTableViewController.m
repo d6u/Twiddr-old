@@ -70,12 +70,15 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ([segue.identifier isEqualToString:@"showTweets"]) {
-        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
         TDTweetsTableViewController *tweetsViewController = [segue destinationViewController];
-        tweetsViewController.account = self.account;
-        NSDictionary *author = self.authors[indexPath.row];
+        tweetsViewController.managedObjectContext = self.managedObjectContext;
+        
+        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+        TDUser *author = self.authors[indexPath.row];
+        
         tweetsViewController.author = author;
-        tweetsViewController.tweets = self.authorTweets[author[@"screen_name"]];
+        tweetsViewController.account = self.account;
+        tweetsViewController.tweets = self.authorTweets[author.screen_name];
     }
 }
 
