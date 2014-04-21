@@ -136,7 +136,7 @@
     
     for (NSDictionary *author in authors)
     {
-        TDUser *oldUser = [self findAuthorById:author[@"id"]];
+        TDUser *oldUser = [self findAuthorById:author[@"id_str"]];
         
         if (oldUser == nil) {
             TDUser *newUser = [NSEntityDescription insertNewObjectForEntityForName:@"User"
@@ -150,7 +150,12 @@
             
             [newAuthors addObject:newUser];
         } else {
-            // TODO: update user info
+            [oldUser setValuesForKeysWithDictionary:[self transformAuthorDictToUserDict:author]];
+            
+            NSError *error;
+            if (![self.managedObjectContext save:&error]) {
+                NSLog(@"Whoops, couldn't save: %@", [error localizedDescription]);
+            }
         }
     }
     
@@ -193,7 +198,6 @@
     
     user[@"created_at"] = [formatter dateFromString:author[@"created_at"]];
     user[@"description_tw"] = author[@"description"];
-    user[@"id_tw"] = author[@"id"];
     
     [user removeObjectForKey:@"description"];
     [user removeObjectForKey:@"id"];
@@ -228,11 +232,11 @@
 }
 
 
-- (TDUser *)findAuthorById:(NSNumber *)authorId
+- (TDUser *)findAuthorById:(NSString *)idStr
 {
     TDUser *target;
     for (TDUser *user in self.authors) {
-        if (user.id_tw == authorId) {
+        if ([user.id_str isEqual:idStr]) {
             target = user;
             break;
         }

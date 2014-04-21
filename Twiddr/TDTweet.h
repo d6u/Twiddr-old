@@ -18,12 +18,9 @@
 @property (nonatomic, strong) id entities;
 @property (nonatomic, strong) NSNumber * favorited;
 @property (nonatomic, strong) NSString * geo;
-@property (nonatomic, strong) NSNumber * id;
 @property (nonatomic, strong) NSString * id_str;
 @property (nonatomic, strong) NSString * in_reply_to_screen_name;
-@property (nonatomic, strong) NSNumber * in_reply_to_status_id;
 @property (nonatomic, strong) NSString * in_reply_to_status_id_str;
-@property (nonatomic, strong) NSNumber * in_reply_to_user_id;
 @property (nonatomic, strong) NSString * in_reply_to_user_id_str;
 @property (nonatomic, strong) NSString * place;
 @property (nonatomic, strong) NSNumber * possibly_sensitive;

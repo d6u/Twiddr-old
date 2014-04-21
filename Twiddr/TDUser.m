@@ -29,7 +29,6 @@
 @dynamic url;
 @dynamic profile_image_url_https;
 @dynamic utc_offset;
-@dynamic id_tw;
 @dynamic profile_use_background_image;
 @dynamic listed_count;
 @dynamic profile_text_color;

@@ -30,7 +30,6 @@
 @property (nonatomic, strong) NSString * url;
 @property (nonatomic, strong) NSString * profile_image_url_https;
 @property (nonatomic, strong) NSNumber * utc_offset;
-@property (nonatomic, strong) NSNumber * id_tw;
 @property (nonatomic, strong) NSNumber * profile_use_background_image;
 @property (nonatomic, strong) NSNumber * listed_count;
 @property (nonatomic, strong) id profile_text_color;

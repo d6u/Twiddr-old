@@ -27,6 +27,6 @@
 - (void)downloadImageFromUrlString:(NSString *)urlString forScreenName:(NSString *)screenName;
 - (NSDictionary *)transformAuthorDictToUserDict:(NSDictionary *) author;
 - (void)loadTimeline;
-- (TDUser *)findAuthorById:(NSNumber *)authorId;
+- (TDUser *)findAuthorById:(NSString *)idStr;
 
 @end
