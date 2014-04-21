@@ -27,10 +27,10 @@
 {
     [super viewDidLoad];
     
-    [self fetchCachedAuthors];
-    
-    self.authorImages = [[NSMutableDictionary alloc] init];
+    self.authors = [NSMutableArray arrayWithArray:[self fetchCachedAuthors]];
     self.authorTweets = [[NSMutableDictionary alloc] init];
+    
+    [self.tableView reloadData];
     
     [self loadMoreAuthor:nil];
     [self loadTimeline];
@@ -60,9 +60,7 @@
     
     cell.textLabel.text = author.name;
     cell.detailTextLabel.text = [NSString stringWithFormat:@"@%@", author.screen_name];
-    if (self.authorImages[author.screen_name]) {
-        cell.imageView.image = self.authorImages[author.screen_name];
-    }
+    cell.imageView.image = author.profileImage;
     
     return cell;
 }
@@ -88,7 +86,7 @@
 
 # pragma mark - Helpers
 
-- (void)fetchCachedAuthors
+- (NSArray *)fetchCachedAuthors
 {
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"User"
@@ -97,14 +95,19 @@
     
     NSError *error;
     NSArray *fetchedObject = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
-    
+
     if (error) {
         NSLog(@"-- ERROR: %@", error);
     }
     
-    self.authors = [NSMutableArray arrayWithArray:fetchedObject];
+    for (TDUser *author in fetchedObject) {
+        [author loadProfileImageWithCompletionBlock:^(UIImage *image) {
+            [[self tableView] reloadData];
+        }];
+    }
+    
+    return [NSArray arrayWithArray:fetchedObject];
 }
-
 
 
 - (void)loadMoreAuthor:(NSString *)nextCursor
@@ -119,10 +122,6 @@
     {
         if ([users count] != 0) {
             [self cacheAuthors:users];
-            
-            for (NSDictionary *user in users) {
-                [self downloadImageFromUrlString:user[@"profile_image_url"] forScreenName:user[@"screen_name"]];
-            }
         }
         if ([users count] == 200) {
             [self loadMoreAuthor:nextCursor];
@@ -154,9 +153,29 @@
                 NSLog(@"Whoops, couldn't save: %@", [error localizedDescription]);
             }
             
+            [newUser loadProfileImageWithCompletionBlock:^(UIImage *image) {
+                [[self tableView] reloadData];
+            }];
+            
             [newAuthors addObject:newUser];
         } else {
+            BOOL profileImageUpdated = NO;
+            
+            if (![oldUser.profile_image_url isEqualToString:author[@"profile_image_url"]]) {
+                profileImageUpdated = YES;
+            }
+            
             [oldUser setValuesForKeysWithDictionary:[self transformAuthorDictToUserDict:author]];
+            
+            if (profileImageUpdated) {
+                if ([oldUser isDownloadingProfileImage]) {
+                    [oldUser.profileImageDownloadOperation cancel];
+                    oldUser.profileImageDownloadOperation = nil;
+                }
+                [oldUser loadProfileImageWithCompletionBlock:^(UIImage *image) {
+                    [[self tableView] reloadData];
+                }];
+            }
             
             NSError *error;
             if (![self.managedObjectContext save:&error]) {
@@ -167,25 +186,6 @@
     
     [self.authors addObjectsFromArray:newAuthors];
     [[self tableView] reloadData];
-}
-
-
-- (void)downloadImageFromUrlString:(NSString *)urlString forScreenName:(NSString *)screenName
-{
-    SDWebImageManager *manager = [SDWebImageManager sharedManager];
-    [manager downloadWithURL:[NSURL URLWithString:urlString]
-                     options:0
-                    progress:^(NSInteger receivedSize, NSInteger expectedSize) {}
-                   completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished)
-     {
-         if (error) {
-             NSLog(@"-- ERROR: %@", error);
-         }
-         if (image) {
-             self.authorImages[screenName] = image;
-             [self.tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
-         }
-     }];
 }
 
 

@@ -18,13 +18,11 @@
 
 @property (strong, nonatomic) TDTwitterAccount *account;
 @property (strong, nonatomic) NSMutableArray *authors;
-@property (strong, nonatomic) NSMutableDictionary *authorImages;
 @property (strong, nonatomic) NSMutableDictionary *authorTweets;
 
-- (void)fetchCachedAuthors;
+- (NSArray *)fetchCachedAuthors;
 - (void)loadMoreAuthor:(NSString *) nextCursor;
 - (void)cacheAuthors:(NSArray *) authors;
-- (void)downloadImageFromUrlString:(NSString *)urlString forScreenName:(NSString *)screenName;
 - (NSDictionary *)transformAuthorDictToUserDict:(NSDictionary *) author;
 - (void)loadTimeline;
 - (TDUser *)findAuthorById:(NSString *)idStr;

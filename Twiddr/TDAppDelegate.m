@@ -20,6 +20,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    // Assign ManagedObjectContext to first view controller
     UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
     TDAccountTableViewController *controller = (TDAccountTableViewController *)navigationController.topViewController;
     controller.managedObjectContext = [self managedObjectContext];
