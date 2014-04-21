@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
+#import <SDWebImage/SDWebImageOperation.h>
 
 
 @interface TDUser : NSManagedObject
@@ -52,5 +53,13 @@
 @property (nonatomic, strong) NSString * screen_name;
 @property (nonatomic, strong) NSString *profile_banner_url;
 @property (nonatomic, strong) NSNumber *is_translation_enabled;
+
+
+@property (nonatomic, strong) UIImage *profileImage;
+
+@property (nonatomic, strong) id<SDWebImageOperation> profileImageDownloadOperation;
+
+- (void)loadProfileImageWithCompletionBlock:(void (^)(UIImage *image))complete;
+- (BOOL)isDownloadingProfileImage;
 
 @end

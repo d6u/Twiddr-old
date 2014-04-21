@@ -7,6 +7,7 @@
 //
 
 #import "TDUser.h"
+#import <SDWebImage/SDWebImageManager.h>
 
 
 @implementation TDUser
@@ -51,5 +52,61 @@
 @dynamic screen_name;
 @dynamic profile_banner_url;
 @dynamic is_translation_enabled;
+
+
+@synthesize profileImageDownloadOperation = _profileImageDownloadOperation;
+@synthesize profileImage = _profileImage;
+
+
+#pragma mark - Interfaces
+
+- (BOOL)isDownloadingProfileImage
+{
+    return _profileImageDownloadOperation != nil;
+}
+
+
+- (void)loadProfileImageWithCompletionBlock:(void (^)(UIImage *image))complete
+{
+    if (self.profile_image_url != nil) {
+        _profileImageDownloadOperation = [self downloadImageFromUrlString:self.profile_image_url withCompleteBlock:complete];
+    } else {
+        NSLog(@"-- ERROR: profile_image_url is nil");
+    }
+}
+
+
+#pragma mark - Getters
+
+- (UIImage *)profileImage
+{
+    return _profileImage;
+}
+
+
+#pragma mark - Helper
+
+- (id <SDWebImageOperation>)downloadImageFromUrlString:(NSString *)urlString
+                                     withCompleteBlock:(void (^)(UIImage *image))complete
+{
+    SDWebImageManager *manager = [SDWebImageManager sharedManager];
+    return [manager downloadWithURL:[NSURL URLWithString:urlString]
+                            options:0
+                           progress:^(NSInteger receivedSize, NSInteger expectedSize) {}
+                          completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished)
+     {
+         if (error) {
+             NSLog(@"-- ERROR: %@", error);
+         }
+         if (image) {
+             _profileImage = image;
+             _profileImageDownloadOperation = nil;
+         }
+         if (complete) {
+             complete(image);
+         }
+     }];
+}
+
 
 @end
