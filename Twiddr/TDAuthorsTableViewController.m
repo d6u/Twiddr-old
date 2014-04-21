@@ -169,8 +169,7 @@
             
             if (profileImageUpdated) {
                 if ([oldUser isDownloadingProfileImage]) {
-                    [oldUser.profileImageDownloadOperation cancel];
-                    oldUser.profileImageDownloadOperation = nil;
+                    [oldUser cancelProfileImageDownloadOperation];
                 }
                 [oldUser loadProfileImageWithCompletionBlock:^(UIImage *image) {
                     [[self tableView] reloadData];

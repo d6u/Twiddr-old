@@ -10,6 +10,13 @@
 #import <SDWebImage/SDWebImageManager.h>
 
 
+@interface TDUser () {
+    id<SDWebImageOperation> _profileImageDownloadOperation;
+}
+
+@end
+
+
 @implementation TDUser
 
 @dynamic profile_sidebar_fill_color;
@@ -54,7 +61,6 @@
 @dynamic is_translation_enabled;
 
 
-@synthesize profileImageDownloadOperation = _profileImageDownloadOperation;
 @synthesize profileImage = _profileImage;
 
 
@@ -73,6 +79,13 @@
     } else {
         NSLog(@"-- ERROR: profile_image_url is nil");
     }
+}
+
+
+- (void)cancelProfileImageDownloadOperation
+{
+    [_profileImageDownloadOperation cancel];
+    _profileImageDownloadOperation = nil;
 }
 
 

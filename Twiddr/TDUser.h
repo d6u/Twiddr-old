@@ -57,9 +57,8 @@
 
 @property (nonatomic, strong) UIImage *profileImage;
 
-@property (nonatomic, strong) id<SDWebImageOperation> profileImageDownloadOperation;
-
 - (void)loadProfileImageWithCompletionBlock:(void (^)(UIImage *image))complete;
 - (BOOL)isDownloadingProfileImage;
+- (void)cancelProfileImageDownloadOperation;
 
 @end
