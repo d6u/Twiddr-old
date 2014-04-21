@@ -156,8 +156,7 @@
 
 - (void)cacheAuthors:(NSArray *)authors
 {
-    
-    [self.authors addObjectsFromArray:authors];
+    NSMutableArray *newAuthors = [[NSMutableArray alloc] init];
     
     for (NSDictionary *author in authors) {
         
@@ -174,19 +173,23 @@
         }
         
         if (oldUser == nil) {
-            TDUser *user = [NSEntityDescription insertNewObjectForEntityForName:@"User"
+            TDUser *newUser = [NSEntityDescription insertNewObjectForEntityForName:@"User"
                                                          inManagedObjectContext:self.managedObjectContext];
-            [user setValuesForKeysWithDictionary:[self transformAuthorDictToUserDict:author]];
+            [newUser setValuesForKeysWithDictionary:[self transformAuthorDictToUserDict:author]];
             
             NSError *error;
             
             if (![self.managedObjectContext save:&error]) {
                 NSLog(@"Whoops, couldn't save: %@", [error localizedDescription]);
             }
-        } else {
             
+            [newAuthors addObject:newUser];
+        } else {
+            // TODO: update user info
         }
     }
+    
+    [self.authors addObjectsFromArray:newAuthors];
     
     [[self tableView] reloadData];
 }
