@@ -12,6 +12,7 @@
 #import "TDTweetsTableViewController.h"
 #import "TDAppDelegate.h"
 #import "TDUser.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 
 
 @interface TDAuthorsTableViewController ()
@@ -51,7 +52,9 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
+    static NSString *CellIdentifier = @"Cell";
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     TDUser *author = self.authors[indexPath.row];
     
@@ -169,26 +172,41 @@
 
 - (void)downloadImageFromUrlString:(NSString *)urlString forScreenName:(NSString *)screenName
 {
-    NSURLSession *session = [NSURLSession sharedSession];
+    SDWebImageManager *manager = [SDWebImageManager sharedManager];
+    [manager downloadWithURL:[NSURL URLWithString:urlString]
+                     options:0
+                    progress:^(NSInteger receivedSize, NSInteger expectedSize) {}
+                   completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished)
+     {
+         if (error) {
+             NSLog(@"-- ERROR: %@", error);
+         }
+         if (image) {
+             self.authorImages[screenName] = image;
+             [self.tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
+         }
+     }];
     
-    NSURLSessionDownloadTask *task =
-            [session downloadTaskWithURL:[NSURL URLWithString:urlString]
-                       completionHandler:^(NSURL *location, NSURLResponse *response, NSError *error)
-    {
-        if (error) {
-            NSLog(@"-- ERROR: %@", error);
-        }
-        NSData *data = [NSData dataWithContentsOfURL:location];
-        UIImage *profileImage = [UIImage imageWithData:data];
-        self.authorImages[screenName] = profileImage;
-        
-        // Refresh table view cell images
-        if ([self.authorImages count] == [self.authors count]) {
-            [self.tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
-        }
-    }];
-    
-    [task resume];
+//    NSURLSession *session = [NSURLSession sharedSession];
+//    
+//    NSURLSessionDownloadTask *task =
+//            [session downloadTaskWithURL:[NSURL URLWithString:urlString]
+//                       completionHandler:^(NSURL *location, NSURLResponse *response, NSError *error)
+//    {
+//        if (error) {
+//            NSLog(@"-- ERROR: %@", error);
+//        }
+//        NSData *data = [NSData dataWithContentsOfURL:location];
+//        UIImage *profileImage = [UIImage imageWithData:data];
+//        self.authorImages[screenName] = profileImage;
+//        
+//        // Refresh table view cell images
+//        if ([self.authorImages count] == [self.authors count]) {
+//            [self.tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
+//        }
+//    }];
+//    
+//    [task resume];
 }
 
 
