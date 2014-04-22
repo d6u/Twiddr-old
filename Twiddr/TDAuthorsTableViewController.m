@@ -207,27 +207,89 @@
 
 - (void)loadTimeline
 {
-    [self.account.twitterApi getStatusesHomeTimelineWithCount:@"200"
-                                                      sinceID:nil
-                                                        maxID:nil
-                                                     trimUser:@(NO)
-                                               excludeReplies:@(NO)
-                                           contributorDetails:@(NO)
-                                              includeEntities:@(YES)
-                                                 successBlock:^(NSArray *statuses)
+    [self loadTimelineSinceID:nil maxID:nil recursive:YES successBlock:^(NSArray *statuses)
     {
-        for (NSDictionary *tweet in statuses) {
-            NSString *screenName = tweet[@"user"][@"screen_name"];
-            if (!self.authorTweets[screenName]) {
-                NSMutableArray *tweets = [NSMutableArray arrayWithObject:tweet];
-                self.authorTweets[screenName] = tweets;
-            } else {
-                [self.authorTweets[screenName] addObject:tweet];
+        if (statuses) {
+            for (NSDictionary *tweet in statuses) {
+                NSString *screenName = tweet[@"user"][@"screen_name"];
+                if (!self.authorTweets[screenName]) {
+                    NSMutableArray *tweets = [NSMutableArray arrayWithObject:tweet];
+                    self.authorTweets[screenName] = tweets;
+                } else {
+                    [self.authorTweets[screenName] addObject:tweet];
+                }
             }
         }
-    } errorBlock:^(NSError *error) {
-        NSLog(@"--- Error: %@", error);
+        
+        [self sortAuthorByUnreadTweetsCount];
+        
+        [self.tableView reloadData];
     }];
+}
+
+
+- (void)loadTimelineSinceID:(NSString *)sinceID maxID:(NSString *)maxID recursive:(BOOL)recursive
+               successBlock:(void (^)(NSArray *statuses))successBlock
+{
+    __block NSMutableArray *allStatuses;
+    __block NSString *maxIdStr = maxID;
+    
+    void(^next)() = ^void() {
+        [self.account.twitterApi getStatusesHomeTimelineWithCount:@"200"
+                                                          sinceID:sinceID
+                                                            maxID:maxID
+                                                         trimUser:@(NO)
+                                                   excludeReplies:@(NO)
+                                               contributorDetails:@(NO)
+                                                  includeEntities:@(YES)
+                                                     successBlock:^(NSArray *statuses)
+        {
+            if (allStatuses == nil) {
+                allStatuses = [[NSMutableArray alloc] init];
+            }
+            
+            [allStatuses addObjectsFromArray:statuses];
+            
+            if (recursive && sinceID != nil && [statuses count] != 0) {
+                NSDictionary *lastStatus = [statuses lastObject];
+                maxIdStr = [self idStrMinusOne:lastStatus[@"id_str"]];
+                next();
+            } else {
+                successBlock(allStatuses);
+            }
+        } errorBlock:^(NSError *error) {
+            NSLog(@"--- Error: %@", error);
+            successBlock(allStatuses);
+        }];
+    };
+    
+    next();
+}
+
+
+- (NSString *)idStrMinusOne:(NSString *)idStr
+{
+    unsigned long long idNum = [idStr longLongValue];
+    idNum--;
+    return [NSString stringWithFormat:@"%llu", idNum];
+}
+
+
+- (void)sortAuthorByUnreadTweetsCount
+{
+    NSArray *sortedArray;
+    
+    sortedArray = [self.authors sortedArrayUsingComparator:^NSComparisonResult(TDUser *a, TDUser *b) {
+        unsigned long first = [self.authorTweets[a.screen_name] count];
+        unsigned long second = [self.authorTweets[b.screen_name] count];
+        if (first > second) {
+            return NSOrderedAscending;
+        } else {
+            return NSOrderedDescending;
+        }
+    }];
+    
+    self.authors = [NSMutableArray arrayWithArray:sortedArray];
 }
 
 
