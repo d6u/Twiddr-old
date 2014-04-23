@@ -81,7 +81,8 @@
         
         tweetsViewController.author = author;
         tweetsViewController.account = self.account;
-        tweetsViewController.tweets = self.authorTweets[author.screen_name];
+        NSLog(@"status cound %lu", [author.statuses count]);
+        tweetsViewController.tweets = [NSMutableArray arrayWithArray:[author.statuses allObjects]];
     }
 }
 
@@ -194,11 +195,11 @@
         
         if (statuses) {
             
-            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-            
             NSDictionary *status = [statuses firstObject];
-            [defaults setObject:status[@"id_str"] forKey:@"lastSinceId"];
-            [defaults synchronize];
+            if (status) {
+                [defaults setObject:status[@"id_str"] forKey:@"lastSinceId"];
+                [defaults synchronize];
+            }
             
             for (NSDictionary *tweet in statuses) {
                 
