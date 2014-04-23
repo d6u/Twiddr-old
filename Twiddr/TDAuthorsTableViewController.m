@@ -81,7 +81,6 @@
         
         tweetsViewController.author = author;
         tweetsViewController.account = self.account;
-        NSLog(@"status cound %lu", [author.statuses count]);
         tweetsViewController.tweets = [NSMutableArray arrayWithArray:[author.statuses allObjects]];
     }
 }
@@ -187,12 +186,9 @@
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *lastSinceId = [defaults objectForKey:@"lastSinceId"];
-    NSLog(@"lastSinceId %@", lastSinceId);
     
     [self loadTimelineSinceID:lastSinceId maxID:nil recursive:YES successBlock:^(NSArray *statuses)
     {
-        NSLog(@"statuses %lu", [statuses count]);
-        
         if (statuses) {
             
             NSDictionary *status = [statuses firstObject];
