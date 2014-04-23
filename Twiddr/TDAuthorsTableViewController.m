@@ -13,6 +13,7 @@
 #import "TDAppDelegate.h"
 #import "TDUser.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "TDTweet.h"
 
 
 @interface TDAuthorsTableViewController ()
@@ -144,9 +145,7 @@
         TDUser *oldUser = [self findAuthorById:author[@"id_str"]];
         
         if (oldUser == nil) {
-            TDUser *newUser = [NSEntityDescription insertNewObjectForEntityForName:@"User"
-                                                         inManagedObjectContext:self.managedObjectContext];
-            [newUser setValuesForKeysWithDictionary:[self transformAuthorDictToUserDict:author]];
+            TDUser *newUser = [TDUser userWithRawDictionary:author];
             
             NSError *error;
             if (![self.managedObjectContext save:&error]) {
@@ -165,7 +164,7 @@
                 profileImageUpdated = YES;
             }
             
-            [oldUser setValuesForKeysWithDictionary:[self transformAuthorDictToUserDict:author]];
+            [oldUser setValuesForKeysWithRawDictionary:author];
             
             if (profileImageUpdated) {
                 if ([oldUser isDownloadingProfileImage]) {
@@ -188,20 +187,20 @@
 }
 
 
-- (NSDictionary *)transformAuthorDictToUserDict:(NSDictionary *)author
+- (NSDictionary *)transformTweetDict:(NSDictionary *)tweetDict
 {
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"EEE MMM dd HH:mm:ss Z yyyy"];
+
+    NSMutableDictionary *transformedTweetDict = [NSMutableDictionary dictionaryWithDictionary:tweetDict];
     
-    NSMutableDictionary *user = [NSMutableDictionary dictionaryWithDictionary:author];
+    transformedTweetDict[@"created_at"] = [formatter dateFromString:tweetDict[@"created_at"]];
     
-    user[@"created_at"] = [formatter dateFromString:author[@"created_at"]];
-    user[@"description_tw"] = author[@"description"];
+    [transformedTweetDict removeObjectForKey:@"id"];
+    [transformedTweetDict removeObjectForKey:@"in_reply_to_status_id"];
+    [transformedTweetDict removeObjectForKey:@"in_reply_to_user_id"];
     
-    [user removeObjectForKey:@"description"];
-    [user removeObjectForKey:@"id"];
-    
-    return user;
+    return transformedTweetDict;
 }
 
 
@@ -211,6 +210,13 @@
     {
         if (statuses) {
             for (NSDictionary *tweet in statuses) {
+                
+                NSDictionary *transformedTweetDict = [self transformTweetDict:tweet];
+                
+//                TDTweet *newTweet = [NSEntityDescription insertNewObjectForEntityForName:@"Tweet"
+//                                                                  inManagedObjectContext:self.managedObjectContext];
+//                [newTweet setValuesForKeysWithDictionary:[self transformAuthorDictToUserDict:]];
+                
                 NSString *screenName = tweet[@"user"][@"screen_name"];
                 if (!self.authorTweets[screenName]) {
                     NSMutableArray *tweets = [NSMutableArray arrayWithObject:tweet];

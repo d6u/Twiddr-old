@@ -1,64 +1,90 @@
 //
-//  User.h
+//  TDUser.h
 //  Twiddr
 //
-//  Created by Daiwei Lu on 4/20/14.
+//  Created by Daiwei Lu on 4/22/14.
 //  Copyright (c) 2014 Daiwei Lu. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
-#import <SDWebImage/SDWebImageOperation.h>
+
+@class TDAccount, TDTweet;
 
 
 @interface TDUser : NSManagedObject
 
-@property (nonatomic, strong) id profile_sidebar_fill_color;
-@property (nonatomic, strong) id profile_sidebar_border_color;
-@property (nonatomic, strong) NSNumber * profile_background_tile;
-@property (nonatomic, strong) NSString * name;
-@property (nonatomic, strong) NSString * profile_image_url;
-@property (nonatomic, strong) NSDate * created_at;
-@property (nonatomic, strong) NSString * location;
-@property (nonatomic, strong) NSNumber * follow_request_sent;
-@property (nonatomic, strong) id profile_link_color;
-@property (nonatomic, strong) NSNumber * is_translator;
-@property (nonatomic, strong) NSString * id_str;
-@property (nonatomic, strong) id entities;
-@property (nonatomic, strong) NSNumber * default_profile;
-@property (nonatomic, strong) NSNumber * contributors_enabled;
-@property (nonatomic, strong) NSNumber * favourites_count;
-@property (nonatomic, strong) NSString * url;
-@property (nonatomic, strong) NSString * profile_image_url_https;
-@property (nonatomic, strong) NSNumber * utc_offset;
-@property (nonatomic, strong) NSNumber * profile_use_background_image;
-@property (nonatomic, strong) NSNumber * listed_count;
-@property (nonatomic, strong) id profile_text_color;
-@property (nonatomic, strong) NSString * lang;
-@property (nonatomic, strong) NSNumber * followers_count;
-@property (nonatomic, strong) NSNumber * protected;
-@property (nonatomic, strong) id notifications;
-@property (nonatomic, strong) NSString * profile_background_image_url_https;
-@property (nonatomic, strong) id profile_background_color;
-@property (nonatomic, strong) NSNumber * verified;
-@property (nonatomic, strong) NSNumber * geo_enabled;
-@property (nonatomic, strong) NSString * time_zone;
-@property (nonatomic, strong) NSString * description_tw;
-@property (nonatomic, strong) NSNumber * default_profile_image;
-@property (nonatomic, strong) NSString * profile_background_image_url;
-@property (nonatomic, strong) NSNumber * statuses_count;
-@property (nonatomic, strong) NSNumber * friends_count;
-@property (nonatomic, strong) NSNumber * following;
-@property (nonatomic, strong) NSNumber * show_all_inline_media;
-@property (nonatomic, strong) NSString * screen_name;
-@property (nonatomic, strong) NSString *profile_banner_url;
-@property (nonatomic, strong) NSNumber *is_translation_enabled;
-
+#pragma mark - Custom property
 
 @property (nonatomic, strong) UIImage *profileImage;
 
+
+#pragma mark - Helper methods
+
++ (instancetype)userWithRawDictionary:(NSDictionary *)keyedValues;
+- (void)setValuesForKeysWithRawDictionary:(NSDictionary *)keyedValues;
 - (void)loadProfileImageWithCompletionBlock:(void (^)(UIImage *image))complete;
 - (BOOL)isDownloadingProfileImage;
 - (void)cancelProfileImageDownloadOperation;
+
+
+#pragma mark - Core Data
+
+@property (nonatomic, retain) NSNumber * contributors_enabled;
+@property (nonatomic, retain) NSDate * created_at;
+@property (nonatomic, retain) NSNumber * default_profile;
+@property (nonatomic, retain) NSNumber * default_profile_image;
+@property (nonatomic, retain) NSString * description_tw;
+@property (nonatomic, retain) NSDictionary * entities;
+@property (nonatomic, retain) NSNumber * favourites_count;
+@property (nonatomic, retain) NSNumber * follow_request_sent;
+@property (nonatomic, retain) NSNumber * followers_count;
+@property (nonatomic, retain) NSNumber * following;
+@property (nonatomic, retain) NSNumber * friends_count;
+@property (nonatomic, retain) NSNumber * geo_enabled;
+@property (nonatomic, retain) NSString * id_str;
+@property (nonatomic, retain) NSNumber * is_translation_enabled;
+@property (nonatomic, retain) NSNumber * is_translator;
+@property (nonatomic, retain) NSString * lang;
+@property (nonatomic, retain) NSNumber * listed_count;
+@property (nonatomic, retain) NSString * location;
+@property (nonatomic, retain) NSString * name;
+@property (nonatomic, retain) id notifications;
+@property (nonatomic, retain) id profile_background_color;
+@property (nonatomic, retain) NSString * profile_background_image_url;
+@property (nonatomic, retain) NSString * profile_background_image_url_https;
+@property (nonatomic, retain) NSNumber * profile_background_tile;
+@property (nonatomic, retain) NSString * profile_banner_url;
+@property (nonatomic, retain) NSString * profile_image_url;
+@property (nonatomic, retain) NSString * profile_image_url_https;
+@property (nonatomic, retain) id profile_link_color;
+@property (nonatomic, retain) id profile_sidebar_border_color;
+@property (nonatomic, retain) id profile_sidebar_fill_color;
+@property (nonatomic, retain) id profile_text_color;
+@property (nonatomic, retain) NSNumber * profile_use_background_image;
+@property (nonatomic, retain) NSNumber * protected;
+@property (nonatomic, retain) NSString * screen_name;
+@property (nonatomic, retain) NSNumber * statuses_count;
+@property (nonatomic, retain) NSString * time_zone;
+@property (nonatomic, retain) NSString * url;
+@property (nonatomic, retain) NSNumber * utc_offset;
+@property (nonatomic, retain) NSNumber * verified;
+@property (nonatomic, retain) NSSet *statuses;
+@property (nonatomic, retain) NSSet *account;
+
+@end
+
+
+@interface TDUser (CoreDataGeneratedAccessors)
+
+- (void)addStatusesObject:(TDTweet *)value;
+- (void)removeStatusesObject:(TDTweet *)value;
+- (void)addStatuses:(NSSet *)values;
+- (void)removeStatuses:(NSSet *)values;
+
+- (void)addAccountObject:(TDAccount *)value;
+- (void)removeAccountObject:(TDAccount *)value;
+- (void)addAccount:(NSSet *)values;
+- (void)removeAccount:(NSSet *)values;
 
 @end

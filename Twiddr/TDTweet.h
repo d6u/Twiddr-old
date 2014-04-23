@@ -2,32 +2,34 @@
 //  TDTweet.h
 //  Twiddr
 //
-//  Created by Daiwei Lu on 4/20/14.
+//  Created by Daiwei Lu on 4/22/14.
 //  Copyright (c) 2014 Daiwei Lu. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
+@class TDUser;
 
 @interface TDTweet : NSManagedObject
 
-@property (nonatomic, strong) id contributors;
-@property (nonatomic, strong) NSString * coordinates;
-@property (nonatomic, strong) NSDate * created_at;
-@property (nonatomic, strong) id entities;
-@property (nonatomic, strong) NSNumber * favorited;
-@property (nonatomic, strong) NSString * geo;
-@property (nonatomic, strong) NSString * id_str;
-@property (nonatomic, strong) NSString * in_reply_to_screen_name;
-@property (nonatomic, strong) NSString * in_reply_to_status_id_str;
-@property (nonatomic, strong) NSString * in_reply_to_user_id_str;
-@property (nonatomic, strong) NSString * place;
-@property (nonatomic, strong) NSNumber * possibly_sensitive;
-@property (nonatomic, strong) NSNumber * retweet_count;
-@property (nonatomic, strong) NSNumber * retweeted;
-@property (nonatomic, strong) NSString * source;
-@property (nonatomic, strong) NSString * text;
-@property (nonatomic, strong) NSNumber * truncated;
+@property (nonatomic, retain) id contributors;
+@property (nonatomic, retain) NSString * coordinates;
+@property (nonatomic, retain) NSDate * created_at;
+@property (nonatomic, retain) id entities;
+@property (nonatomic, retain) NSNumber * favorited;
+@property (nonatomic, retain) NSString * geo;
+@property (nonatomic, retain) NSString * id_str;
+@property (nonatomic, retain) NSString * in_reply_to_screen_name;
+@property (nonatomic, retain) NSString * in_reply_to_status_id_str;
+@property (nonatomic, retain) NSString * in_reply_to_user_id_str;
+@property (nonatomic, retain) NSString * place;
+@property (nonatomic, retain) NSNumber * possibly_sensitive;
+@property (nonatomic, retain) NSNumber * retweet_count;
+@property (nonatomic, retain) NSNumber * retweeted;
+@property (nonatomic, retain) NSString * source;
+@property (nonatomic, retain) NSString * text;
+@property (nonatomic, retain) NSNumber * truncated;
+@property (nonatomic, retain) TDUser *author;
 
 @end

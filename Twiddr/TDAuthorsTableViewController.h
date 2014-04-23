@@ -23,7 +23,6 @@
 - (NSArray *)fetchCachedAuthors;
 - (void)loadMoreAuthor:(NSString *) nextCursor;
 - (void)cacheAuthors:(NSArray *) authors;
-- (NSDictionary *)transformAuthorDictToUserDict:(NSDictionary *) author;
 - (void)loadTimeline;
 - (TDUser *)findAuthorById:(NSString *)idStr;
 
