@@ -7,17 +7,20 @@
     </entity>
     <entity name="Tweet" representedClassName="TDTweet" syncable="YES">
         <attribute name="contributors" optional="YES" attributeType="Transformable" syncable="YES"/>
-        <attribute name="coordinates" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="coordinates" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="created_at" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="entities" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="favorite_count" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="favorited" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="geo" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="geo" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="id_str" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="in_reply_to_screen_name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="in_reply_to_status_id_str" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="in_reply_to_user_id_str" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="place" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="lang" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="place" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="possibly_sensitive" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="read" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="retweet_count" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="retweeted" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="source" optional="YES" attributeType="String" syncable="YES"/>
@@ -69,8 +72,8 @@
         <relationship name="statuses" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Tweet" inverseName="author" inverseEntity="Tweet" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Tweet" positionX="-11790" positionY="-7740" width="128" height="313"/>
-        <element name="User" positionX="-11790" positionY="-7587" width="128" height="658"/>
         <element name="Account" positionX="-11763" positionY="-7569" width="128" height="88"/>
+        <element name="Tweet" positionX="-11790" positionY="-7740" width="128" height="358"/>
+        <element name="User" positionX="-11790" positionY="-7587" width="128" height="658"/>
     </elements>
 </model>

@@ -14,6 +14,7 @@
 #import "TDUser.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "TDTweet.h"
+#import "TDSingletonCoreDataManager.h"
 
 
 @interface TDAuthorsTableViewController ()
@@ -147,10 +148,7 @@
         if (oldUser == nil) {
             TDUser *newUser = [TDUser userWithRawDictionary:author];
             
-            NSError *error;
-            if (![self.managedObjectContext save:&error]) {
-                NSLog(@"Whoops, couldn't save: %@", [error localizedDescription]);
-            }
+            [TDSingletonCoreDataManager saveContext];
             
             [newUser loadProfileImageWithCompletionBlock:^(UIImage *image) {
                 [[self tableView] reloadData];
@@ -175,10 +173,7 @@
                 }];
             }
             
-            NSError *error;
-            if (![self.managedObjectContext save:&error]) {
-                NSLog(@"Whoops, couldn't save: %@", [error localizedDescription]);
-            }
+            [TDSingletonCoreDataManager saveContext];
         }
     }
     
@@ -187,44 +182,37 @@
 }
 
 
-- (NSDictionary *)transformTweetDict:(NSDictionary *)tweetDict
-{
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"EEE MMM dd HH:mm:ss Z yyyy"];
-
-    NSMutableDictionary *transformedTweetDict = [NSMutableDictionary dictionaryWithDictionary:tweetDict];
-    
-    transformedTweetDict[@"created_at"] = [formatter dateFromString:tweetDict[@"created_at"]];
-    
-    [transformedTweetDict removeObjectForKey:@"id"];
-    [transformedTweetDict removeObjectForKey:@"in_reply_to_status_id"];
-    [transformedTweetDict removeObjectForKey:@"in_reply_to_user_id"];
-    
-    return transformedTweetDict;
-}
-
-
 - (void)loadTimeline
 {
-    [self loadTimelineSinceID:nil maxID:nil recursive:YES successBlock:^(NSArray *statuses)
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *lastSinceId = [defaults objectForKey:@"lastSinceId"];
+    NSLog(@"lastSinceId %@", lastSinceId);
+    
+    [self loadTimelineSinceID:lastSinceId maxID:nil recursive:YES successBlock:^(NSArray *statuses)
     {
+        NSLog(@"statuses %lu", [statuses count]);
+        
         if (statuses) {
+            
+            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+            
+            NSDictionary *status = [statuses firstObject];
+            [defaults setObject:status[@"id_str"] forKey:@"lastSinceId"];
+            [defaults synchronize];
+            
             for (NSDictionary *tweet in statuses) {
                 
-                NSDictionary *transformedTweetDict = [self transformTweetDict:tweet];
+                TDTweet *newTweet = [TDTweet tweetWithRawDictionary:tweet];
                 
-//                TDTweet *newTweet = [NSEntityDescription insertNewObjectForEntityForName:@"Tweet"
-//                                                                  inManagedObjectContext:self.managedObjectContext];
-//                [newTweet setValuesForKeysWithDictionary:[self transformAuthorDictToUserDict:]];
-                
-                NSString *screenName = tweet[@"user"][@"screen_name"];
-                if (!self.authorTweets[screenName]) {
-                    NSMutableArray *tweets = [NSMutableArray arrayWithObject:tweet];
-                    self.authorTweets[screenName] = tweets;
-                } else {
-                    [self.authorTweets[screenName] addObject:tweet];
+                for (TDUser *user in self.authors) {
+                    if ([user.id_str isEqualToString:tweet[@"user"][@"id_str"]]) {
+                        [user addStatusesObject:newTweet];
+                        break;
+                    }
                 }
             }
+            
+            [TDSingletonCoreDataManager saveContext];
         }
         
         [self sortAuthorByUnreadTweetsCount];
@@ -240,7 +228,8 @@
     __block NSMutableArray *allStatuses;
     __block NSString *maxIdStr = maxID;
     
-    void(^next)() = ^void() {
+    static void(^next)();
+    next = ^void() {
         [self.account.twitterApi getStatusesHomeTimelineWithCount:@"200"
                                                           sinceID:sinceID
                                                             maxID:maxID
@@ -286,8 +275,8 @@
     NSArray *sortedArray;
     
     sortedArray = [self.authors sortedArrayUsingComparator:^NSComparisonResult(TDUser *a, TDUser *b) {
-        unsigned long first = [self.authorTweets[a.screen_name] count];
-        unsigned long second = [self.authorTweets[b.screen_name] count];
+        unsigned long first = [[a statuses] count];
+        unsigned long second = [[b statuses] count];
         if (first > second) {
             return NSOrderedAscending;
         } else {

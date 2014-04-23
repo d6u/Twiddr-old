@@ -283,6 +283,9 @@
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = "Daiwei Lu";
 				TargetAttributes = {
+					1AF901CC18FD618200A5B64A = {
+						DevelopmentTeam = 8MZGXEXG4Z;
+					};
 					1AF901EC18FD618200A5B64A = {
 						TestTargetID = 1AF901CC18FD618200A5B64A;
 					};
