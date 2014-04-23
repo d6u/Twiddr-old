@@ -9,15 +9,21 @@
 #import <UIKit/UIKit.h>
 
 @class TDTwitterAccount;
+@class TDUser;
 
 
 @interface TDAuthorsTableViewController : UITableViewController <UITableViewDataSource>
 
+@property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
+
 @property (strong, nonatomic) TDTwitterAccount *account;
 @property (strong, nonatomic) NSMutableArray *authors;
-@property (strong, nonatomic) NSMutableDictionary *authorImages;
 @property (strong, nonatomic) NSMutableDictionary *authorTweets;
 
-- (void)loadMoreAuthor:(NSString *)nextCursor;
+- (NSArray *)fetchCachedAuthors;
+- (void)loadMoreAuthor:(NSString *) nextCursor;
+- (void)cacheAuthors:(NSArray *) authors;
+- (void)loadTimeline;
+- (TDUser *)findAuthorById:(NSString *)idStr;
 
 @end

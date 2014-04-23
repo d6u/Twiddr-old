@@ -100,8 +100,12 @@
 
 #pragma mark - Table View delegate
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {}
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+}
 
+
+#pragma mark - UIViewController with StoreBoard
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
@@ -111,6 +115,8 @@
     }
     else if ([segue.identifier isEqualToString:@"showAuthors"]) {
         TDAuthorsTableViewController *authorViewController = segue.destinationViewController;
+        authorViewController.managedObjectContext = self.managedObjectContext;
+        
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
         authorViewController.account = self.twitterAccounts[indexPath.row];
     }

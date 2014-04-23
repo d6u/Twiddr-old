@@ -10,6 +10,11 @@
 #import "TDTwitterAccount.h"
 #import <STTwitter/STTwitter.h>
 #import "TDTweetsTableViewController.h"
+#import "TDAppDelegate.h"
+#import "TDUser.h"
+#import <SDWebImage/UIImageView+WebCache.h>
+#import "TDTweet.h"
+#import "TDSingletonCoreDataManager.h"
 
 
 @interface TDAuthorsTableViewController ()
@@ -24,33 +29,13 @@
 {
     [super viewDidLoad];
     
-    self.authors = [[NSMutableArray alloc] init];
-    self.authorImages = [[NSMutableDictionary alloc] init];
+    self.authors = [NSMutableArray arrayWithArray:[self fetchCachedAuthors]];
     self.authorTweets = [[NSMutableDictionary alloc] init];
     
-    // Update timeline
-    [self.account.twitterApi getStatusesHomeTimelineWithCount:@"200"
-                                                      sinceID:nil
-                                                        maxID:nil
-                                                     trimUser:@(NO)
-                                               excludeReplies:@(NO)
-                                           contributorDetails:@(NO)
-                                              includeEntities:@(YES)
-                                                 successBlock:^(NSArray *statuses) {
-        for (NSDictionary *tweet in statuses) {
-            NSString *screenName = tweet[@"user"][@"screen_name"];
-            if (!self.authorTweets[screenName]) {
-                NSMutableArray *tweets = [NSMutableArray arrayWithObject:tweet];
-                self.authorTweets[screenName] = tweets;
-            } else {
-                [self.authorTweets[screenName] addObject:tweet];
-            }
-        }
-    } errorBlock:^(NSError *error) {
-        NSLog(@"--- Error: %@", error);
-    }];
+    [self.tableView reloadData];
     
     [self loadMoreAuthor:nil];
+    [self loadTimeline];
 }
 
 
@@ -69,15 +54,15 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
+    static NSString *CellIdentifier = @"Cell";
     
-    NSDictionary *author = self.authors[indexPath.row];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
-    cell.textLabel.text = author[@"name"];
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"@%@", author[@"screen_name"]];
-    if (self.authorImages[author[@"screen_name"]]) {
-        cell.imageView.image = self.authorImages[author[@"screen_name"]];
-    }
+    TDUser *author = self.authors[indexPath.row];
+    
+    cell.textLabel.text = author.name;
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"@%@", author.screen_name];
+    cell.imageView.image = author.profileImage;
     
     return cell;
 }
@@ -88,17 +73,44 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ([segue.identifier isEqualToString:@"showTweets"]) {
-        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
         TDTweetsTableViewController *tweetsViewController = [segue destinationViewController];
-        tweetsViewController.account = self.account;
-        NSDictionary *author = self.authors[indexPath.row];
+        tweetsViewController.managedObjectContext = self.managedObjectContext;
+        
+        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+        TDUser *author = self.authors[indexPath.row];
+        
         tweetsViewController.author = author;
-        tweetsViewController.tweets = self.authorTweets[author[@"screen_name"]];
+        tweetsViewController.account = self.account;
+        tweetsViewController.tweets = [NSMutableArray arrayWithArray:[author.statuses allObjects]];
     }
 }
 
 
 # pragma mark - Helpers
+
+- (NSArray *)fetchCachedAuthors
+{
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"User"
+                                              inManagedObjectContext:self.managedObjectContext];
+    [fetchRequest setEntity:entity];
+    
+    NSError *error;
+    NSArray *fetchedObject = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+
+    if (error) {
+        NSLog(@"-- ERROR: %@", error);
+    }
+    
+    for (TDUser *author in fetchedObject) {
+        [author loadProfileImageWithCompletionBlock:^(UIImage *image) {
+            [[self tableView] reloadData];
+        }];
+    }
+    
+    return [NSArray arrayWithArray:fetchedObject];
+}
+
 
 - (void)loadMoreAuthor:(NSString *)nextCursor
 {
@@ -108,37 +120,10 @@
                                                count:@"200"
                                           skipStatus:@(YES)
                                  includeUserEntities:@(NO)
-                                        successBlock:^(NSArray *users, NSString *previousCursor, NSString *nextCursor) {
+                                        successBlock:^(NSArray *users, NSString *previousCursor, NSString *nextCursor)
+    {
         if ([users count] != 0) {
-            [self.authors addObjectsFromArray:users];
-            
-            NSURLSession *session = [NSURLSession sharedSession];
-            
-            for (NSDictionary *user in users) {
-                NSString *screenName = user[@"screen_name"];
-                
-                NSURL *url = [NSURL URLWithString:user[@"profile_image_url"]];
-                
-                NSURLSessionDownloadTask *task =
-                [session downloadTaskWithURL:url
-                           completionHandler:^(NSURL *location, NSURLResponse *response, NSError *error) {
-                    if (error) {
-                       NSLog(@"-- ERROR: %@", error);
-                    }
-                    NSData *data = [NSData dataWithContentsOfURL:location];
-                    UIImage *profileImage = [UIImage imageWithData:data];
-                    self.authorImages[screenName] = profileImage;
-                    
-                    // Refresh table view cell images
-                    if ([self.authorImages count] == [self.authors count]) {
-                        [self.tableView performSelectorOnMainThread:@selector(reloadData)
-                                                         withObject:nil
-                                                      waitUntilDone:NO];
-                    }
-                }];
-                
-                [task resume];
-            }
+            [self cacheAuthors:users];
         }
         if ([users count] == 200) {
             [self loadMoreAuthor:nextCursor];
@@ -152,9 +137,164 @@
 }
 
 
-- (void)downloadImageFromUrl:(NSString *)urlString successBlock:(void (^)(UIImage *image))successBlock
+- (void)cacheAuthors:(NSArray *)authors
 {
+    NSMutableArray *newAuthors = [[NSMutableArray alloc] init];
     
+    for (NSDictionary *author in authors)
+    {
+        TDUser *oldUser = [self findAuthorById:author[@"id_str"]];
+        
+        if (oldUser == nil) {
+            TDUser *newUser = [TDUser userWithRawDictionary:author];
+            
+            [TDSingletonCoreDataManager saveContext];
+            
+            [newUser loadProfileImageWithCompletionBlock:^(UIImage *image) {
+                [[self tableView] reloadData];
+            }];
+            
+            [newAuthors addObject:newUser];
+        } else {
+            BOOL profileImageUpdated = NO;
+            
+            if (![oldUser.profile_image_url isEqualToString:author[@"profile_image_url"]]) {
+                profileImageUpdated = YES;
+            }
+            
+            [oldUser setValuesForKeysWithRawDictionary:author];
+            
+            if (profileImageUpdated) {
+                if ([oldUser isDownloadingProfileImage]) {
+                    [oldUser cancelProfileImageDownloadOperation];
+                }
+                [oldUser loadProfileImageWithCompletionBlock:^(UIImage *image) {
+                    [[self tableView] reloadData];
+                }];
+            }
+            
+            [TDSingletonCoreDataManager saveContext];
+        }
+    }
+    
+    [self.authors addObjectsFromArray:newAuthors];
+    [[self tableView] reloadData];
+}
+
+
+- (void)loadTimeline
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *lastSinceId = [defaults objectForKey:@"lastSinceId"];
+    
+    [self loadTimelineSinceID:lastSinceId maxID:nil recursive:YES successBlock:^(NSArray *statuses)
+    {
+        if (statuses) {
+            
+            NSDictionary *status = [statuses firstObject];
+            if (status) {
+                [defaults setObject:status[@"id_str"] forKey:@"lastSinceId"];
+                [defaults synchronize];
+            }
+            
+            for (NSDictionary *tweet in statuses) {
+                
+                TDTweet *newTweet = [TDTweet tweetWithRawDictionary:tweet];
+                
+                for (TDUser *user in self.authors) {
+                    if ([user.id_str isEqualToString:tweet[@"user"][@"id_str"]]) {
+                        [user addStatusesObject:newTweet];
+                        break;
+                    }
+                }
+            }
+            
+            [TDSingletonCoreDataManager saveContext];
+        }
+        
+        [self sortAuthorByUnreadTweetsCount];
+        
+        [self.tableView reloadData];
+    }];
+}
+
+
+- (void)loadTimelineSinceID:(NSString *)sinceID maxID:(NSString *)maxID recursive:(BOOL)recursive
+               successBlock:(void (^)(NSArray *statuses))successBlock
+{
+    __block NSMutableArray *allStatuses;
+    __block NSString *maxIdStr = maxID;
+    
+    static void(^next)();
+    next = ^void() {
+        [self.account.twitterApi getStatusesHomeTimelineWithCount:@"200"
+                                                          sinceID:sinceID
+                                                            maxID:maxID
+                                                         trimUser:@(NO)
+                                                   excludeReplies:@(NO)
+                                               contributorDetails:@(NO)
+                                                  includeEntities:@(YES)
+                                                     successBlock:^(NSArray *statuses)
+        {
+            if (allStatuses == nil) {
+                allStatuses = [[NSMutableArray alloc] init];
+            }
+            
+            [allStatuses addObjectsFromArray:statuses];
+            
+            if (recursive && sinceID != nil && [statuses count] != 0) {
+                NSDictionary *lastStatus = [statuses lastObject];
+                maxIdStr = [self idStrMinusOne:lastStatus[@"id_str"]];
+                next();
+            } else {
+                successBlock(allStatuses);
+            }
+        } errorBlock:^(NSError *error) {
+            NSLog(@"--- Error: %@", error);
+            successBlock(allStatuses);
+        }];
+    };
+    
+    next();
+}
+
+
+- (NSString *)idStrMinusOne:(NSString *)idStr
+{
+    unsigned long long idNum = [idStr longLongValue];
+    idNum--;
+    return [NSString stringWithFormat:@"%llu", idNum];
+}
+
+
+- (void)sortAuthorByUnreadTweetsCount
+{
+    NSArray *sortedArray;
+    
+    sortedArray = [self.authors sortedArrayUsingComparator:^NSComparisonResult(TDUser *a, TDUser *b) {
+        unsigned long first = [[a statuses] count];
+        unsigned long second = [[b statuses] count];
+        if (first > second) {
+            return NSOrderedAscending;
+        } else {
+            return NSOrderedDescending;
+        }
+    }];
+    
+    self.authors = [NSMutableArray arrayWithArray:sortedArray];
+}
+
+
+- (TDUser *)findAuthorById:(NSString *)idStr
+{
+    TDUser *target;
+    for (TDUser *user in self.authors) {
+        if ([user.id_str isEqual:idStr]) {
+            target = user;
+            break;
+        }
+    }
+    return target;
 }
 
 

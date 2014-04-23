@@ -8,8 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		1A001D1818FDC3F300D16BC1 /* TDTwitterAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A001D1718FDC3F300D16BC1 /* TDTwitterAccount.m */; };
-		1A001D1B18FDC48100D16BC1 /* TDTweet.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A001D1A18FDC48100D16BC1 /* TDTweet.m */; };
 		1A001D1E18FDC5C800D16BC1 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A001D1D18FDC5C800D16BC1 /* Constants.m */; };
+		1A745C6719073A20000E9B54 /* TDTweet.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A745C6619073A20000E9B54 /* TDTweet.m */; };
+		1A745C6A19073A21000E9B54 /* TDAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A745C6919073A21000E9B54 /* TDAccount.m */; };
+		1A745C6D19073A21000E9B54 /* TDUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A745C6C19073A21000E9B54 /* TDUser.m */; };
+		1A745C7019073EB8000E9B54 /* TDSingletonCoreDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A745C6F19073EB8000E9B54 /* TDSingletonCoreDataManager.m */; };
 		1AF901D118FD618200A5B64A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AF901D018FD618200A5B64A /* Foundation.framework */; };
 		1AF901D318FD618200A5B64A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AF901D218FD618200A5B64A /* CoreGraphics.framework */; };
 		1AF901D518FD618200A5B64A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AF901D418FD618200A5B64A /* UIKit.framework */; };
@@ -47,10 +50,16 @@
 /* Begin PBXFileReference section */
 		1A001D1618FDC3F300D16BC1 /* TDTwitterAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDTwitterAccount.h; sourceTree = "<group>"; };
 		1A001D1718FDC3F300D16BC1 /* TDTwitterAccount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDTwitterAccount.m; sourceTree = "<group>"; };
-		1A001D1918FDC48100D16BC1 /* TDTweet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDTweet.h; sourceTree = "<group>"; };
-		1A001D1A18FDC48100D16BC1 /* TDTweet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDTweet.m; sourceTree = "<group>"; };
 		1A001D1C18FDC5C800D16BC1 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		1A001D1D18FDC5C800D16BC1 /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
+		1A745C6519073A20000E9B54 /* TDTweet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDTweet.h; sourceTree = "<group>"; };
+		1A745C6619073A20000E9B54 /* TDTweet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDTweet.m; sourceTree = "<group>"; };
+		1A745C6819073A21000E9B54 /* TDAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDAccount.h; sourceTree = "<group>"; };
+		1A745C6919073A21000E9B54 /* TDAccount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDAccount.m; sourceTree = "<group>"; };
+		1A745C6B19073A21000E9B54 /* TDUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDUser.h; sourceTree = "<group>"; };
+		1A745C6C19073A21000E9B54 /* TDUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDUser.m; sourceTree = "<group>"; };
+		1A745C6E19073EB8000E9B54 /* TDSingletonCoreDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDSingletonCoreDataManager.h; sourceTree = "<group>"; };
+		1A745C6F19073EB8000E9B54 /* TDSingletonCoreDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDSingletonCoreDataManager.m; sourceTree = "<group>"; };
 		1AF901CD18FD618200A5B64A /* Twiddr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Twiddr.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1AF901D018FD618200A5B64A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1AF901D218FD618200A5B64A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -162,6 +171,8 @@
 		1AF901D918FD618200A5B64A /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				1A745C6E19073EB8000E9B54 /* TDSingletonCoreDataManager.h */,
+				1A745C6F19073EB8000E9B54 /* TDSingletonCoreDataManager.m */,
 				1A001D1C18FDC5C800D16BC1 /* Constants.h */,
 				1A001D1D18FDC5C800D16BC1 /* Constants.m */,
 				1AF901DA18FD618200A5B64A /* Twiddr-Info.plist */,
@@ -210,10 +221,14 @@
 		1AF9021718FD61FD00A5B64A /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				1A745C6B19073A21000E9B54 /* TDUser.h */,
+				1A745C6C19073A21000E9B54 /* TDUser.m */,
+				1A745C6819073A21000E9B54 /* TDAccount.h */,
+				1A745C6919073A21000E9B54 /* TDAccount.m */,
+				1A745C6519073A20000E9B54 /* TDTweet.h */,
+				1A745C6619073A20000E9B54 /* TDTweet.m */,
 				1A001D1618FDC3F300D16BC1 /* TDTwitterAccount.h */,
 				1A001D1718FDC3F300D16BC1 /* TDTwitterAccount.m */,
-				1A001D1918FDC48100D16BC1 /* TDTweet.h */,
-				1A001D1A18FDC48100D16BC1 /* TDTweet.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -268,6 +283,9 @@
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = "Daiwei Lu";
 				TargetAttributes = {
+					1AF901CC18FD618200A5B64A = {
+						DevelopmentTeam = 8MZGXEXG4Z;
+					};
 					1AF901EC18FD618200A5B64A = {
 						TestTargetID = 1AF901CC18FD618200A5B64A;
 					};
@@ -357,10 +375,13 @@
 				1AF9021618FD61EE00A5B64A /* TDTwitterAuthViewController.m in Sources */,
 				1A001D1818FDC3F300D16BC1 /* TDTwitterAccount.m in Sources */,
 				1AF901E618FD618200A5B64A /* Twiddr.xcdatamodeld in Sources */,
+				1A745C6A19073A21000E9B54 /* TDAccount.m in Sources */,
 				1AF9021518FD61EE00A5B64A /* TDDetailViewController.m in Sources */,
+				1A745C7019073EB8000E9B54 /* TDSingletonCoreDataManager.m in Sources */,
 				1AF9021418FD61EE00A5B64A /* TDTweetsTableViewController.m in Sources */,
-				1A001D1B18FDC48100D16BC1 /* TDTweet.m in Sources */,
+				1A745C6D19073A21000E9B54 /* TDUser.m in Sources */,
 				1A001D1E18FDC5C800D16BC1 /* Constants.m in Sources */,
+				1A745C6719073A20000E9B54 /* TDTweet.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

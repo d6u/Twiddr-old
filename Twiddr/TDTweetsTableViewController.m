@@ -8,6 +8,8 @@
 
 #import "TDTweetsTableViewController.h"
 #import "TDTwitterAccount.h"
+#import "TDUser.h"
+#import "TDTweet.h"
 
 
 @interface TDTweetsTableViewController ()
@@ -26,7 +28,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    self.navigationItem.title = self.author[@"name"];
+    self.navigationItem.title = self.author.name;
 }
 
 
@@ -48,10 +50,10 @@
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
     
-    NSDictionary *tweet = self.tweets[indexPath.row];
+    TDTweet *tweet = self.tweets[indexPath.row];
     
-    cell.textLabel.text = tweet[@"text"];
-    cell.detailTextLabel.text = tweet[@"created_at"];
+    cell.textLabel.text = tweet.text;
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@", tweet.created_at];
     
     return cell;
 }
