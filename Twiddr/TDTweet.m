@@ -25,8 +25,12 @@
 
 - (void)setValuesForKeysWithRawDictionary:(NSDictionary *)keyedValues
 {
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"EEE MMM dd HH:mm:ss Z yyyy"];
+    static NSDateFormatter *formatter;
+    
+    if (formatter == nil) {
+        formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"EEE MMM dd HH:mm:ss Z yyyy"];
+    }
     
     NSMutableDictionary *tweetDict = [NSMutableDictionary dictionaryWithDictionary:keyedValues];
     

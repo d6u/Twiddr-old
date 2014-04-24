@@ -28,7 +28,7 @@
 {
     NSManagedObjectContext *context = [TDSingletonCoreDataManager getManagedObjectContext];
     TDUser *user = [NSEntityDescription insertNewObjectForEntityForName:@"User"
-                                                    inManagedObjectContext:context];
+                                                 inManagedObjectContext:context];
     [user setValuesForKeysWithRawDictionary:keyedValues];
     return user;
 }
@@ -38,8 +38,12 @@
 
 - (void)setValuesForKeysWithRawDictionary:(NSDictionary *)keyedValues
 {
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"EEE MMM dd HH:mm:ss Z yyyy"];
+    static NSDateFormatter *formatter;
+    
+    if (formatter == nil) {
+        formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"EEE MMM dd HH:mm:ss Z yyyy"];
+    }
     
     NSMutableDictionary *userDict = [NSMutableDictionary dictionaryWithDictionary:keyedValues];
     
