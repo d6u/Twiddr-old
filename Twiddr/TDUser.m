@@ -154,6 +154,7 @@
 @dynamic url;
 @dynamic utc_offset;
 @dynamic verified;
+@dynamic muting;
 @dynamic statuses;
 @dynamic account;
 
