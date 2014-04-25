@@ -7,7 +7,7 @@
 //
 
 #import "TDTweetsTableViewController.h"
-#import "TDTwitterAccount.h"
+#import "TDAccount.h"
 #import "TDUser.h"
 #import "TDTweet.h"
 
