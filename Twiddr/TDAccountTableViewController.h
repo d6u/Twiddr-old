@@ -12,6 +12,7 @@
 @interface TDAccountTableViewController : UITableViewController <UITableViewDelegate>
 
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic) BOOL firstLoadSinceAppLaunch;
 
 @property (strong, nonatomic) NSMutableArray *accounts;
 

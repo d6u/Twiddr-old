@@ -38,10 +38,6 @@
             }
         }];
     }
-    
-    if ([_accounts count] == 0) {
-        [self performSegueWithIdentifier:@"showTwitterAuth" sender:self];
-    }
 }
 
 
@@ -49,6 +45,15 @@
 {
     [super viewWillAppear:animated];
     [self.tableView reloadData];
+}
+
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    if ([_accounts count] == 0 && _firstLoadSinceAppLaunch == YES) {
+        [self performSegueWithIdentifier:@"showTwitterAuth" sender:self];
+    }
+    _firstLoadSinceAppLaunch = NO;
 }
 
 
