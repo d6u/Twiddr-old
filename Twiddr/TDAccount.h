@@ -10,8 +10,22 @@
 #import <CoreData/CoreData.h>
 
 @class TDUser;
+@class STTwitterAPI;
+
 
 @interface TDAccount : NSManagedObject
+
+@property (strong, nonatomic) STTwitterAPI *twitterApi;
+
+#pragma mark - Interfaces
+
++ (NSArray *)allAccounts;
++ (instancetype)accountWithRawDictionary:(NSDictionary *)keyedValues;
+- (void)setValuesForKeysWithRawDictionary:(NSDictionary *)keyedValues;
+- (void)initTwitterApi;
+- (void)initTwitterApiWithToken:(NSString *)token TokenSecret:(NSString *)tokenSecret;
+- (void)validateTwitterAccountAuthorizationWithFinishBlock:(void(^)(BOOL valid))finish;
+
 
 #pragma mark - Core Data
 
