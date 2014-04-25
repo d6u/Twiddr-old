@@ -8,14 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-@class TDTwitterAccount;
-
 
 @interface TDAccountTableViewController : UITableViewController <UITableViewDelegate>
 
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 
-@property (strong, nonatomic) NSMutableArray *twitterAccounts;
+@property (strong, nonatomic) NSMutableArray *accounts;
 
 - (IBAction)addAccount:(id)sender;
 

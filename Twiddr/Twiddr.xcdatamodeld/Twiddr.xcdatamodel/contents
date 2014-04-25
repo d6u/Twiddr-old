@@ -49,6 +49,7 @@
         <attribute name="lang" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="listed_count" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="location" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="muting" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="notifications" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="profile_background_color" optional="YES" attributeType="Transformable" syncable="YES"/>
@@ -76,6 +77,6 @@
     <elements>
         <element name="Account" positionX="-11763" positionY="-7569" width="128" height="120"/>
         <element name="Tweet" positionX="-11790" positionY="-7740" width="128" height="358"/>
-        <element name="User" positionX="-11790" positionY="-7587" width="128" height="658"/>
+        <element name="User" positionX="-11790" positionY="-7587" width="128" height="675"/>
     </elements>
 </model>

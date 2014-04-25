@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@class TDTwitterAccount;
+@class TDAccount;
 @class TDUser;
 
 
@@ -16,11 +16,10 @@
 
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 
-@property (strong, nonatomic) TDTwitterAccount *account;
+@property (strong, nonatomic) TDAccount *account;
 @property (strong, nonatomic) NSMutableArray *authors;
 @property (strong, nonatomic) NSMutableDictionary *authorTweets;
 
-- (NSArray *)fetchCachedAuthors;
 - (void)loadMoreAuthor:(NSString *) nextCursor;
 - (void)cacheAuthors:(NSArray *) authors;
 - (void)loadTimeline;

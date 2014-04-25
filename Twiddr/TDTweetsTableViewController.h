@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@class TDTwitterAccount;
+@class TDAccount;
 @class TDUser;
 
 
@@ -16,7 +16,7 @@
 
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 
-@property (strong, nonatomic) TDTwitterAccount *account;
+@property (strong, nonatomic) TDAccount *account;
 @property (strong, nonatomic) TDUser *author;
 @property (strong, nonatomic) NSMutableArray *tweets;
 

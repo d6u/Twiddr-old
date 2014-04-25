@@ -69,6 +69,7 @@
 @property (nonatomic, retain) NSString * url;
 @property (nonatomic, retain) NSNumber * utc_offset;
 @property (nonatomic, retain) NSNumber * verified;
+@property (nonatomic, retain) NSNumber * muting;
 @property (nonatomic, retain) NSSet *statuses;
 @property (nonatomic, retain) NSSet *account;
 

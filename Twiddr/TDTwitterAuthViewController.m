@@ -10,73 +10,63 @@
 #import "TDAccountTableViewController.h"
 #import <STTwitter/STTwitter.h>
 #import "Constants.h"
-#import "TDTwitterAccount.h"
+#import "TDAccount.h"
 #import <SSKeychain/SSKeychain.h>
+#import "TDSingletonCoreDataManager.h"
 
 
-@interface TDTwitterAuthViewController ()
-
+@interface TDTwitterAuthViewController () {
+    STTwitterAPI *_twitterApi;
+}
 @end
 
 
 @implementation TDTwitterAuthViewController
 
+static void(^callbackErrorBlock)(NSError *error);
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.callbackErrorBlock = ^void(NSError *error) {
+    
+    callbackErrorBlock = ^void(NSError *error) {
         NSLog(@"-- error: %@", error);
     };
+    
     self.webView.delegate = self;
 }
 
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    STTwitterAPI *twitter = [STTwitterAPI twitterAPIWithOAuthConsumerKey:TWAPIKey consumerSecret:TWAPISecret];
-    self.twitterAccount = [TDTwitterAccount accountWithTwitter:twitter];
+    _twitterApi = [STTwitterAPI twitterAPIWithOAuthConsumerKey:TWAPIKey consumerSecret:TWAPISecret];
     
-    void (^postTokenRequestBlock)(NSURL *, NSString *) = ^void(NSURL *url, NSString *oauthToken) {
+    [_twitterApi postTokenRequest:^(NSURL *url, NSString *oauthToken) {
         NSURLRequest *request = [NSURLRequest requestWithURL:url];
         [self.webView loadRequest:request];
-    };
-    
-    [self.twitterAccount.twitterApi postTokenRequest:postTokenRequestBlock
-                                          forceLogin:@(YES)
-                                          screenName:nil
-                                       oauthCallback:TWAPICallback
-                                          errorBlock:self.callbackErrorBlock];
-}
-
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
+    } forceLogin:@(YES) screenName:nil oauthCallback:TWAPICallback errorBlock:callbackErrorBlock];
 }
 
 
 #pragma mark - Web View delegate
 
-- (BOOL)           webView:(UIWebView *)webView
-shouldStartLoadWithRequest:(NSURLRequest *)request
-            navigationType:(UIWebViewNavigationType)navigationType
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request
+                                                 navigationType:(UIWebViewNavigationType)navigationType
 {
-    if ([[request.URL absoluteString] hasPrefix:TWAPICallback])
-    {
+    if ([[request.URL absoluteString] hasPrefix:TWAPICallback]) {
+        
         NSDictionary *d = [self parametersDictionaryFromQueryString:[request.URL query]];
         
-        void (^successBlock)(NSString *, NSString *, NSString *, NSString *) =
-        ^void(NSString *oauthToken, NSString *oauthTokenSecret, NSString *userID, NSString *screenName) {
-            [self saveTwitterAccountScreenName:screenName OauthToken:oauthToken tokenSecret:oauthTokenSecret];
-        };
+        [_twitterApi postAccessTokenRequestWithPIN:d[@"oauth_verifier"]
+                                      successBlock:^(NSString *oauthToken, NSString *oauthTokenSecret,
+                                                     NSString *userID, NSString *screenName)
+        {
+            [self saveTwitterAccountScreenName:screenName idStr:userID OauthToken:oauthToken
+                                   tokenSecret:oauthTokenSecret];
+        } errorBlock:callbackErrorBlock];
         
-        [self.twitterAccount.twitterApi postAccessTokenRequestWithPIN:d[@"oauth_verifier"]
-                                                         successBlock:successBlock
-                                                           errorBlock:self.callbackErrorBlock];
         return NO;
-    }
-    else {
+    } else {
         return YES;
     }
 }
@@ -92,19 +82,25 @@ shouldStartLoadWithRequest:(NSURLRequest *)request
 
 #pragma mark - Helpers
 
-- (void)saveTwitterAccountScreenName:(NSString *)screenName OauthToken:(NSString *)oauthToken tokenSecret:(NSString *)oauthTokenSecret
+- (void)saveTwitterAccountScreenName:(NSString *)screenName
+                               idStr:(NSString *)idStr
+                          OauthToken:(NSString *)oauthToken
+                         tokenSecret:(NSString *)oauthTokenSecret
 {
-    // Save token to keychain
-    [SSKeychain setPassword:oauthToken forService:@"TwiddrOauthTokenService" account:screenName];
-    [SSKeychain setPassword:oauthTokenSecret forService:@"TwiddrTokenSecretService" account:screenName];
+    NSDictionary *accountDict = @{@"id_str":       screenName,
+                                  @"screen_name":  screenName,
+                                  @"token":        oauthToken,
+                                  @"token_secret": oauthTokenSecret};
     
     // Save account info to TDAccount view controller, and dismiss current view
-    [self.twitterAccount.twitterApi getAccountSettingsWithSuccessBlock:^(NSDictionary *settings) {
-        self.twitterAccount.accountSetting = settings;
-        self.twitterAccount.screenName = settings[@"screen_name"];
-        [self.accountTableViewController.twitterAccounts addObject:self.twitterAccount];
-        [self dismissViewControllerAnimated:YES completion:nil];
-    } errorBlock:self.callbackErrorBlock];
+    _account = [TDAccount accountWithRawDictionary:accountDict];
+    [TDSingletonCoreDataManager saveContext];
+    
+    _account.twitterApi = _twitterApi;
+    
+    [self.accountTableViewController.accounts addObject:_account];
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 

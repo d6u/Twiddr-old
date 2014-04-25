@@ -7,7 +7,6 @@
 //
 
 #import "TDAuthorsTableViewController.h"
-#import "TDTwitterAccount.h"
 #import <STTwitter/STTwitter.h>
 #import "TDTweetsTableViewController.h"
 #import "TDAppDelegate.h"
@@ -15,6 +14,7 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "TDTweet.h"
 #import "TDSingletonCoreDataManager.h"
+#import "TDAccount.h"
 
 
 @interface TDAuthorsTableViewController ()
@@ -29,8 +29,12 @@
 {
     [super viewDidLoad];
     
-    self.authors = [NSMutableArray arrayWithArray:[self fetchCachedAuthors]];
-    self.authorTweets = [[NSMutableDictionary alloc] init];
+    _authors = [NSMutableArray arrayWithArray:[_account.following allObjects]];
+    for (TDUser *author in _authors) {
+        [author loadProfileImageWithCompletionBlock:^(UIImage *image) {
+            [self.tableView reloadData];
+        }];
+    }
     
     [self.tableView reloadData];
     
@@ -48,7 +52,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [self.authors count];
+    return [_authors count];
 }
 
 
@@ -80,7 +84,7 @@
         TDUser *author = self.authors[indexPath.row];
         
         tweetsViewController.author = author;
-        tweetsViewController.account = self.account;
+        tweetsViewController.account = _account;
         tweetsViewController.tweets = [NSMutableArray arrayWithArray:[author.statuses allObjects]];
     }
 }
@@ -88,39 +92,15 @@
 
 # pragma mark - Helpers
 
-- (NSArray *)fetchCachedAuthors
-{
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"User"
-                                              inManagedObjectContext:self.managedObjectContext];
-    [fetchRequest setEntity:entity];
-    
-    NSError *error;
-    NSArray *fetchedObject = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
-
-    if (error) {
-        NSLog(@"-- ERROR: %@", error);
-    }
-    
-    for (TDUser *author in fetchedObject) {
-        [author loadProfileImageWithCompletionBlock:^(UIImage *image) {
-            [[self tableView] reloadData];
-        }];
-    }
-    
-    return [NSArray arrayWithArray:fetchedObject];
-}
-
-
 - (void)loadMoreAuthor:(NSString *)nextCursor
 {
-    [self.account.twitterApi getFriendsListForUserID:nil
-                                        orScreenName:self.account.screenName
-                                              cursor:nextCursor
-                                               count:@"200"
-                                          skipStatus:@(YES)
-                                 includeUserEntities:@(NO)
-                                        successBlock:^(NSArray *users, NSString *previousCursor, NSString *nextCursor)
+    [_account.twitterApi getFriendsListForUserID:nil
+                                    orScreenName:_account.screen_name
+                                          cursor:nextCursor
+                                           count:@"200"
+                                      skipStatus:@(YES)
+                             includeUserEntities:@(NO)
+                                    successBlock:^(NSArray *users, NSString *previousCursor, NSString *nextCursor)
     {
         if ([users count] != 0) {
             [self cacheAuthors:users];
@@ -147,6 +127,7 @@
         
         if (oldUser == nil) {
             TDUser *newUser = [TDUser userWithRawDictionary:author];
+            [_account addFollowingObject:newUser];
             
             [TDSingletonCoreDataManager saveContext];
             
@@ -177,7 +158,7 @@
         }
     }
     
-    [self.authors addObjectsFromArray:newAuthors];
+    [_authors addObjectsFromArray:newAuthors];
     [[self tableView] reloadData];
 }
 
@@ -227,14 +208,14 @@
     
     static void(^next)();
     next = ^void() {
-        [self.account.twitterApi getStatusesHomeTimelineWithCount:@"200"
-                                                          sinceID:sinceID
-                                                            maxID:maxID
-                                                         trimUser:@(NO)
-                                                   excludeReplies:@(NO)
-                                               contributorDetails:@(NO)
-                                                  includeEntities:@(YES)
-                                                     successBlock:^(NSArray *statuses)
+        [_account.twitterApi getStatusesHomeTimelineWithCount:@"200"
+                                                      sinceID:sinceID
+                                                        maxID:maxID
+                                                     trimUser:@(NO)
+                                               excludeReplies:@(NO)
+                                           contributorDetails:@(NO)
+                                              includeEntities:@(YES)
+                                                 successBlock:^(NSArray *statuses)
         {
             if (allStatuses == nil) {
                 allStatuses = [[NSMutableArray alloc] init];
@@ -271,7 +252,7 @@
 {
     NSArray *sortedArray;
     
-    sortedArray = [self.authors sortedArrayUsingComparator:^NSComparisonResult(TDUser *a, TDUser *b) {
+    sortedArray = [_authors sortedArrayUsingComparator:^NSComparisonResult(TDUser *a, TDUser *b) {
         unsigned long first = [[a statuses] count];
         unsigned long second = [[b statuses] count];
         if (first > second) {
@@ -281,14 +262,14 @@
         }
     }];
     
-    self.authors = [NSMutableArray arrayWithArray:sortedArray];
+    _authors = [NSMutableArray arrayWithArray:sortedArray];
 }
 
 
 - (TDUser *)findAuthorById:(NSString *)idStr
 {
     TDUser *target;
-    for (TDUser *user in self.authors) {
+    for (TDUser *user in _authors) {
         if ([user.id_str isEqual:idStr]) {
             target = user;
             break;
