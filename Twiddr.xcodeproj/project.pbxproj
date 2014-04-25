@@ -206,14 +206,14 @@
 			children = (
 				1AF9020818FD61EE00A5B64A /* TDAccountTableViewController.h */,
 				1AF9020918FD61EE00A5B64A /* TDAccountTableViewController.m */,
+				1AF9021018FD61EE00A5B64A /* TDTwitterAuthViewController.h */,
+				1AF9021118FD61EE00A5B64A /* TDTwitterAuthViewController.m */,
 				1AF9020A18FD61EE00A5B64A /* TDAuthorsTableViewController.h */,
 				1AF9020B18FD61EE00A5B64A /* TDAuthorsTableViewController.m */,
 				1AF9020C18FD61EE00A5B64A /* TDTweetsTableViewController.h */,
 				1AF9020D18FD61EE00A5B64A /* TDTweetsTableViewController.m */,
 				1AF9020E18FD61EE00A5B64A /* TDDetailViewController.h */,
 				1AF9020F18FD61EE00A5B64A /* TDDetailViewController.m */,
-				1AF9021018FD61EE00A5B64A /* TDTwitterAuthViewController.h */,
-				1AF9021118FD61EE00A5B64A /* TDTwitterAuthViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";

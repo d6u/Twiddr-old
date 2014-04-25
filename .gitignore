@@ -22,3 +22,7 @@ DerivedData
 # CocoaPods
 Podfile.lock
 Pods/
+
+# AppCode
+.idea/
+
