@@ -10,10 +10,9 @@
 #import "TDDetailViewController.h"
 #import "TDTwitterAuthViewController.h"
 #import <STTwitter/STTwitter.h>
-#import "TDTwitterAccount.h"
 #import "TDAuthorsTableViewController.h"
-#import <SSKeychain/SSKeychain.h>
 #import "Constants.h"
+#import "TDAccount.h"
 
 
 @interface TDAccountTableViewController () {}
@@ -28,35 +27,20 @@
 {
     [super viewDidLoad];
     
-    self.twitterAccounts = [[NSMutableArray alloc] init];
+    _accounts = [NSMutableArray arrayWithArray:[TDAccount allAccounts]];
     
-    NSArray *accounts = [SSKeychain accountsForService:@"TwiddrOauthTokenService"];
-    if (accounts) {
-        for (NSDictionary *account in accounts) {
-            NSString *screenName = account[@"acct"];
-            NSString *oauthToken = [SSKeychain passwordForService:@"TwiddrOauthTokenService" account:screenName];
-            NSString *oauthTokenSecret = [SSKeychain passwordForService:@"TwiddrTokenSecretService" account:screenName];
-            
-            if (oauthToken && oauthTokenSecret) {
-                STTwitterAPI *twitter = [STTwitterAPI twitterAPIWithOAuthConsumerKey:TWAPIKey
-                                                                      consumerSecret:TWAPISecret
-                                                                          oauthToken:oauthToken
-                                                                    oauthTokenSecret:oauthTokenSecret];
-                [twitter getAccountSettingsWithSuccessBlock:^(NSDictionary *settings) {
-                    TDTwitterAccount *twitterAccount = [TDTwitterAccount accountWithTwitter:twitter];
-                    twitterAccount.accountSetting = settings;
-                    twitterAccount.screenName = settings[@"screen_name"];
-                    [self.twitterAccounts addObject:twitterAccount];
-                    [self.tableView reloadData];
-                } errorBlock:^(NSError *error) {
-                    NSLog(@"-- error: %@", error);
-                }];
+    for (TDAccount *account in _accounts) {
+        [account initTwitterApi];
+        [account validateTwitterAccountAuthorizationWithFinishBlock:^(BOOL valid) {
+            if (!valid) {
+                // TODO: add notifications
+                NSLog(@"--- Twitter account is not valid: %@", account.screen_name);
             }
-        }
-    } else {
-        if ([self.twitterAccounts count] == 0) {
-            [self performSegueWithIdentifier:@"showTwitterAuth" sender:self];
-        }
+        }];
+    }
+    
+    if ([_accounts count] == 0) {
+        [self performSegueWithIdentifier:@"showTwitterAuth" sender:self];
     }
 }
 
@@ -65,13 +49,6 @@
 {
     [super viewWillAppear:animated];
     [self.tableView reloadData];
-}
-
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 
@@ -85,15 +62,15 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [self.twitterAccounts count];
+    return [_accounts count];
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
-    TDTwitterAccount *twitterAccount = self.twitterAccounts[indexPath.row];
-    cell.textLabel.text = [NSString stringWithFormat:@"@%@", twitterAccount.screenName];
+    TDAccount *account = _accounts[indexPath.row];
+    cell.textLabel.text = [NSString stringWithFormat:@"@%@", account.screen_name];
     return cell;
 }
 
@@ -118,12 +95,9 @@
         authorViewController.managedObjectContext = self.managedObjectContext;
         
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-        authorViewController.account = self.twitterAccounts[indexPath.row];
+        authorViewController.account = _accounts[indexPath.row];
     }
 }
-
-
-
 
 
 #pragma mark - IBActions

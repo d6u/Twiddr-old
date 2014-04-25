@@ -9,14 +9,18 @@
 #import <UIKit/UIKit.h>
 
 @class TDAccountTableViewController;
-@class TDTwitterAccount;
+@class TDAccount;
+@class STTwitterAPI;
 
 
 @interface TDTwitterAuthViewController : UIViewController <UIWebViewDelegate>
 
+
 @property (weak, nonatomic) TDAccountTableViewController *accountTableViewController;
-@property (strong, nonatomic) TDTwitterAccount *twitterAccount;
-@property (strong, nonatomic) void (^callbackErrorBlock)(NSError *);
+@property (strong, nonatomic) TDAccount *account;
+
+
+#pragma mark - UI
 
 @property (strong, nonatomic) IBOutlet UIWebView *webView;
 
