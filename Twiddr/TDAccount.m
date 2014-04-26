@@ -94,7 +94,7 @@
         
         // Load Friends List
         [self getFriendsWithFinishBlock:^(NSError *error, NSArray *friends) {
-            if (error != nil) {
+            if (error == nil) {
                 [self syncFollowingWithFriendDictArray:friends];
                 followingFinish([self.following allObjects]);
             }
@@ -110,7 +110,7 @@
                        recursive:YES
                      finishBlock:^(NSError *error, NSArray *statuses)
         {
-            if (error != nil) {
+            if (error == nil) {
                 unsavedStatuses = [self syncStatusesWithTweetsDictArray:statuses];
                 timelineFinish(statuses);
             }
@@ -157,7 +157,7 @@
              
              [allFriends addObjectsFromArray:users];
              
-             if ([users count] < 200) {
+             if ([users count] < 198) {
                  finish(nil, allFriends);
              } else {
                  cursor = nextCursor;
@@ -200,11 +200,13 @@
              
              [allStatuses addObjectsFromArray:statuses];
              
-             if ([statuses count] < 200) {
+             if ([statuses count] < 198) {
                  finish(nil, allStatuses);
              } else if (recursive && sinceID != nil) {
                  maxIdStr = [self idStrMinusOne:[statuses lastObject][@"id_str"]];
                  weakNext();
+             } else {
+                 finish(nil, allStatuses);
              }
          } errorBlock:^(NSError *error) {
              NSLog(@"--- Error: %@", error);
@@ -229,17 +231,21 @@
     NSMutableArray *following = [NSMutableArray arrayWithArray:[self.following allObjects]];
     
     for (NSDictionary *friendDict in friends) {
+        BOOL found = NO;
         for (TDUser *user in following) {
-            if ([user.id_str isEqualToString:friendDict[@"id_str"]]) {
+            if ([[user id_str] isEqualToString:friendDict[@"id_str"]]) {
                 [user setValuesForKeysWithRawDictionary:friendDict];
                 [following removeObject:user];
+                found = YES;
                 break;
             }
         }
         
         // No user on local found
-        TDUser *user = [TDUser userWithRawDictionary:friendDict];
-        [self addFollowingObject:user];
+        if (!found) {
+            TDUser *user = [TDUser userWithRawDictionary:friendDict];
+            [self addFollowingObject:user];
+        }
     }
     
     // Remove users left in following array
@@ -257,15 +263,19 @@
     NSMutableArray *unsavedTweetDict = [[NSMutableArray alloc] init];
     
     for (NSDictionary *tweetDict in tweets) {
+        BOOL attached = NO;
         for (TDUser *user in self.following) {
             if ([user.id_str isEqualToString:tweetDict[@"user"][@"id_str"]]) {
                 TDTweet *tweet = [TDTweet tweetWithRawDictionary:tweetDict];
                 [user addStatusesObject:tweet];
+                attached = YES;
                 break;
             }
         }
         
-        [unsavedTweetDict addObject:tweetDict];
+        if (!attached) {
+            [unsavedTweetDict addObject:tweetDict];
+        }
     }
     
     return (NSArray *)unsavedTweetDict;
