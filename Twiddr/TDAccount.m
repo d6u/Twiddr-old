@@ -88,9 +88,26 @@
                                          allFinishBlock:(void (^)(NSError *error, NSArray *following))allFinish
 {
     if (_twitterApi) {
+        __block NSString *newest_status_id_str;
         __block NSArray *unsavedStatuses;
         __block BOOL friendsSynced = NO;
         __block BOOL timelineSynced = NO;
+        
+        __block void(^allFinishBlockWrapper)() = ^void() {
+            if ([unsavedStatuses count] > 0) {
+                NSArray *finalUnsavedStatuses = [self syncStatusesWithTweetsDictArray:unsavedStatuses];
+                if ([finalUnsavedStatuses count] > 0) {
+                    NSLog(@"--- ERROR: there are still statuses unsaved: %@", finalUnsavedStatuses);
+                }
+            }
+            
+            if (newest_status_id_str) {
+                self.newest_timeline_tweet_id_str = newest_status_id_str;
+                [TDSingletonCoreDataManager saveContext];
+            }
+            
+            allFinish(nil, [self.following allObjects]);
+        };
         
         // Load Friends List
         [self getFriendsWithFinishBlock:^(NSError *error, NSArray *friends) {
@@ -100,7 +117,7 @@
             }
             friendsSynced = YES;
             if (timelineSynced) {
-                allFinish(nil, [self.following allObjects]);
+                allFinishBlockWrapper();
             }
         }];
         
@@ -111,16 +128,15 @@
                      finishBlock:^(NSError *error, NSArray *statuses)
         {
             if (error == nil) {
+                if ([statuses count] > 0) {
+                    newest_status_id_str = [statuses firstObject][@"id_str"];
+                }
                 unsavedStatuses = [self syncStatusesWithTweetsDictArray:statuses];
                 timelineFinish(statuses);
             }
             timelineSynced = YES;
             if (friendsSynced) {
-                NSArray *finalUnsavedStatuses = [self syncStatusesWithTweetsDictArray:unsavedStatuses];
-                if ([finalUnsavedStatuses count] > 0) {
-                    NSLog(@"--- ERROR: there are still statuses unsaved: %@", finalUnsavedStatuses);
-                }
-                allFinish(nil, [self.following allObjects]);
+                allFinishBlockWrapper();
             }
         }];
     } else {
