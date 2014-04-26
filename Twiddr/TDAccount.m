@@ -88,6 +88,7 @@
 @dynamic screen_name;
 @dynamic token;
 @dynamic token_secret;
+@dynamic newest_timeline_tweet_id_str;
 @dynamic following;
 
 @end

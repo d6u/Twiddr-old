@@ -33,6 +33,7 @@
 @property (nonatomic, retain) NSString * screen_name;
 @property (nonatomic, retain) NSString * token;
 @property (nonatomic, retain) NSString * token_secret;
+@property (nonatomic, retain) NSString * newest_timeline_tweet_id_str;
 @property (nonatomic, retain) NSSet *following;
 
 @end

@@ -2,6 +2,7 @@
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5064" systemVersion="13C1021" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Account" representedClassName="TDAccount" syncable="YES">
         <attribute name="id_str" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="newest_timeline_tweet_id_str" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="screen_name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="token" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="token_secret" optional="YES" attributeType="String" syncable="YES"/>
@@ -75,7 +76,7 @@
         <relationship name="statuses" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Tweet" inverseName="author" inverseEntity="Tweet" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Account" positionX="-11763" positionY="-7569" width="128" height="120"/>
+        <element name="Account" positionX="-11763" positionY="-7569" width="128" height="135"/>
         <element name="Tweet" positionX="-11790" positionY="-7740" width="128" height="358"/>
         <element name="User" positionX="-11790" positionY="-7587" width="128" height="675"/>
     </elements>
