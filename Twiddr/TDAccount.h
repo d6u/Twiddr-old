@@ -26,6 +26,10 @@
 - (void)initTwitterApiWithToken:(NSString *)token TokenSecret:(NSString *)tokenSecret;
 - (void)validateTwitterAccountAuthorizationWithFinishBlock:(void(^)(BOOL valid))finish;
 
+- (void)getFollowingAndTimelineWithFollowingFinishBlock:(void (^)(NSArray *following))followingFinish
+                                    timelineFinishBlock:(void (^)(NSArray *tweets))timelineFinish
+                                         allFinishBlock:(void (^)(NSError *error, NSArray *following))allFinish;
+
 
 #pragma mark - Core Data
 
