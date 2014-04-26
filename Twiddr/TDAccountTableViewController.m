@@ -37,6 +37,14 @@
                 NSLog(@"--- Twitter account is not valid: %@", account.screen_name);
             }
         }];
+        
+        [account getFollowingAndTimelineWithFollowingFinishBlock:^(NSArray *following) {
+            NSLog(@"following cound %lu", [following count]);
+        } timelineFinishBlock:^(NSArray *tweets) {
+            NSLog(@"timeline cound %lu", [tweets count]);
+        } allFinishBlock:^(NSError *error, NSArray *following) {
+            NSLog(@"Finished syncing %@", error);
+        }];
     }
 }
 

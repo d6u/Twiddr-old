@@ -20,9 +20,4 @@
 @property (strong, nonatomic) NSMutableArray *authors;
 @property (strong, nonatomic) NSMutableDictionary *authorTweets;
 
-- (void)loadMoreAuthor:(NSString *) nextCursor;
-- (void)cacheAuthors:(NSArray *) authors;
-- (void)loadTimeline;
-- (TDUser *)findAuthorById:(NSString *)idStr;
-
 @end
