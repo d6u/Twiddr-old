@@ -94,7 +94,7 @@
 - (BOOL)deregisterSyncDelegate:(id<TDAccountSyncDelegate>)delegate
 {
     if ([_syncDelegates containsObject:delegate]) {
-        [_syncDelegates addObject:delegate];
+        [_syncDelegates removeObject:delegate];
         return YES;
     } else {
         return NO;
@@ -117,30 +117,63 @@
 - (void)syncAccountWithFinishBlock:(void(^)(NSError *error))finish
 {
     if (_twitterApi) {
+        __block NSArray *gotTimeline;
         __block BOOL friendsSynced = NO;
-        __block BOOL timelineSynced = NO;
+        __block BOOL timelineDownloaded = NO;
         
         __block void(^allFinish)() = ^void() {
-            finish(nil);
+            [self saveStatusesWithTweetsDictArray:gotTimeline
+                                      resultBlock:^(NSArray *newTweets,
+                                                    NSArray *affectedUsers,
+                                                    NSArray *unassignedTweets)
+             {
+                 NSDictionary *latestTweets = [gotTimeline firstObject];
+                 if (latestTweets) {
+                      self.newest_timeline_tweet_id_str = latestTweets[@"id_str"];
+                      [TDSingletonCoreDataManager saveContext];
+                 }
+                 
+                 for (NSObject<TDAccountSyncDelegate> *delegate in _syncDelegates) {
+                     if ([delegate respondsToSelector:
+                          @selector(syncedTimelineFromApiWithNewTweets:affectedUsers:unassignedTweets:)])
+                     {
+                         [delegate syncedTimelineFromApiWithNewTweets:newTweets
+                                                        affectedUsers:affectedUsers
+                                                     unassignedTweets:unassignedTweets];
+                     }
+                 }
+                 
+                 finish(nil);
+             }];
         };
         
+        // Following
         [self syncFollowingWithFinishBlock:^(NSArray *updatedUsers,
                                              NSArray *newUsers,
                                              NSArray *deletedUsers,
                                              NSArray *unchangedUsers)
         {
             friendsSynced = YES;
-            if (timelineSynced) {
+            if (timelineDownloaded) {
                 allFinish();
             }
         }];
         
-        [self syncTimelineWithFinishBlock:^(NSArray *newTweets, NSArray *affectedUsers, NSArray *unassignedTweets) {
-            timelineSynced = YES;
-            if (friendsSynced) {
-                allFinish();
-            }
-        }];
+        // Timeline
+        [self getTimelineSinceID:self.newest_timeline_tweet_id_str
+                           maxID:nil
+                       recursive:YES
+                     finishBlock:^(NSError *error, NSArray *statuses)
+         {
+             NSLog(@"getTimelineSinceID %lu", [statuses count]);
+             if (error == nil) {
+                 gotTimeline = statuses;
+                 timelineDownloaded = YES;
+                 if (friendsSynced) {
+                     allFinish();
+                 }
+             }
+         }];
         
     } else {
         NSError *error = [NSError errorWithDomain:@"com.daiwei.Twiddr.TDAccount"
@@ -243,7 +276,7 @@
              
              [allFriends addObjectsFromArray:users];
              
-             if ([users count] < 198) {
+             if ([users count] < 196) {
                  finish(nil, allFriends);
              } else {
                  cursor = nextCursor;
@@ -287,7 +320,7 @@
              
              [allStatuses addObjectsFromArray:statuses];
              
-             if ([statuses count] < 198) {
+             if ([statuses count] < 196) {
                  finish(nil, allStatuses);
              } else if (recursive && sinceID != nil) {
                  maxIdStr = [self idStrMinusOne:[statuses lastObject][@"id_str"]];
