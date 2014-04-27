@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
+#import "TDAccountSyncDelegate.h"
 
 @class TDUser;
 @class STTwitterAPI;
@@ -16,6 +17,7 @@
 @interface TDAccount : NSManagedObject
 
 @property (strong, nonatomic) STTwitterAPI *twitterApi;
+@property (nonatomic, strong) NSMutableSet *syncDelegates;
 
 #pragma mark - Interfaces
 
@@ -24,11 +26,25 @@
 - (void)setValuesForKeysWithRawDictionary:(NSDictionary *)keyedValues;
 - (void)initTwitterApi;
 - (void)initTwitterApiWithToken:(NSString *)token TokenSecret:(NSString *)tokenSecret;
-- (void)validateTwitterAccountAuthorizationWithFinishBlock:(void(^)(BOOL valid))finish;
 
-- (void)getFollowingAndTimelineWithFollowingFinishBlock:(void (^)(NSArray *following))followingFinish
-                                    timelineFinishBlock:(void (^)(NSArray *tweets))timelineFinish
-                                         allFinishBlock:(void (^)(NSError *error, NSArray *following))allFinish;
+
+#pragma mark - Events
+
+- (BOOL)registerSyncDelegate:(id<TDAccountSyncDelegate>)delegate;
+- (BOOL)deregisterSyncDelegate:(id<TDAccountSyncDelegate>)delegate;
+
+
+#pragma mark - Twitter API
+
+- (void)validateTwitterAccountAuthorizationWithFinishBlock:(void(^)(BOOL valid))finish;
+- (void)syncAccountWithFinishBlock:(void(^)(NSError *error))finish;
+- (void)syncFollowingWithFinishBlock:(void(^)(NSArray *updatedUsers,
+                                              NSArray *newUsers,
+                                              NSArray *deletedUsers,
+                                              NSArray *unchangedUsers))finish;
+- (void)syncTimelineWithFinishBlock:(void(^)(NSArray *newTweets,
+                                             NSArray *affectedUsers,
+                                             NSArray *unassignedTweets))finish;
 
 
 #pragma mark - Core Data

@@ -17,6 +17,7 @@
 @implementation TDAccount
 
 @synthesize twitterApi = _twitterApi;
+@synthesize syncDelegates = _syncDelegates;
 
 #pragma mark - Interfaces
 
@@ -73,6 +74,32 @@
 }
 
 
+#pragma mark - Events
+
+- (BOOL)registerSyncDelegate:(id<TDAccountSyncDelegate>)delegate
+{
+    if (![_syncDelegates containsObject:delegate]) {
+        [_syncDelegates addObject:delegate];
+        return YES;
+    } else {
+        return NO;
+    }
+}
+
+
+- (BOOL)deregisterSyncDelegate:(id<TDAccountSyncDelegate>)delegate
+{
+    if ([_syncDelegates containsObject:delegate]) {
+        [_syncDelegates addObject:delegate];
+        return YES;
+    } else {
+        return NO;
+    }
+}
+
+
+#pragma mark - Twitter API
+
 - (void)validateTwitterAccountAuthorizationWithFinishBlock:(void(^)(BOOL valid))finish
 {
     [_twitterApi getAccountSettingsWithSuccessBlock:^(NSDictionary *settings) {
@@ -83,70 +110,88 @@
 }
 
 
-- (void)getFollowingAndTimelineWithFollowingFinishBlock:(void (^)(NSArray *following))followingFinish
-                                    timelineFinishBlock:(void (^)(NSArray *tweets))timelineFinish
-                                         allFinishBlock:(void (^)(NSError *error, NSArray *following))allFinish
+- (void)syncAccountWithFinishBlock:(void(^)(NSError *error))finish
 {
     if (_twitterApi) {
-        __block NSString *newest_status_id_str;
-        __block NSArray *unsavedStatuses;
         __block BOOL friendsSynced = NO;
         __block BOOL timelineSynced = NO;
         
-        __block void(^allFinishBlockWrapper)() = ^void() {
-            if ([unsavedStatuses count] > 0) {
-                NSArray *finalUnsavedStatuses = [self syncStatusesWithTweetsDictArray:unsavedStatuses];
-                if ([finalUnsavedStatuses count] > 0) {
-                    NSLog(@"--- ERROR: there are still statuses unsaved: %@", finalUnsavedStatuses);
-                }
-            }
-            
-            if (newest_status_id_str) {
-                self.newest_timeline_tweet_id_str = newest_status_id_str;
-                [TDSingletonCoreDataManager saveContext];
-            }
-            
-            allFinish(nil, [self.following allObjects]);
+        __block void(^allFinish)() = ^void() {
+            finish(nil);
         };
         
-        // Load Friends List
-        [self getFriendsWithFinishBlock:^(NSError *error, NSArray *friends) {
-            if (error == nil) {
-                [self syncFollowingWithFriendDictArray:friends];
-                followingFinish([self.following allObjects]);
-            }
+        [self syncFollowingWithFinishBlock:^(NSArray *updatedUsers,
+                                             NSArray *newUsers,
+                                             NSArray *deletedUsers,
+                                             NSArray *unchangedUsers)
+        {
             friendsSynced = YES;
             if (timelineSynced) {
-                allFinishBlockWrapper();
+                allFinish();
             }
         }];
         
-        // Load Timeline
-        [self getTimelineSinceID:self.newest_timeline_tweet_id_str
-                           maxID:nil
-                       recursive:YES
-                     finishBlock:^(NSError *error, NSArray *statuses)
-        {
-            if (error == nil) {
-                if ([statuses count] > 0) {
-                    newest_status_id_str = [statuses firstObject][@"id_str"];
-                }
-                unsavedStatuses = [self syncStatusesWithTweetsDictArray:statuses];
-                timelineFinish(statuses);
-            }
+        [self syncTimelineWithFinishBlock:^(NSArray *newTweets, NSArray *affectedUsers, NSArray *unassignedTweets) {
             timelineSynced = YES;
             if (friendsSynced) {
-                allFinishBlockWrapper();
+                allFinish();
             }
         }];
+        
     } else {
         NSError *error = [NSError errorWithDomain:@"com.daiwei.Twiddr.TDAccount"
                                              code:100
                                          userInfo:@{@"description": @"twitterApi id has not initialized"}];
-        allFinish(error, nil);
+        finish(error);
     }
 }
-         
+
+
+- (void)syncFollowingWithFinishBlock:(void(^)(NSArray *updatedUsers,
+                                              NSArray *newUsers,
+                                              NSArray *deletedUsers,
+                                              NSArray *unchangedUsers))finish
+{
+    [self getFriendsWithFinishBlock:^(NSError *error, NSArray *friends) {
+        if (error == nil) {
+            [self saveFollowingWithFriendDictArray:friends resultBlock:^(NSArray *updatedUsers,
+                                                                         NSArray *newUsers,
+                                                                         NSArray *deletedUsers,
+                                                                         NSArray *unchangedUsers)
+            {
+                finish(updatedUsers, newUsers, deletedUsers, unchangedUsers);
+            }];
+        }
+        // TODO: add error handling
+    }];
+}
+
+
+- (void)syncTimelineWithFinishBlock:(void(^)(NSArray *newTweets,
+                                             NSArray *affectedUsers,
+                                             NSArray *unassignedTweets))finish
+{
+    [self getTimelineSinceID:self.newest_timeline_tweet_id_str
+                       maxID:nil
+                   recursive:YES
+                 finishBlock:^(NSError *error, NSArray *statuses)
+    {
+        if (error == nil) {
+            [self saveStatusesWithTweetsDictArray:statuses
+                                      resultBlock:^(NSArray *newTweets,
+                                                    NSArray *affectedUsers,
+                                                    NSArray *unassignedTweets)
+            {
+                NSDictionary *latestTweets = [statuses firstObject];
+                self.newest_timeline_tweet_id_str = latestTweets[@"id_str"];
+                [TDSingletonCoreDataManager saveContext];
+                
+                finish(newTweets, affectedUsers, unassignedTweets);
+            }];
+        }
+    }];
+}
+
 
 #pragma mark - Helpers
 
@@ -181,6 +226,7 @@
              }
          } errorBlock:^(NSError *error) {
              NSLog(@"--- Error: %@", error);
+             // TODO: specify rate limit error
              finish(error, allFriends);
          }];
     };
@@ -226,6 +272,7 @@
              }
          } errorBlock:^(NSError *error) {
              NSLog(@"--- Error: %@", error);
+             // TODO: specify rate limit error
              finish(error, allStatuses);
          }];
     };
@@ -242,16 +289,24 @@
 }
 
 
-- (void)syncFollowingWithFriendDictArray:(NSArray *)friends
+- (void)saveFollowingWithFriendDictArray:(NSArray *)friends resultBlock:(void(^)(NSArray *updatedUsers,
+                                                                                 NSArray *newUsers,
+                                                                                 NSArray *deletedUsers,
+                                                                                 NSArray *unchangedUsers))result
 {
-    NSMutableArray *following = [NSMutableArray arrayWithArray:[self.following allObjects]];
+    NSMutableArray *updatedUsers = [[NSMutableArray alloc] init];
+    NSMutableArray *newUsers = [[NSMutableArray alloc] init];
+    NSMutableArray *deletingUsers = [NSMutableArray arrayWithArray:[self.following allObjects]];
+    // TODO: track changed users
+//    NSMutableArray *unchangedUsers = nil;
     
     for (NSDictionary *friendDict in friends) {
         BOOL found = NO;
-        for (TDUser *user in following) {
+        for (TDUser *user in deletingUsers) {
             if ([[user id_str] isEqualToString:friendDict[@"id_str"]]) {
                 [user setValuesForKeysWithRawDictionary:friendDict];
-                [following removeObject:user];
+                [deletingUsers removeObject:user];
+                [updatedUsers addObject:user];
                 found = YES;
                 break;
             }
@@ -261,22 +316,30 @@
         if (!found) {
             TDUser *user = [TDUser userWithRawDictionary:friendDict];
             [self addFollowingObject:user];
+            [newUsers addObject:user];
         }
     }
     
     // Remove users left in following array
     NSManagedObjectContext *context = [TDSingletonCoreDataManager getManagedObjectContext];
-    for (TDUser *user in following) {
+    for (TDUser *user in deletingUsers) {
         [context deleteObject:user];
     }
     
     [TDSingletonCoreDataManager saveContext];
+    
+    result((NSArray *)updatedUsers, (NSArray *)newUsers, (NSArray *)deletingUsers, nil);
 }
 
 
-- (NSArray *)syncStatusesWithTweetsDictArray:(NSArray *)tweets
+- (void)saveStatusesWithTweetsDictArray:(NSArray *)tweets
+                            resultBlock:(void(^)(NSArray *newTweets,
+                                                 NSArray *affectedUsers,
+                                                 NSArray *unassignedTweets))result
 {
-    NSMutableArray *unsavedTweetDict = [[NSMutableArray alloc] init];
+    NSMutableArray *newTweets = [[NSMutableArray alloc] init];
+    NSMutableSet *affectedUsers = [[NSMutableSet alloc] init];
+    NSMutableArray *unassignedTweets = [NSMutableArray arrayWithArray:tweets];
     
     for (NSDictionary *tweetDict in tweets) {
         BOOL attached = NO;
@@ -284,17 +347,21 @@
             if ([user.id_str isEqualToString:tweetDict[@"user"][@"id_str"]]) {
                 TDTweet *tweet = [TDTweet tweetWithRawDictionary:tweetDict];
                 [user addStatusesObject:tweet];
+                [newTweets addObject:tweet];
+                [affectedUsers addObject:user];
                 attached = YES;
                 break;
             }
         }
         
         if (!attached) {
-            [unsavedTweetDict addObject:tweetDict];
+            [unassignedTweets addObject:tweetDict];
         }
     }
     
-    return (NSArray *)unsavedTweetDict;
+    [TDSingletonCoreDataManager saveContext];
+    
+    result(newTweets, [affectedUsers allObjects], unassignedTweets);
 }
 
 

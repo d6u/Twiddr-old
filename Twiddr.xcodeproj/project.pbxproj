@@ -57,6 +57,7 @@
 		1A745C6F19073EB8000E9B54 /* TDSingletonCoreDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDSingletonCoreDataManager.m; sourceTree = "<group>"; };
 		1A9A471F1908D9E80060E622 /* TDAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDAccount.h; sourceTree = "<group>"; };
 		1A9A47201908D9E80060E622 /* TDAccount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDAccount.m; sourceTree = "<group>"; };
+		1AEE36A4190C54710065D84A /* TDAccountSyncDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDAccountSyncDelegate.h; sourceTree = "<group>"; };
 		1AF901CD18FD618200A5B64A /* Twiddr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Twiddr.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1AF901D018FD618200A5B64A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1AF901D218FD618200A5B64A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -224,6 +225,7 @@
 				1A745C6C19073A21000E9B54 /* TDUser.m */,
 				1A745C6519073A20000E9B54 /* TDTweet.h */,
 				1A745C6619073A20000E9B54 /* TDTweet.m */,
+				1AEE36A4190C54710065D84A /* TDAccountSyncDelegate.h */,
 			);
 			name = Models;
 			sourceTree = "<group>";
