@@ -23,12 +23,59 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    [self.refreshControl addTarget:self action:@selector(pullToRefresh:) forControlEvents:UIControlEventValueChanged];
+    
+    _tweets = [NSMutableArray arrayWithArray:[_author.statuses allObjects]];
 }
 
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    [super viewWillAppear:animated];
+    
+    [_account registerSyncDelegate:self];
+    
     self.navigationItem.title = self.author.name;
+}
+
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    [_account deregisterSyncDelegate:self];
+}
+
+
+#pragma mark - UIRefreshControl
+
+- (void)pullToRefresh:(id)sender
+{
+    [_account syncAccountWithFinishBlock:^(NSError *error) {
+        [(UIRefreshControl *)sender endRefreshing];
+    }];
+}
+
+
+#pragma mark - TDAccountSyncDelegate
+
+- (void)syncedFollowingFromApiWithUpdatedUsers:(NSArray *)updatedUsers
+                                      newUsers:(NSArray *)newUsers
+                                  deletedUsers:(NSArray *)deletedUsers
+                                unchangedUsers:(NSArray *)unchangedUsers
+{
+    [self.tableView reloadData];
+}
+
+
+- (void)syncedTimelineFromApiWithNewTweets:(NSArray *)newTweets
+                             affectedUsers:(NSArray *)affectedUsers
+                          unassignedTweets:(NSArray *)unassignedTweets
+{
+    _tweets = [NSMutableArray arrayWithArray:[_author.statuses allObjects]];
+    [self.tableView reloadData];
 }
 
 

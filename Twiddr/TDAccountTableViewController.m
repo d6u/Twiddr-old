@@ -28,6 +28,9 @@
 {
     [super viewDidLoad];
     
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    [self.refreshControl addTarget:self action:@selector(pullToRefresh:) forControlEvents:UIControlEventValueChanged];
+    
     _accounts = [NSMutableArray arrayWithArray:[TDAccount allAccounts]];
     
     for (TDAccount *account in _accounts) {
@@ -72,6 +75,22 @@
 {
     for (TDAccount *account in _accounts) {
         [account deregisterSyncDelegate:self];
+    }
+}
+
+
+#pragma mark - UIRefreshControl
+
+- (void)pullToRefresh:(id)sender
+{
+    __block NSUInteger refreshFinished = 0;
+    for (int i = 0; i < [_accounts count]; i++) {
+        [_accounts[i] syncAccountWithFinishBlock:^(NSError *error) {
+            refreshFinished |= (1 << i);
+            if (refreshFinished == (pow(2, [_accounts count]) - 1)) {
+                [(UIRefreshControl *)sender endRefreshing];
+            }
+        }];
     }
 }
 
