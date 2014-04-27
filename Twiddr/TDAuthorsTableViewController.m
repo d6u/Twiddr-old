@@ -29,6 +29,9 @@
 {
     [super viewDidLoad];
     
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    [self.refreshControl addTarget:self action:@selector(pullToRefresh:) forControlEvents:UIControlEventValueChanged];
+
     _authors = [NSMutableArray arrayWithArray:[_account.following allObjects]];
     
     for (TDUser *author in _authors) {
@@ -58,6 +61,16 @@
 }
 
 
+#pragma mark - UIRefreshControl
+
+- (void)pullToRefresh:(id)sender
+{
+    [_account syncAccountWithFinishBlock:^(NSError *error) {
+        [(UIRefreshControl *)sender endRefreshing];
+    }];
+}
+
+
 #pragma mark - TDAccountSyncDelegate
 
 - (void)syncedFollowingFromApiWithUpdatedUsers:(NSArray *)updatedUsers
@@ -65,7 +78,7 @@
                                   deletedUsers:(NSArray *)deletedUsers
                                 unchangedUsers:(NSArray *)unchangedUsers
 {
-    NSLog(@"Author View syncedFollowingFromApiWithUpdatedUsers");
+    _authors = [NSMutableArray arrayWithArray:[_account.following allObjects]];
     [self.tableView reloadData];
 }
 
@@ -74,7 +87,6 @@
                              affectedUsers:(NSArray *)affectedUsers
                           unassignedTweets:(NSArray *)unassignedTweets
 {
-    NSLog(@"Author View syncedTimelineFromApiWithNewTweets");
     [self sortAuthorByUnreadTweetsCount];
     [self.tableView reloadData];
 }
@@ -122,7 +134,6 @@
         
         tweetsViewController.author = author;
         tweetsViewController.account = _account;
-        tweetsViewController.tweets = [NSMutableArray arrayWithArray:[author.statuses allObjects]];
     }
 }
 
