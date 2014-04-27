@@ -29,12 +29,6 @@
 {
     [super viewDidLoad];
     
-    [_account registerSyncDelegate:self];
-    
-    [_account syncAccountWithFinishBlock:^(NSError *error) {
-        NSLog(@"TDAccountTableViewController syncAccountWithFinishBlock %@", error);
-    }];
-    
     _authors = [NSMutableArray arrayWithArray:[_account.following allObjects]];
     
     for (TDUser *author in _authors) {
@@ -47,8 +41,20 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    [super viewWillAppear:animated];
+    
     [self sortAuthorByUnreadTweetsCount];
+    [_account registerSyncDelegate:self];
+    
     [self.tableView reloadData];
+}
+
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    [_account deregisterSyncDelegate:self];
 }
 
 
@@ -132,8 +138,10 @@
         unsigned long second = [[b statuses] count];
         if (first > second) {
             return NSOrderedAscending;
-        } else {
+        } else if (first < second) {
             return NSOrderedDescending;
+        } else {
+            return [((TDUser *)a).screen_name compare:((TDUser *)b).screen_name];
         }
     }];
     

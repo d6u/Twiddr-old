@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "TDAccountSyncDelegate.h"
 
 
-@interface TDAccountTableViewController : UITableViewController <UITableViewDelegate>
+@interface TDAccountTableViewController : UITableViewController <UITableViewDelegate, TDAccountSyncDelegate>
 
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic) BOOL firstLoadSinceAppLaunch;

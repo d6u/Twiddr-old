@@ -13,6 +13,7 @@
 #import "TDAuthorsTableViewController.h"
 #import "Constants.h"
 #import "TDAccount.h"
+#import "TDUser.h"
 
 
 @interface TDAccountTableViewController () {}
@@ -39,9 +40,9 @@
             }
         }];
         
-//        [account syncAccountWithFinishBlock:^(NSError *error) {
-//            NSLog(@"TDAccountTableViewController syncAccountWithFinishBlock %@", error);
-//        }];
+        [account syncAccountWithFinishBlock:^(NSError *error) {
+            NSLog(@"TDAccountTableViewController syncAccountWithFinishBlock %@", error);
+        }];
     }
 }
 
@@ -49,6 +50,11 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    for (TDAccount *account in _accounts) {
+        [account registerSyncDelegate:self];
+    }
+    
     [self.tableView reloadData];
 }
 
@@ -59,6 +65,24 @@
         [self performSegueWithIdentifier:@"showTwitterAuth" sender:self];
     }
     _firstLoadSinceAppLaunch = NO;
+}
+
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    for (TDAccount *account in _accounts) {
+        [account deregisterSyncDelegate:self];
+    }
+}
+
+
+#pragma mark - TDAccountSyncDelegate
+
+- (void)syncedTimelineFromApiWithNewTweets:(NSArray *)newTweets
+                             affectedUsers:(NSArray *)affectedUsers
+                          unassignedTweets:(NSArray *)unassignedTweets
+{
+    [self.tableView reloadData];
 }
 
 
@@ -81,6 +105,13 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
     TDAccount *account = _accounts[indexPath.row];
     cell.textLabel.text = [NSString stringWithFormat:@"@%@", account.screen_name];
+    
+    long count = 0;
+    for (TDUser *user in account.following) {
+        count += [user.statuses count];
+    }
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"%lu", count];
+    
     return cell;
 }
 
