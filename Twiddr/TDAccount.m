@@ -78,6 +78,10 @@
 
 - (BOOL)registerSyncDelegate:(id<TDAccountSyncDelegate>)delegate
 {
+    if (_syncDelegates == nil) {
+        _syncDelegates = [[NSMutableSet alloc] init];
+    }
+    
     if (![_syncDelegates containsObject:delegate]) {
         [_syncDelegates addObject:delegate];
         return YES;
@@ -159,7 +163,6 @@
                                                                          NSArray *deletedUsers,
                                                                          NSArray *unchangedUsers)
             {
-                finish(updatedUsers, newUsers, deletedUsers, unchangedUsers);
                 for (NSObject<TDAccountSyncDelegate> *delegate in _syncDelegates) {
                     if ([delegate respondsToSelector:
                          @selector(syncedFollowingFromApiWithUpdatedUsers:newUsers:deletedUsers:unchangedUsers:)])
@@ -170,6 +173,8 @@
                                                           unchangedUsers:unchangedUsers];
                     }
                 }
+                
+                finish(updatedUsers, newUsers, deletedUsers, unchangedUsers);
             }];
         }
         // TODO: add error handling
@@ -196,7 +201,6 @@
                 self.newest_timeline_tweet_id_str = latestTweets[@"id_str"];
                 [TDSingletonCoreDataManager saveContext];
                 
-                finish(newTweets, affectedUsers, unassignedTweets);
                 for (NSObject<TDAccountSyncDelegate> *delegate in _syncDelegates) {
                     if ([delegate respondsToSelector:
                          @selector(syncedTimelineFromApiWithNewTweets:affectedUsers:unassignedTweets:)])
@@ -206,6 +210,8 @@
                                                     unassignedTweets:unassignedTweets];
                     }
                 }
+                
+                finish(newTweets, affectedUsers, unassignedTweets);
             }];
         }
     }];
