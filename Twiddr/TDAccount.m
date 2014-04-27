@@ -160,6 +160,16 @@
                                                                          NSArray *unchangedUsers)
             {
                 finish(updatedUsers, newUsers, deletedUsers, unchangedUsers);
+                for (NSObject<TDAccountSyncDelegate> *delegate in _syncDelegates) {
+                    if ([delegate respondsToSelector:
+                         @selector(syncedFollowingFromApiWithUpdatedUsers:newUsers:deletedUsers:unchangedUsers:)])
+                    {
+                        [delegate syncedFollowingFromApiWithUpdatedUsers:updatedUsers
+                                                                newUsers:newUsers
+                                                            deletedUsers:deletedUsers
+                                                          unchangedUsers:unchangedUsers];
+                    }
+                }
             }];
         }
         // TODO: add error handling
@@ -187,6 +197,15 @@
                 [TDSingletonCoreDataManager saveContext];
                 
                 finish(newTweets, affectedUsers, unassignedTweets);
+                for (NSObject<TDAccountSyncDelegate> *delegate in _syncDelegates) {
+                    if ([delegate respondsToSelector:
+                         @selector(syncedTimelineFromApiWithNewTweets:affectedUsers:unassignedTweets:)])
+                    {
+                        [delegate syncedTimelineFromApiWithNewTweets:newTweets
+                                                       affectedUsers:affectedUsers
+                                                    unassignedTweets:unassignedTweets];
+                    }
+                }
             }];
         }
     }];
