@@ -31,6 +31,7 @@
     
     for (TDAccount *account in _accounts) {
         [account initTwitterApi];
+        
         [account validateTwitterAccountAuthorizationWithFinishBlock:^(BOOL valid) {
             if (!valid) {
                 // TODO: add notifications
@@ -38,13 +39,9 @@
             }
         }];
         
-        [account getFollowingAndTimelineWithFollowingFinishBlock:^(NSArray *following) {
-            NSLog(@"following cound %lu", [following count]);
-        } timelineFinishBlock:^(NSArray *tweets) {
-            NSLog(@"timeline cound %lu", [tweets count]);
-        } allFinishBlock:^(NSError *error, NSArray *following) {
-            NSLog(@"Finished syncing %@", error);
-        }];
+//        [account syncAccountWithFinishBlock:^(NSError *error) {
+//            NSLog(@"TDAccountTableViewController syncAccountWithFinishBlock %@", error);
+//        }];
     }
 }
 

@@ -96,7 +96,9 @@ static void(^callbackErrorBlock)(NSError *error);
     _account = [TDAccount accountWithRawDictionary:accountDict];
     [TDSingletonCoreDataManager saveContext];
     
+    // Sync following and timeline after added account
     _account.twitterApi = _twitterApi;
+    [_account syncAccountWithFinishBlock:^(NSError *error) {}];
     
     [self.accountTableViewController.accounts addObject:_account];
     

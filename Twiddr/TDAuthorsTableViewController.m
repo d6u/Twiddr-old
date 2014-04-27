@@ -29,6 +29,12 @@
 {
     [super viewDidLoad];
     
+    [_account registerSyncDelegate:self];
+    
+    [_account syncAccountWithFinishBlock:^(NSError *error) {
+        NSLog(@"TDAccountTableViewController syncAccountWithFinishBlock %@", error);
+    }];
+    
     _authors = [NSMutableArray arrayWithArray:[_account.following allObjects]];
     
     for (TDUser *author in _authors) {
@@ -41,6 +47,28 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    [self sortAuthorByUnreadTweetsCount];
+    [self.tableView reloadData];
+}
+
+
+#pragma mark - TDAccountSyncDelegate
+
+- (void)syncedFollowingFromApiWithUpdatedUsers:(NSArray *)updatedUsers
+                                      newUsers:(NSArray *)newUsers
+                                  deletedUsers:(NSArray *)deletedUsers
+                                unchangedUsers:(NSArray *)unchangedUsers
+{
+    NSLog(@"Author View syncedFollowingFromApiWithUpdatedUsers");
+    [self.tableView reloadData];
+}
+
+
+- (void)syncedTimelineFromApiWithNewTweets:(NSArray *)newTweets
+                             affectedUsers:(NSArray *)affectedUsers
+                          unassignedTweets:(NSArray *)unassignedTweets
+{
+    NSLog(@"Author View syncedTimelineFromApiWithNewTweets");
     [self sortAuthorByUnreadTweetsCount];
     [self.tableView reloadData];
 }

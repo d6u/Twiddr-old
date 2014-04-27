@@ -7,17 +7,21 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "TDAccountSyncDelegate.h"
 
 @class TDAccount;
 @class TDUser;
 
 
-@interface TDAuthorsTableViewController : UITableViewController <UITableViewDataSource>
+@interface TDAuthorsTableViewController : UITableViewController <UITableViewDataSource, TDAccountSyncDelegate>
 
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 
 @property (strong, nonatomic) TDAccount *account;
 @property (strong, nonatomic) NSMutableArray *authors;
 @property (strong, nonatomic) NSMutableDictionary *authorTweets;
+
+- (void)syncedFollowingFromApiWithUpdatedUsers:(NSArray *)updatedUsers newUsers:(NSArray *)newUsers deletedUsers:(NSArray *)deletedUsers unchangedUsers:(NSArray *)unchangedUsers;
+- (void)syncedTimelineFromApiWithNewTweets:(NSArray *)newTweets affectedUsers:(NSArray *)affectedUsers unassignedTweets:(NSArray *)unassignedTweets;
 
 @end
