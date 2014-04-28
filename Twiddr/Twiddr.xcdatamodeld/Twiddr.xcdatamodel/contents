@@ -7,6 +7,13 @@
         <attribute name="token" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="token_secret" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="following" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="User" inverseName="account" inverseEntity="User" syncable="YES"/>
+        <relationship name="timeline_gaps" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="TimelineGap" inverseName="account" inverseEntity="TimelineGap" syncable="YES"/>
+        <relationship name="timeline_tweets" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Tweet" inverseName="timeline_account" inverseEntity="Tweet" syncable="YES"/>
+    </entity>
+    <entity name="TimelineGap" representedClassName="TDTimelineGap" syncable="YES">
+        <attribute name="max_id_str" attributeType="String" syncable="YES"/>
+        <attribute name="since_id_str" attributeType="String" syncable="YES"/>
+        <relationship name="account" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="timeline_gaps" inverseEntity="Account" syncable="YES"/>
     </entity>
     <entity name="Tweet" representedClassName="TDTweet" syncable="YES">
         <attribute name="contributors" optional="YES" attributeType="Transformable" syncable="YES"/>
@@ -30,6 +37,7 @@
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="truncated" optional="YES" attributeType="Boolean" syncable="YES"/>
         <relationship name="author" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="statuses" inverseEntity="User" syncable="YES"/>
+        <relationship name="timeline_account" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="timeline_tweets" inverseEntity="Account" syncable="YES"/>
     </entity>
     <entity name="User" representedClassName="TDUser" syncable="YES">
         <attribute name="contributors_enabled" optional="YES" attributeType="Boolean" syncable="YES"/>
@@ -72,12 +80,13 @@
         <attribute name="url" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="utc_offset" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="verified" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <relationship name="account" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Account" inverseName="following" inverseEntity="Account" syncable="YES"/>
-        <relationship name="statuses" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Tweet" inverseName="author" inverseEntity="Tweet" syncable="YES"/>
+        <relationship name="account" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="following" inverseEntity="Account" syncable="YES"/>
+        <relationship name="statuses" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Tweet" inverseName="author" inverseEntity="Tweet" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Account" positionX="-11763" positionY="-7569" width="128" height="135"/>
-        <element name="Tweet" positionX="-11790" positionY="-7740" width="128" height="358"/>
-        <element name="User" positionX="-11790" positionY="-7587" width="128" height="675"/>
+        <element name="Account" positionX="-11763" positionY="-7569" width="128" height="163"/>
+        <element name="Tweet" positionX="-11790" positionY="-7740" width="128" height="373"/>
+        <element name="User" positionX="-11790" positionY="-7587" width="128" height="673"/>
+        <element name="TimelineGap" positionX="-11772" positionY="-7587" width="128" height="88"/>
     </elements>
 </model>

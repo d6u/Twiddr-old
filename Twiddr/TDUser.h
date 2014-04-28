@@ -48,6 +48,7 @@
 @property (nonatomic, retain) NSString * lang;
 @property (nonatomic, retain) NSNumber * listed_count;
 @property (nonatomic, retain) NSString * location;
+@property (nonatomic, retain) NSNumber * muting;
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) id notifications;
 @property (nonatomic, retain) id profile_background_color;
@@ -69,12 +70,11 @@
 @property (nonatomic, retain) NSString * url;
 @property (nonatomic, retain) NSNumber * utc_offset;
 @property (nonatomic, retain) NSNumber * verified;
-@property (nonatomic, retain) NSNumber * muting;
+
+@property (nonatomic, retain) TDAccount *account;
 @property (nonatomic, retain) NSSet *statuses;
-@property (nonatomic, retain) NSSet *account;
 
 @end
-
 
 @interface TDUser (CoreDataGeneratedAccessors)
 
@@ -82,10 +82,5 @@
 - (void)removeStatusesObject:(TDTweet *)value;
 - (void)addStatuses:(NSSet *)values;
 - (void)removeStatuses:(NSSet *)values;
-
-- (void)addAccountObject:(TDAccount *)value;
-- (void)removeAccountObject:(TDAccount *)value;
-- (void)addAccount:(NSSet *)values;
-- (void)removeAccount:(NSSet *)values;
 
 @end

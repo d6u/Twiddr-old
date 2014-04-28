@@ -11,13 +11,16 @@
 #import "TDSingletonCoreDataManager.h"
 #import <STTwitter/STTwitter.h>
 #import "Constants.h"
+#import "TDTimelineGap.h"
 #import "TDTweet.h"
+#import "TDUser.h"
 
 
 @implementation TDAccount
 
 @synthesize twitterApi = _twitterApi;
 @synthesize syncDelegates = _syncDelegates;
+
 
 #pragma mark - Interfaces
 
@@ -426,10 +429,13 @@
 #pragma mark - Core Data
 
 @dynamic id_str;
+@dynamic newest_timeline_tweet_id_str;
 @dynamic screen_name;
 @dynamic token;
 @dynamic token_secret;
-@dynamic newest_timeline_tweet_id_str;
+
 @dynamic following;
+@dynamic timeline_tweets;
+@dynamic timeline_gaps;
 
 @end

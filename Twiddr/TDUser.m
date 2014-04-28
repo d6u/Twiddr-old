@@ -133,6 +133,7 @@
 @dynamic lang;
 @dynamic listed_count;
 @dynamic location;
+@dynamic muting;
 @dynamic name;
 @dynamic notifications;
 @dynamic profile_background_color;
@@ -154,8 +155,8 @@
 @dynamic url;
 @dynamic utc_offset;
 @dynamic verified;
-@dynamic muting;
-@dynamic statuses;
+
 @dynamic account;
+@dynamic statuses;
 
 @end

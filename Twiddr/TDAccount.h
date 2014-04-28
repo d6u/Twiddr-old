@@ -10,14 +10,14 @@
 #import <CoreData/CoreData.h>
 #import "TDAccountSyncDelegate.h"
 
-@class TDUser;
-@class STTwitterAPI;
+@class STTwitterAPI, TDTimelineGap, TDTweet, TDUser;
 
 
 @interface TDAccount : NSManagedObject
 
 @property (strong, nonatomic) STTwitterAPI *twitterApi;
 @property (nonatomic, strong) NSMutableSet *syncDelegates;
+
 
 #pragma mark - Interfaces
 
@@ -50,11 +50,14 @@
 #pragma mark - Core Data
 
 @property (nonatomic, retain) NSString * id_str;
+@property (nonatomic, retain) NSString * newest_timeline_tweet_id_str;
 @property (nonatomic, retain) NSString * screen_name;
 @property (nonatomic, retain) NSString * token;
 @property (nonatomic, retain) NSString * token_secret;
-@property (nonatomic, retain) NSString * newest_timeline_tweet_id_str;
+
 @property (nonatomic, retain) NSSet *following;
+@property (nonatomic, retain) NSSet *timeline_tweets;
+@property (nonatomic, retain) NSSet *timeline_gaps;
 
 @end
 
@@ -64,5 +67,15 @@
 - (void)removeFollowingObject:(TDUser *)value;
 - (void)addFollowing:(NSSet *)values;
 - (void)removeFollowing:(NSSet *)values;
+
+- (void)addTimeline_tweetsObject:(TDTweet *)value;
+- (void)removeTimeline_tweetsObject:(TDTweet *)value;
+- (void)addTimeline_tweets:(NSSet *)values;
+- (void)removeTimeline_tweets:(NSSet *)values;
+
+- (void)addTimeline_gapsObject:(TDTimelineGap *)value;
+- (void)removeTimeline_gapsObject:(TDTimelineGap *)value;
+- (void)addTimeline_gaps:(NSSet *)values;
+- (void)removeTimeline_gaps:(NSSet *)values;
 
 @end
