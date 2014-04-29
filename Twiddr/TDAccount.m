@@ -113,16 +113,6 @@
 }
 
 
-- (void)performSelectorOnDelegates:(SEL)method
-{
-    for (NSObject<TDAccountChangeDelegate> *delegate in _changeDelegates) {
-        if ([delegate respondsToSelector:method]) {
-            [delegate performSelectorOnMainThread:method withObject:delegate waitUntilDone:YES];
-        }
-    }
-}
-
-
 #pragma mark - Sync
 
 - (void)pullFollowingAndTimelineWithFinishBlock:(void(^)(NSError *error))finish
@@ -169,6 +159,36 @@
             }];
         }
     }];
+}
+
+
+- (void)assignOrphanTweetsToAuthorWithFinishBlock:(void(^)(NSArray *unassginedTweets, NSArray *affectedUsers))finish
+{
+    NSMutableArray *affectedUsers = [[NSMutableArray alloc] init];
+    NSMutableSet *unassignedTweets = [NSMutableSet setWithSet:[self tweetsNoAuthorAssigned]];
+    
+    for (TDUser *user in self.following) {
+        NSSet *targetSet = [unassignedTweets filteredSetUsingPredicate:
+                            [NSPredicate predicateWithFormat:@"author_id_str == %@", user.id_str]];
+        if ([targetSet count] > 0) {
+            [user addStatuses:targetSet];
+            [affectedUsers addObject:user];
+            for (TDTweet *tweet in targetSet) {
+                [unassignedTweets removeObject:tweet];
+            }
+        }
+    }
+    
+    [TDSingletonCoreDataManager saveContext];
+    
+    for (NSObject<TDAccountChangeDelegate> *delegate in _changeDelegates) {
+        if ([delegate respondsToSelector:@selector(assignedOrphanTweetsToAuthorWithUnassginedTweets:affectedUsers:)]) {
+            [delegate assignedOrphanTweetsToAuthorWithUnassginedTweets:[unassignedTweets allObjects]
+                                                         affectedUsers:(NSArray *)affectedUsers];
+        }
+    }
+    
+    finish([unassignedTweets allObjects], (NSArray *)affectedUsers);
 }
 
 
@@ -306,8 +326,16 @@
     
     [TDSingletonCoreDataManager saveContext];
     
-    [self performSelectorOnDelegates:
-            @selector(mergedFollowingFromApiWithUpdatedUsers:newUsers:deletedUsers:unchangedUsers:)];
+    for (NSObject<TDAccountChangeDelegate> *delegate in _changeDelegates) {
+        if ([delegate respondsToSelector:
+             @selector(mergedFollowingFromApiWithUpdatedUsers:newUsers:deletedUsers:unchangedUsers:)])
+        {
+            [delegate mergedFollowingFromApiWithUpdatedUsers:updatedUsers
+                                                    newUsers:newUsers
+                                                deletedUsers:deletingUsers
+                                              unchangedUsers:unchangedUsers];
+        }
+    }
     
     result((NSArray *)updatedUsers, (NSArray *)newUsers, (NSArray *)deletingUsers, (NSArray *)unchangedUsers);
 }
@@ -329,7 +357,11 @@
     }
     [TDSingletonCoreDataManager saveContext];
     
-    [self performSelectorOnDelegates:@selector(mergedTimelineFromApiWithNewTweets:)];
+    for (NSObject<TDAccountChangeDelegate> *delegate in _changeDelegates) {
+        if ([delegate respondsToSelector:@selector(mergedTimelineFromApiWithNewTweets:)]) {
+            [delegate mergedTimelineFromApiWithNewTweets:[newTweets allObjects]];
+        }
+    }
     
     result([newTweets allObjects]);
 }

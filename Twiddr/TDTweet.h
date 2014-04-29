@@ -19,6 +19,7 @@
 
 #pragma mark - Core Data
 
+@property (nonatomic, retain) NSString * author_id_str;
 @property (nonatomic, retain) id contributors;
 @property (nonatomic, retain) NSDictionary * coordinates;
 @property (nonatomic, retain) NSDate * created_at;

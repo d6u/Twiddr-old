@@ -19,4 +19,7 @@
 
 - (void)mergedTimelineFromApiWithNewTweets:(NSArray *)newTweets;
 
+- (void)assignedOrphanTweetsToAuthorWithUnassginedTweets:(NSArray *)unassginedTweets
+                                           affectedUsers:(NSArray *)affectedUsers;
+
 @end

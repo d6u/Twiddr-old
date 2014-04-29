@@ -36,6 +36,7 @@
     NSMutableDictionary *tweetDict = [NSMutableDictionary dictionaryWithDictionary:keyedValues];
     
     tweetDict[@"created_at"] = [formatter dateFromString:keyedValues[@"created_at"]];
+    tweetDict[@"author_id_str"] = keyedValues[@"user"][@"id_str"];
     
     [tweetDict removeObjectForKey:@"id"];
     [tweetDict removeObjectForKey:@"user"];
@@ -49,6 +50,7 @@
 
 #pragma mark - Core Data
 
+@dynamic author_id_str;
 @dynamic contributors;
 @dynamic coordinates;
 @dynamic created_at;
