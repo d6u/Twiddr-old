@@ -28,6 +28,7 @@
     [self.refreshControl addTarget:self action:@selector(pullToRefresh:) forControlEvents:UIControlEventValueChanged];
     
     _tweets = [NSMutableArray arrayWithArray:[_author.statuses allObjects]];
+    [self sortTweetsByDate];
 }
 
 
@@ -66,6 +67,7 @@
                                   deletedUsers:(NSArray *)deletedUsers
                                 unchangedUsers:(NSArray *)unchangedUsers
 {
+    [self sortTweetsByDate];
     [self.tableView reloadData];
 }
 
@@ -103,6 +105,20 @@
     cell.detailTextLabel.text = [NSString stringWithFormat:@"%@", tweet.created_at];
     
     return cell;
+}
+
+
+#pragma mark - Helper
+
+- (void)sortTweetsByDate
+{
+    NSArray *sortedArray;
+    
+    sortedArray = [_tweets sortedArrayUsingComparator:^NSComparisonResult(TDTweet *a, TDTweet *b) {
+        return [b.created_at compare:a.created_at];
+    }];
+    
+    _tweets = [NSMutableArray arrayWithArray:sortedArray];
 }
 
 
