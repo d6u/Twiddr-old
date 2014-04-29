@@ -53,9 +53,9 @@
 
 - (void)pullToRefresh:(id)sender
 {
-    [_account syncAccountWithFinishBlock:^(NSError *error) {
-        [(UIRefreshControl *)sender endRefreshing];
-    }];
+//    [_account syncAccountWithFinishBlock:^(NSError *error) {
+//        [(UIRefreshControl *)sender endRefreshing];
+//    }];
 }
 
 

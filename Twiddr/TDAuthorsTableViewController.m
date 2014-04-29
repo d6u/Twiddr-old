@@ -65,7 +65,7 @@
 
 - (void)pullToRefresh:(id)sender
 {
-    [_account syncAccountWithFinishBlock:^(NSError *error) {
+    [_account pullFollowingAndTimelineWithFinishBlock:^(NSError *error) {
         [(UIRefreshControl *)sender endRefreshing];
     }];
 }

@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
-#import "TDAccountSyncDelegate.h"
+#import "TDAccountChangeDelegate.h"
 
 @class STTwitterAPI, TDTimelineGap, TDTweet, TDUser;
 
@@ -16,7 +16,7 @@
 @interface TDAccount : NSManagedObject
 
 @property (strong, nonatomic) STTwitterAPI *twitterApi;
-@property (nonatomic, strong) NSMutableSet *syncDelegates;
+@property (nonatomic, strong) NSMutableSet *changeDelegates;
 
 
 #pragma mark - Interfaces
@@ -30,21 +30,22 @@
 
 #pragma mark - Events
 
-- (BOOL)registerSyncDelegate:(id<TDAccountSyncDelegate>)delegate;
-- (BOOL)deregisterSyncDelegate:(id<TDAccountSyncDelegate>)delegate;
+- (BOOL)registerSyncDelegate:(NSObject<TDAccountChangeDelegate> *)delegate;
+- (BOOL)deregisterSyncDelegate:(NSObject<TDAccountChangeDelegate> *)delegate;
 
 
 #pragma mark - Twitter API
 
-- (void)validateTwitterAccountAuthorizationWithFinishBlock:(void(^)(BOOL valid))finish;
-- (void)syncAccountWithFinishBlock:(void(^)(NSError *error))finish;
-- (void)syncFollowingWithFinishBlock:(void(^)(NSArray *updatedUsers,
-                                              NSArray *newUsers,
-                                              NSArray *deletedUsers,
-                                              NSArray *unchangedUsers))finish;
-- (void)syncTimelineWithFinishBlock:(void(^)(NSArray *newTweets,
-                                             NSArray *affectedUsers,
-                                             NSArray *unassignedTweets))finish;
+/**
+ *  Keywords explaination
+ *
+ *  perform: simple wrapper for twitterApi
+ *  pull: fetch and merge (download, sync, resolve conflict)
+ *  compare: return difference between provided and local copies
+ */
+
+- (void)performGetAccountSettingsWithFinishBlock:(void(^)(NSError *error, NSDictionary *settings))finish;
+- (void)pullFollowingAndTimelineWithFinishBlock:(void(^)(NSError *error))finish;
 
 
 #pragma mark - Core Data

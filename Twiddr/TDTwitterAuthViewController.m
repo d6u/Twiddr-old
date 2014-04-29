@@ -98,7 +98,8 @@ static void(^callbackErrorBlock)(NSError *error);
     
     // Sync following and timeline after added account
     _account.twitterApi = _twitterApi;
-    [_account syncAccountWithFinishBlock:^(NSError *error) {}];
+    [_account pullFollowingAndTimelineWithFinishBlock:^(NSError *error) {
+    }];
     
     [self.accountTableViewController.accounts addObject:_account];
     

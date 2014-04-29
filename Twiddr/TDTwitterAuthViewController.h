@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "TDAccountSyncDelegate.h"
+#import "TDAccountChangeDelegate.h"
 
 @class TDAccountTableViewController;
 @class TDAccount;
