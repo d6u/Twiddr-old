@@ -13,7 +13,7 @@
 		1A6ABDEE190EA493005D3C97 /* TDTimelineGap.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A6ABDED190EA493005D3C97 /* TDTimelineGap.m */; };
 		1A6ABDF1190EA493005D3C97 /* TDTweet.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A6ABDF0190EA493005D3C97 /* TDTweet.m */; };
 		1A745C7019073EB8000E9B54 /* TDSingletonCoreDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A745C6F19073EB8000E9B54 /* TDSingletonCoreDataManager.m */; };
-		1AC0127A190FEF0D009B41D4 /* TDAuthorTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AC01279190FEF0D009B41D4 /* TDAuthorTableViewCell.m */; };
+		1AC0128619101FC1009B41D4 /* TDAuthorTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AC0128419101FC1009B41D4 /* TDAuthorTableViewCell.m */; };
 		1AF901D118FD618200A5B64A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AF901D018FD618200A5B64A /* Foundation.framework */; };
 		1AF901D318FD618200A5B64A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AF901D218FD618200A5B64A /* CoreGraphics.framework */; };
 		1AF901D518FD618200A5B64A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AF901D418FD618200A5B64A /* UIKit.framework */; };
@@ -61,8 +61,8 @@
 		1A6ABDF0190EA493005D3C97 /* TDTweet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDTweet.m; sourceTree = "<group>"; };
 		1A745C6E19073EB8000E9B54 /* TDSingletonCoreDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDSingletonCoreDataManager.h; sourceTree = "<group>"; };
 		1A745C6F19073EB8000E9B54 /* TDSingletonCoreDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDSingletonCoreDataManager.m; sourceTree = "<group>"; };
-		1AC01278190FEF0D009B41D4 /* TDAuthorTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDAuthorTableViewCell.h; sourceTree = "<group>"; };
-		1AC01279190FEF0D009B41D4 /* TDAuthorTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDAuthorTableViewCell.m; sourceTree = "<group>"; };
+		1AC0128319101FC1009B41D4 /* TDAuthorTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TDAuthorTableViewCell.h; path = Twiddr/TDAuthorTableViewCell.h; sourceTree = "<group>"; };
+		1AC0128419101FC1009B41D4 /* TDAuthorTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TDAuthorTableViewCell.m; path = Twiddr/TDAuthorTableViewCell.m; sourceTree = "<group>"; };
 		1AEE36A4190C54710065D84A /* TDAccountChangeDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDAccountChangeDelegate.h; sourceTree = "<group>"; };
 		1AF901CD18FD618200A5B64A /* Twiddr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Twiddr.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1AF901D018FD618200A5B64A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -127,8 +127,8 @@
 		1AC0127B190FEF11009B41D4 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				1AC01278190FEF0D009B41D4 /* TDAuthorTableViewCell.h */,
-				1AC01279190FEF0D009B41D4 /* TDAuthorTableViewCell.m */,
+				1AC0128319101FC1009B41D4 /* TDAuthorTableViewCell.h */,
+				1AC0128419101FC1009B41D4 /* TDAuthorTableViewCell.m */,
 			);
 			name = View;
 			path = ..;
@@ -393,7 +393,7 @@
 				1AF901DF18FD618200A5B64A /* main.m in Sources */,
 				1AF9021618FD61EE00A5B64A /* TDTwitterAuthViewController.m in Sources */,
 				1AF901E618FD618200A5B64A /* Twiddr.xcdatamodeld in Sources */,
-				1AC0127A190FEF0D009B41D4 /* TDAuthorTableViewCell.m in Sources */,
+				1AC0128619101FC1009B41D4 /* TDAuthorTableViewCell.m in Sources */,
 				1AF9021518FD61EE00A5B64A /* TDDetailViewController.m in Sources */,
 				1A745C7019073EB8000E9B54 /* TDSingletonCoreDataManager.m in Sources */,
 				1AF9021418FD61EE00A5B64A /* TDTweetsTableViewController.m in Sources */,

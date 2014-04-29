@@ -10,6 +10,6 @@
 
 @interface TDAuthorTableViewCell : UITableViewCell
 
-@property (strong, nonatomic) IBOutlet UILabel *unreadCount;
+@property (strong, nonatomic) IBOutlet UILabel *count;
 
 @end

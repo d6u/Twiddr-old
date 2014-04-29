@@ -117,7 +117,7 @@
     cell.textLabel.text = author.name;
     cell.detailTextLabel.text = [NSString stringWithFormat:@"@%@", author.screen_name];
     cell.imageView.image = author.profileImage;
-    cell.unreadCount.text = [NSString stringWithFormat:@"%lu", [author.statuses count]];
+    cell.count.text = [NSString stringWithFormat:@"%lu", [author.statuses count]];
     
     return cell;
 }
