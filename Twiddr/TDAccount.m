@@ -80,7 +80,7 @@
 
 - (NSSet *)tweetsNoAuthorAssigned
 {
-    NSPredicate *nullAuthorTweetsPredicate = [NSPredicate predicateWithFormat:@"author <> NULL"];
+    NSPredicate *nullAuthorTweetsPredicate = [NSPredicate predicateWithFormat:@"author == NULL"];
     return [self.timeline_tweets filteredSetUsingPredicate:nullAuthorTweetsPredicate];
 }
 
@@ -188,7 +188,9 @@
         }
     }
     
-    finish([unassignedTweets allObjects], (NSArray *)affectedUsers);
+    if (finish) {
+        finish([unassignedTweets allObjects], (NSArray *)affectedUsers);
+    }
 }
 
 

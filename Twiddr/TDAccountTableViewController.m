@@ -43,7 +43,7 @@
         }];
         
         [account pullFollowingAndTimelineWithFinishBlock:^(NSError *error) {
-            
+            [account assignOrphanTweetsToAuthorWithFinishBlock:nil];
         }];
     }
 }

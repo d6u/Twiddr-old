@@ -35,8 +35,6 @@
 - (BOOL)deregisterSyncDelegate:(NSObject<TDAccountChangeDelegate> *)delegate;
 
 
-#pragma mark - Twitter API
-
 /**
  *  Keywords explaination
  *
@@ -45,8 +43,15 @@
  *  compare: return difference between provided and local copies
  */
 
-- (void)performGetAccountSettingsWithFinishBlock:(void(^)(NSError *error, NSDictionary *settings))finish;
+#pragma mark - Sync
+
 - (void)pullFollowingAndTimelineWithFinishBlock:(void(^)(NSError *error))finish;
+- (void)assignOrphanTweetsToAuthorWithFinishBlock:(void(^)(NSArray *unassginedTweets, NSArray *affectedUsers))finish;
+
+
+#pragma mark - Twitter API
+
+- (void)performGetAccountSettingsWithFinishBlock:(void(^)(NSError *error, NSDictionary *settings))finish;
 
 
 #pragma mark - Core Data
