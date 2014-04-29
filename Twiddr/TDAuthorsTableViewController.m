@@ -108,9 +108,34 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
+    TDAuthorTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
+//    TDAuthorTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
-    TDAuthorTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    if (cell == nil) {
+        UILabel *textField = cell.count;
+        
+        [textField setTranslatesAutoresizingMaskIntoConstraints:NO];
+        
+//        NSLayoutConstraint *textLeftConstraint =
+//        [NSLayoutConstraint constraintWithItem:textField
+//                                     attribute:NSLayoutAttributeLeading
+//                                     relatedBy:NSLayoutRelationEqual
+//                                        toItem:cell.contentView
+//                                     attribute:NSLayoutAttributeLeading
+//                                    multiplier:1.0f
+//                                      constant:0.f];
+//        [cell addConstraint:textLeftConstraint];
+
+        NSLayoutConstraint *textRightConstraint =
+        [NSLayoutConstraint constraintWithItem:textField
+                                     attribute:NSLayoutAttributeTrailing
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:cell.contentView
+                                     attribute:NSLayoutAttributeTrailing
+                                    multiplier:1.0f
+                                      constant:0.f];
+        [cell addConstraint:textRightConstraint];
+    }
     
     TDUser *author = self.authors[indexPath.row];
     

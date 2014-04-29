@@ -97,6 +97,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
     
     TDTweet *tweet = self.tweets[indexPath.row];
@@ -105,6 +106,25 @@
     cell.detailTextLabel.text = [NSString stringWithFormat:@"%@", tweet.created_at];
     
     return cell;
+}
+
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    CGSize maxSize = CGSizeMake(280, MAXFLOAT);
+    TDTweet *tweet = _tweets[indexPath.row];
+    
+    NSDictionary *stringAttributes = [NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:17]
+                                                                 forKey:NSFontAttributeName];
+    
+    CGRect labelRect = [tweet.text boundingRectWithSize:maxSize
+                                                options:NSStringDrawingUsesLineFragmentOrigin
+                                             attributes:stringAttributes
+                                                context:nil];
+    
+    NSLog(@"size %@", NSStringFromCGSize(labelRect.size));
+    
+    return labelRect.size.height + 25;
 }
 
 
