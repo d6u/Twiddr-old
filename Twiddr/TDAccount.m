@@ -78,6 +78,13 @@
 }
 
 
+- (NSSet *)tweetsNoAuthorAssigned
+{
+    NSPredicate *nullAuthorTweetsPredicate = [NSPredicate predicateWithFormat:@"author <> NULL"];
+    return [self.timeline_tweets filteredSetUsingPredicate:nullAuthorTweetsPredicate];
+}
+
+
 #pragma mark - Events
 
 - (BOOL)registerSyncDelegate:(NSObject<TDAccountChangeDelegate> *)delegate
@@ -128,7 +135,7 @@
     
     [self performGetFriendsListWithFinishBlock:^(NSError *error, NSArray *users) {
         if (error) {
-            // TODO
+            // TODO: error handling
 //            if ([[error domain] isEqualToString:kSTTwitterTwitterErrorDomain] &&
 //                [error code] == STTwitterTwitterErrorRateLimitExceeded) {}
         } else {
@@ -150,7 +157,7 @@
     [self performGetStatusesHomeTimelineWithFinishBlock:^(NSError *error, NSArray *statuses) {
         NSLog(@"%lu", [statuses count]);
         if (error) {
-            // TODO
+            // TODO: error handling
 //            if ([[error domain] isEqualToString:kSTTwitterTwitterErrorDomain] &&
 //                [error code] == STTwitterTwitterErrorRateLimitExceeded) {}
         } else {
@@ -325,6 +332,12 @@
     [self performSelectorOnDelegates:@selector(mergedTimelineFromApiWithNewTweets:)];
     
     result([newTweets allObjects]);
+}
+
+
+- (void)assignStatusesToFollowing
+{
+//    NSArray *ophenTweets = [TDTweet tweetsNotAssignedToAuthor];
 }
 
 

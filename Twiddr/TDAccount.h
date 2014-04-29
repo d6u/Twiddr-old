@@ -26,6 +26,7 @@
 - (void)setValuesForKeysWithRawDictionary:(NSDictionary *)keyedValues;
 - (void)initTwitterApi;
 - (void)initTwitterApiWithToken:(NSString *)token TokenSecret:(NSString *)tokenSecret;
+- (NSSet *)tweetsNoAuthorAssigned;
 
 
 #pragma mark - Events
