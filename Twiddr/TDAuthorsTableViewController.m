@@ -15,6 +15,7 @@
 #import "TDTweet.h"
 #import "TDSingletonCoreDataManager.h"
 #import "TDAccount.h"
+#import "TDAuthorTableViewCell.h"
 
 
 @interface TDAuthorsTableViewController ()
@@ -109,13 +110,14 @@
 {
     static NSString *CellIdentifier = @"Cell";
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    TDAuthorTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     TDUser *author = self.authors[indexPath.row];
     
     cell.textLabel.text = author.name;
     cell.detailTextLabel.text = [NSString stringWithFormat:@"@%@", author.screen_name];
     cell.imageView.image = author.profileImage;
+    cell.unreadCount.text = [NSString stringWithFormat:@"%lu", [author.statuses count]];
     
     return cell;
 }
