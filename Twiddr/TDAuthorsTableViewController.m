@@ -30,6 +30,9 @@
 {
     [super viewDidLoad];
     
+    [self.tableView registerNib:[UINib nibWithNibName:@"TDAuthorTableViewCell" bundle:nil]
+         forCellReuseIdentifier:@"Cell"];
+    
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(pullToRefresh:) forControlEvents:UIControlEventValueChanged];
 
@@ -40,8 +43,6 @@
             [self.tableView reloadData];
         }];
     }
-    
-    [self.tableView registerNib:[UINib nibWithNibName:@"TDAuthorTableView" bundle:[NSBundle mainBundle]]forCellReuseIdentifier:@"cell"];
 }
 
 
@@ -102,34 +103,30 @@
     return 1;
 }
 
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return [_authors count];
 }
 
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    [self.navigationController pushViewController:[[TDTweetsTableViewController alloc]init] animated:YES];
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self performSegueWithIdentifier:@"showTweets" sender:self];
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    TDAuthorTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
-//    TDAuthorTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    
-    if (cell == nil) {
-        [tableView registerNib:[UINib nibWithNibName:@"TDAuthorTableCell" bundle:nil] forCellReuseIdentifier:@"cell"];
-        cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
-    }
+    TDAuthorTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
     
     TDUser *author = self.authors[indexPath.row];
     
+    cell.imageView.image = author.profileImage;
     cell.Title.text = author.name;
     cell.Detail.text = [NSString stringWithFormat:@"@%@", author.screen_name];
-    cell.imageView.image = author.profileImage;
-    NSLog(@"profile image%@",author.profileImage);
     cell.count.text = [NSString stringWithFormat:@"%lu", [author.statuses count]];
-    NSLog(@"%@",cell.count);
+    
     return cell;
 }
 

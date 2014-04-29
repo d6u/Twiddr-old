@@ -129,7 +129,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" textLabel="xrS-cE-BiI" detailTextLabel="1p3-S1-mIb" style="IBUITableViewCellStyleSubtitle" id="Kbl-GO-HTi">
-                                <rect key="frame" x="0.0" y="22" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Kbl-GO-HTi" id="Odh-2P-jCg">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
@@ -211,12 +211,25 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Cell" id="Ts3-v6-fYq">
+                                <rect key="frame" x="0.0" y="86" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Ts3-v6-fYq" id="och-wh-PY6">
+                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="wtV-rO-bF7" id="7hZ-FG-ZiP"/>
                             <outlet property="delegate" destination="wtV-rO-bF7" id="48I-bi-L5U"/>
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Authors" id="0Dq-iA-Uym"/>
+                    <connections>
+                        <segue destination="Lak-99-rGo" kind="push" identifier="showTweets" id="dK8-1F-ebd"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="F3V-kK-RV8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

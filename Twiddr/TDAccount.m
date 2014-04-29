@@ -145,7 +145,7 @@
     
     
     [self performGetStatusesHomeTimelineWithFinishBlock:^(NSError *error, NSArray *statuses) {
-        NSLog(@"%lu", [statuses count]);
+        NSLog(@"%ld", [statuses count]);
         if (error) {
             // TODO: error handling
 //            if ([[error domain] isEqualToString:kSTTwitterTwitterErrorDomain] &&

@@ -9,7 +9,9 @@
 #import "TDAuthorTableViewCell.h"
 
 @implementation TDAuthorTableViewCell
+
 @synthesize imageView;
+
 - (void)awakeFromNib
 {
     // Initialization code
