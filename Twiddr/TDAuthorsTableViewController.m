@@ -40,6 +40,8 @@
             [self.tableView reloadData];
         }];
     }
+    
+    [self.tableView registerNib:[UINib nibWithNibName:@"TDAuthorTableView" bundle:[NSBundle mainBundle]]forCellReuseIdentifier:@"cell"];
 }
 
 
@@ -105,6 +107,10 @@
     return [_authors count];
 }
 
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    [self.navigationController pushViewController:[[TDTweetsTableViewController alloc]init] animated:YES];
+}
+
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -112,38 +118,18 @@
 //    TDAuthorTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     if (cell == nil) {
-        UILabel *textField = cell.count;
-        
-        [textField setTranslatesAutoresizingMaskIntoConstraints:NO];
-        
-//        NSLayoutConstraint *textLeftConstraint =
-//        [NSLayoutConstraint constraintWithItem:textField
-//                                     attribute:NSLayoutAttributeLeading
-//                                     relatedBy:NSLayoutRelationEqual
-//                                        toItem:cell.contentView
-//                                     attribute:NSLayoutAttributeLeading
-//                                    multiplier:1.0f
-//                                      constant:0.f];
-//        [cell addConstraint:textLeftConstraint];
-
-        NSLayoutConstraint *textRightConstraint =
-        [NSLayoutConstraint constraintWithItem:textField
-                                     attribute:NSLayoutAttributeTrailing
-                                     relatedBy:NSLayoutRelationEqual
-                                        toItem:cell.contentView
-                                     attribute:NSLayoutAttributeTrailing
-                                    multiplier:1.0f
-                                      constant:0.f];
-        [cell addConstraint:textRightConstraint];
+        [tableView registerNib:[UINib nibWithNibName:@"TDAuthorTableCell" bundle:nil] forCellReuseIdentifier:@"cell"];
+        cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
     }
     
     TDUser *author = self.authors[indexPath.row];
     
-    cell.textLabel.text = author.name;
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"@%@", author.screen_name];
+    cell.Title.text = author.name;
+    cell.Detail.text = [NSString stringWithFormat:@"@%@", author.screen_name];
     cell.imageView.image = author.profileImage;
+    NSLog(@"profile image%@",author.profileImage);
     cell.count.text = [NSString stringWithFormat:@"%lu", [author.statuses count]];
-    
+    NSLog(@"%@",cell.count);
     return cell;
 }
 

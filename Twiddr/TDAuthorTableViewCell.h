@@ -11,5 +11,8 @@
 @interface TDAuthorTableViewCell : UITableViewCell
 
 @property (strong, nonatomic) IBOutlet UILabel *count;
+@property (strong, nonatomic) IBOutlet UILabel *Title;
+@property (strong, nonatomic) IBOutlet UILabel *Detail;
+@property (strong, nonatomic) IBOutlet UIImageView *imageView;
 
 @end

@@ -35,6 +35,7 @@
 		1AF9021518FD61EE00A5B64A /* TDDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AF9020F18FD61EE00A5B64A /* TDDetailViewController.m */; };
 		1AF9021618FD61EE00A5B64A /* TDTwitterAuthViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AF9021118FD61EE00A5B64A /* TDTwitterAuthViewController.m */; };
 		1AF902ED18FD665500A5B64A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1AF902EF18FD665500A5B64A /* Main.storyboard */; };
+		3084617119105693001C73BD /* TDAuthorTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3084617019105693001C73BD /* TDAuthorTableCell.xib */; };
 		879E8E3D97674AF599CE833A /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C7064A8EEFCC42B3AA62603F /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -93,6 +94,7 @@
 		1AF9021018FD61EE00A5B64A /* TDTwitterAuthViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDTwitterAuthViewController.h; sourceTree = "<group>"; };
 		1AF9021118FD61EE00A5B64A /* TDTwitterAuthViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDTwitterAuthViewController.m; sourceTree = "<group>"; };
 		1AF902EE18FD665500A5B64A /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/Main.storyboard; sourceTree = "<group>"; };
+		3084617019105693001C73BD /* TDAuthorTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TDAuthorTableCell.xib; sourceTree = "<group>"; };
 		5A583C806375493BA4027BDF /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		C7064A8EEFCC42B3AA62603F /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -175,6 +177,7 @@
 				1AF901E718FD618200A5B64A /* Images.xcassets */,
 				1AF901E418FD618200A5B64A /* Twiddr.xcdatamodeld */,
 				1AF902EF18FD665500A5B64A /* Main.storyboard */,
+				3084617019105693001C73BD /* TDAuthorTableCell.xib */,
 				1AF9020718FD61D400A5B64A /* Controllers */,
 				1AF9021718FD61FD00A5B64A /* Models */,
 				1AC0127B190FEF11009B41D4 /* View */,
@@ -330,6 +333,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3084617119105693001C73BD /* TDAuthorTableCell.xib in Resources */,
 				1AF902ED18FD665500A5B64A /* Main.storyboard in Resources */,
 				1AF901DD18FD618200A5B64A /* InfoPlist.strings in Resources */,
 				1AF901E818FD618200A5B64A /* Images.xcassets in Resources */,
