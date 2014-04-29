@@ -28,6 +28,7 @@
     [self.refreshControl addTarget:self action:@selector(pullToRefresh:) forControlEvents:UIControlEventValueChanged];
     
     _tweets = [NSMutableArray arrayWithArray:[_author.statuses allObjects]];
+    [self sortTweetsByDate];
 }
 
 
@@ -66,6 +67,7 @@
                                   deletedUsers:(NSArray *)deletedUsers
                                 unchangedUsers:(NSArray *)unchangedUsers
 {
+    [self sortTweetsByDate];
     [self.tableView reloadData];
 }
 
@@ -95,6 +97,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
     
     TDTweet *tweet = self.tweets[indexPath.row];
@@ -103,6 +106,39 @@
     cell.detailTextLabel.text = [NSString stringWithFormat:@"%@", tweet.created_at];
     
     return cell;
+}
+
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    CGSize maxSize = CGSizeMake(280, MAXFLOAT);
+    TDTweet *tweet = _tweets[indexPath.row];
+    
+    NSDictionary *stringAttributes = [NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:17]
+                                                                 forKey:NSFontAttributeName];
+    
+    CGRect labelRect = [tweet.text boundingRectWithSize:maxSize
+                                                options:NSStringDrawingUsesLineFragmentOrigin
+                                             attributes:stringAttributes
+                                                context:nil];
+    
+    NSLog(@"size %@", NSStringFromCGSize(labelRect.size));
+    
+    return labelRect.size.height + 25;
+}
+
+
+#pragma mark - Helper
+
+- (void)sortTweetsByDate
+{
+    NSArray *sortedArray;
+    
+    sortedArray = [_tweets sortedArrayUsingComparator:^NSComparisonResult(TDTweet *a, TDTweet *b) {
+        return [b.created_at compare:a.created_at];
+    }];
+    
+    _tweets = [NSMutableArray arrayWithArray:sortedArray];
 }
 
 

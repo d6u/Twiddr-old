@@ -15,6 +15,7 @@
 #import "TDTweet.h"
 #import "TDSingletonCoreDataManager.h"
 #import "TDAccount.h"
+#import "TDAuthorTableViewCell.h"
 
 
 @interface TDAuthorsTableViewController ()
@@ -28,6 +29,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [self.tableView registerNib:[UINib nibWithNibName:@"TDAuthorTableViewCell" bundle:nil]
+         forCellReuseIdentifier:@"Cell"];
     
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(pullToRefresh:) forControlEvents:UIControlEventValueChanged];
@@ -99,23 +103,29 @@
     return 1;
 }
 
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return [_authors count];
 }
 
 
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self performSegueWithIdentifier:@"showTweets" sender:self];
+}
+
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
-    
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    TDAuthorTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
     
     TDUser *author = self.authors[indexPath.row];
     
-    cell.textLabel.text = author.name;
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"@%@", author.screen_name];
     cell.imageView.image = author.profileImage;
+    cell.Title.text = author.name;
+    cell.Detail.text = [NSString stringWithFormat:@"@%@", author.screen_name];
+    cell.count.text = [NSString stringWithFormat:@"%lu", [author.statuses count]];
     
     return cell;
 }

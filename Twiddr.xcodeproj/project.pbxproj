@@ -13,6 +13,7 @@
 		1A6ABDEE190EA493005D3C97 /* TDTimelineGap.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A6ABDED190EA493005D3C97 /* TDTimelineGap.m */; };
 		1A6ABDF1190EA493005D3C97 /* TDTweet.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A6ABDF0190EA493005D3C97 /* TDTweet.m */; };
 		1A745C7019073EB8000E9B54 /* TDSingletonCoreDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A745C6F19073EB8000E9B54 /* TDSingletonCoreDataManager.m */; };
+		1AC0128619101FC1009B41D4 /* TDAuthorTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AC0128419101FC1009B41D4 /* TDAuthorTableViewCell.m */; };
 		1AF901D118FD618200A5B64A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AF901D018FD618200A5B64A /* Foundation.framework */; };
 		1AF901D318FD618200A5B64A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AF901D218FD618200A5B64A /* CoreGraphics.framework */; };
 		1AF901D518FD618200A5B64A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AF901D418FD618200A5B64A /* UIKit.framework */; };
@@ -34,6 +35,7 @@
 		1AF9021518FD61EE00A5B64A /* TDDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AF9020F18FD61EE00A5B64A /* TDDetailViewController.m */; };
 		1AF9021618FD61EE00A5B64A /* TDTwitterAuthViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AF9021118FD61EE00A5B64A /* TDTwitterAuthViewController.m */; };
 		1AF902ED18FD665500A5B64A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1AF902EF18FD665500A5B64A /* Main.storyboard */; };
+		3084617119105693001C73BD /* TDAuthorTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3084617019105693001C73BD /* TDAuthorTableViewCell.xib */; };
 		879E8E3D97674AF599CE833A /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C7064A8EEFCC42B3AA62603F /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -60,6 +62,8 @@
 		1A6ABDF0190EA493005D3C97 /* TDTweet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDTweet.m; sourceTree = "<group>"; };
 		1A745C6E19073EB8000E9B54 /* TDSingletonCoreDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDSingletonCoreDataManager.h; sourceTree = "<group>"; };
 		1A745C6F19073EB8000E9B54 /* TDSingletonCoreDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDSingletonCoreDataManager.m; sourceTree = "<group>"; };
+		1AC0128319101FC1009B41D4 /* TDAuthorTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TDAuthorTableViewCell.h; path = Twiddr/TDAuthorTableViewCell.h; sourceTree = "<group>"; };
+		1AC0128419101FC1009B41D4 /* TDAuthorTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TDAuthorTableViewCell.m; path = Twiddr/TDAuthorTableViewCell.m; sourceTree = "<group>"; };
 		1AEE36A4190C54710065D84A /* TDAccountChangeDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDAccountChangeDelegate.h; sourceTree = "<group>"; };
 		1AF901CD18FD618200A5B64A /* Twiddr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Twiddr.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1AF901D018FD618200A5B64A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -90,6 +94,7 @@
 		1AF9021018FD61EE00A5B64A /* TDTwitterAuthViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDTwitterAuthViewController.h; sourceTree = "<group>"; };
 		1AF9021118FD61EE00A5B64A /* TDTwitterAuthViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDTwitterAuthViewController.m; sourceTree = "<group>"; };
 		1AF902EE18FD665500A5B64A /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/Main.storyboard; sourceTree = "<group>"; };
+		3084617019105693001C73BD /* TDAuthorTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TDAuthorTableViewCell.xib; path = Twiddr/TDAuthorTableViewCell.xib; sourceTree = "<group>"; };
 		5A583C806375493BA4027BDF /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		C7064A8EEFCC42B3AA62603F /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -121,6 +126,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1AC0127B190FEF11009B41D4 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				1AC0128319101FC1009B41D4 /* TDAuthorTableViewCell.h */,
+				1AC0128419101FC1009B41D4 /* TDAuthorTableViewCell.m */,
+				3084617019105693001C73BD /* TDAuthorTableViewCell.xib */,
+			);
+			name = View;
+			path = ..;
+			sourceTree = "<group>";
+		};
 		1AF901C418FD618200A5B64A = {
 			isa = PBXGroup;
 			children = (
@@ -164,6 +180,7 @@
 				1AF902EF18FD665500A5B64A /* Main.storyboard */,
 				1AF9020718FD61D400A5B64A /* Controllers */,
 				1AF9021718FD61FD00A5B64A /* Models */,
+				1AC0127B190FEF11009B41D4 /* View */,
 				1AF901D918FD618200A5B64A /* Supporting Files */,
 			);
 			path = Twiddr;
@@ -316,6 +333,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3084617119105693001C73BD /* TDAuthorTableViewCell.xib in Resources */,
 				1AF902ED18FD665500A5B64A /* Main.storyboard in Resources */,
 				1AF901DD18FD618200A5B64A /* InfoPlist.strings in Resources */,
 				1AF901E818FD618200A5B64A /* Images.xcassets in Resources */,
@@ -379,6 +397,7 @@
 				1AF901DF18FD618200A5B64A /* main.m in Sources */,
 				1AF9021618FD61EE00A5B64A /* TDTwitterAuthViewController.m in Sources */,
 				1AF901E618FD618200A5B64A /* Twiddr.xcdatamodeld in Sources */,
+				1AC0128619101FC1009B41D4 /* TDAuthorTableViewCell.m in Sources */,
 				1AF9021518FD61EE00A5B64A /* TDDetailViewController.m in Sources */,
 				1A745C7019073EB8000E9B54 /* TDSingletonCoreDataManager.m in Sources */,
 				1AF9021418FD61EE00A5B64A /* TDTweetsTableViewController.m in Sources */,
