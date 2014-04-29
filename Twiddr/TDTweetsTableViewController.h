@@ -7,13 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "TDAccountSyncDelegate.h"
+#import "TDAccountChangeDelegate.h"
 
 @class TDAccount;
 @class TDUser;
 
 
-@interface TDTweetsTableViewController : UITableViewController <TDAccountSyncDelegate>
+@interface TDTweetsTableViewController : UITableViewController <TDAccountChangeDelegate>
 
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 

@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
-#import "TDAccountSyncDelegate.h"
+#import "TDAccountChangeDelegate.h"
 
 @class STTwitterAPI, TDTimelineGap, TDTweet, TDUser;
 
@@ -16,7 +16,7 @@
 @interface TDAccount : NSManagedObject
 
 @property (strong, nonatomic) STTwitterAPI *twitterApi;
-@property (nonatomic, strong) NSMutableSet *syncDelegates;
+@property (nonatomic, strong) NSMutableSet *changeDelegates;
 
 
 #pragma mark - Interfaces
@@ -26,25 +26,32 @@
 - (void)setValuesForKeysWithRawDictionary:(NSDictionary *)keyedValues;
 - (void)initTwitterApi;
 - (void)initTwitterApiWithToken:(NSString *)token TokenSecret:(NSString *)tokenSecret;
+- (NSSet *)tweetsNoAuthorAssigned;
 
 
 #pragma mark - Events
 
-- (BOOL)registerSyncDelegate:(id<TDAccountSyncDelegate>)delegate;
-- (BOOL)deregisterSyncDelegate:(id<TDAccountSyncDelegate>)delegate;
+- (BOOL)registerSyncDelegate:(NSObject<TDAccountChangeDelegate> *)delegate;
+- (BOOL)deregisterSyncDelegate:(NSObject<TDAccountChangeDelegate> *)delegate;
+
+
+/**
+ *  Keywords explaination
+ *
+ *  perform: simple wrapper for twitterApi
+ *  pull: fetch and merge (download, sync, resolve conflict)
+ *  compare: return difference between provided and local copies
+ */
+
+#pragma mark - Sync
+
+- (void)pullFollowingAndTimelineWithFinishBlock:(void(^)(NSError *error))finish;
+- (void)assignOrphanTweetsToAuthorWithFinishBlock:(void(^)(NSArray *unassginedTweets, NSArray *affectedUsers))finish;
 
 
 #pragma mark - Twitter API
 
-- (void)validateTwitterAccountAuthorizationWithFinishBlock:(void(^)(BOOL valid))finish;
-- (void)syncAccountWithFinishBlock:(void(^)(NSError *error))finish;
-- (void)syncFollowingWithFinishBlock:(void(^)(NSArray *updatedUsers,
-                                              NSArray *newUsers,
-                                              NSArray *deletedUsers,
-                                              NSArray *unchangedUsers))finish;
-- (void)syncTimelineWithFinishBlock:(void(^)(NSArray *newTweets,
-                                             NSArray *affectedUsers,
-                                             NSArray *unassignedTweets))finish;
+- (void)performGetAccountSettingsWithFinishBlock:(void(^)(NSError *error, NSDictionary *settings))finish;
 
 
 #pragma mark - Core Data

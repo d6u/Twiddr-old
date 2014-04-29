@@ -36,15 +36,14 @@
     for (TDAccount *account in _accounts) {
         [account initTwitterApi];
         
-        [account validateTwitterAccountAuthorizationWithFinishBlock:^(BOOL valid) {
-            if (!valid) {
-                // TODO: add notifications
-                NSLog(@"--- Twitter account is not valid: %@", account.screen_name);
+        [account performGetAccountSettingsWithFinishBlock:^(NSError *error, NSDictionary *settings) {
+            if (error) {
+                // TODO: invalidate account
             }
         }];
         
-        [account syncAccountWithFinishBlock:^(NSError *error) {
-            NSLog(@"TDAccountTableViewController syncAccountWithFinishBlock %@", error);
+        [account pullFollowingAndTimelineWithFinishBlock:^(NSError *error) {
+            [account assignOrphanTweetsToAuthorWithFinishBlock:nil];
         }];
     }
 }
@@ -85,7 +84,7 @@
 {
     __block NSUInteger refreshFinished = 0;
     for (int i = 0; i < [_accounts count]; i++) {
-        [_accounts[i] syncAccountWithFinishBlock:^(NSError *error) {
+        [_accounts[i] pullFollowingAndTimelineWithFinishBlock:^(NSError *error) {
             refreshFinished |= (1 << i);
             if (refreshFinished == (pow(2, [_accounts count]) - 1)) {
                 [(UIRefreshControl *)sender endRefreshing];
@@ -95,11 +94,9 @@
 }
 
 
-#pragma mark - TDAccountSyncDelegate
+#pragma mark - TDAccountChangeDelegate
 
-- (void)syncedTimelineFromApiWithNewTweets:(NSArray *)newTweets
-                             affectedUsers:(NSArray *)affectedUsers
-                          unassignedTweets:(NSArray *)unassignedTweets
+- (void)mergedTimelineFromApiWithNewTweets:(NSArray *)newTweets
 {
     [self.tableView reloadData];
 }
@@ -125,11 +122,7 @@
     TDAccount *account = _accounts[indexPath.row];
     cell.textLabel.text = [NSString stringWithFormat:@"@%@", account.screen_name];
     
-    long count = 0;
-    for (TDUser *user in account.following) {
-        count += [user.statuses count];
-    }
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"%lu", count];
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"%lu", [account.timeline_tweets count]];
     
     return cell;
 }

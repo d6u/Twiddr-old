@@ -104,6 +104,7 @@ static TDSingletonCoreDataManager *_coreDataManager;
         
         // TODO: remove in production
         [[NSFileManager defaultManager] removeItemAtURL:storeURL error:nil];
+        _persistentStoreCoordinator = nil;
         
         return [self persistentStoreCoordinator];
     }
