@@ -85,10 +85,13 @@
     __block NSUInteger refreshFinished = 0;
     for (int i = 0; i < [_accounts count]; i++) {
         [_accounts[i] pullFollowingAndTimelineWithFinishBlock:^(NSError *error) {
-            refreshFinished |= (1 << i);
-            if (refreshFinished == (pow(2, [_accounts count]) - 1)) {
-                [(UIRefreshControl *)sender endRefreshing];
-            }
+            [_accounts[i] assignOrphanTweetsToAuthorWithFinishBlock:
+             ^(NSArray *unassginedTweets, NSArray *affectedUsers) {
+                refreshFinished |= (1 << i);
+                if (refreshFinished == (pow(2, [_accounts count]) - 1)) {
+                    [(UIRefreshControl *)sender endRefreshing];
+                }
+            }];
         }];
     }
 }

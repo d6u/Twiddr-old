@@ -70,7 +70,9 @@
 - (void)pullToRefresh:(id)sender
 {
     [_account pullFollowingAndTimelineWithFinishBlock:^(NSError *error) {
-        [(UIRefreshControl *)sender endRefreshing];
+        [_account assignOrphanTweetsToAuthorWithFinishBlock:^(NSArray *unassginedTweets, NSArray *affectedUsers) {
+            [(UIRefreshControl *)sender endRefreshing];
+        }];
     }];
 }
 
