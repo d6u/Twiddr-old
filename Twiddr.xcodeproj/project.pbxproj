@@ -36,6 +36,8 @@
 		1AF9021618FD61EE00A5B64A /* TDTwitterAuthViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AF9021118FD61EE00A5B64A /* TDTwitterAuthViewController.m */; };
 		1AF902ED18FD665500A5B64A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1AF902EF18FD665500A5B64A /* Main.storyboard */; };
 		3084617119105693001C73BD /* TDAuthorTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3084617019105693001C73BD /* TDAuthorTableViewCell.xib */; };
+		30B8D8BC19121CD20061BB50 /* bubble.png in Resources */ = {isa = PBXBuildFile; fileRef = 30B8D8BB19121CD20061BB50 /* bubble.png */; };
+		30B8D8BE191223230061BB50 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30B8D8BD191223230061BB50 /* QuartzCore.framework */; };
 		30E5E91319118C440063922D /* LaunchImage-4.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E5E91119118C440063922D /* LaunchImage-4.png */; };
 		30E5E91419118C440063922D /* LaunchImage-3.5.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E5E91219118C440063922D /* LaunchImage-3.5.png */; };
 		30E5E91619118C740063922D /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E5E91519118C740063922D /* Default-568h@2x.png */; };
@@ -101,6 +103,8 @@
 		1AF9021118FD61EE00A5B64A /* TDTwitterAuthViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDTwitterAuthViewController.m; sourceTree = "<group>"; };
 		1AF902EE18FD665500A5B64A /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/Main.storyboard; sourceTree = "<group>"; };
 		3084617019105693001C73BD /* TDAuthorTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TDAuthorTableViewCell.xib; path = Twiddr/TDAuthorTableViewCell.xib; sourceTree = "<group>"; };
+		30B8D8BB19121CD20061BB50 /* bubble.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bubble.png; sourceTree = "<group>"; };
+		30B8D8BD191223230061BB50 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		30E5E91119118C440063922D /* LaunchImage-4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LaunchImage-4.png"; sourceTree = "<group>"; };
 		30E5E91219118C440063922D /* LaunchImage-3.5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LaunchImage-3.5.png"; sourceTree = "<group>"; };
 		30E5E91519118C740063922D /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
@@ -116,6 +120,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				30B8D8BE191223230061BB50 /* QuartzCore.framework in Frameworks */,
 				1AF901D318FD618200A5B64A /* CoreGraphics.framework in Frameworks */,
 				1AF901D718FD618200A5B64A /* CoreData.framework in Frameworks */,
 				1AF901D518FD618200A5B64A /* UIKit.framework in Frameworks */,
@@ -173,6 +178,7 @@
 		1AF901CF18FD618200A5B64A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				30B8D8BD191223230061BB50 /* QuartzCore.framework */,
 				1AF901D018FD618200A5B64A /* Foundation.framework */,
 				1AF901D218FD618200A5B64A /* CoreGraphics.framework */,
 				1AF901D418FD618200A5B64A /* UIKit.framework */,
@@ -202,6 +208,7 @@
 		1AF901D918FD618200A5B64A /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				30B8D8BB19121CD20061BB50 /* bubble.png */,
 				30E5E91D19118EC30063922D /* Twiddr-Logo-80.png */,
 				30E5E91E19118EC30063922D /* Twiddr-Logo-58.png */,
 				30E5E91F19118EC30063922D /* Twiddr-Logo-120.png */,
@@ -360,6 +367,7 @@
 				1AF901DD18FD618200A5B64A /* InfoPlist.strings in Resources */,
 				30E5E92019118EC30063922D /* Twiddr-Logo-80.png in Resources */,
 				30E5E92219118EC30063922D /* Twiddr-Logo-120.png in Resources */,
+				30B8D8BC19121CD20061BB50 /* bubble.png in Resources */,
 				1AF901E818FD618200A5B64A /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

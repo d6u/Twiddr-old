@@ -16,7 +16,7 @@
 #import "TDSingletonCoreDataManager.h"
 #import "TDAccount.h"
 #import "TDAuthorTableViewCell.h"
-
+#import <QuartzCore/QuartzCore.h>
 
 @interface TDAuthorsTableViewController ()
 
@@ -125,6 +125,8 @@
     TDUser *author = self.authors[indexPath.row];
     
     cell.imageView.image = author.profileImage;
+    [cell.imageView.layer setMasksToBounds:YES];
+    [cell.imageView.layer setCornerRadius:8.0];
     cell.Title.text = author.name;
     cell.Detail.text = [NSString stringWithFormat:@"@%@", author.screen_name];
     cell.count.text = [NSString stringWithFormat:@"%lu", [author.statuses count]];
@@ -132,6 +134,9 @@
     return cell;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 60;
+}
 
 #pragma mark - Navigation
 
