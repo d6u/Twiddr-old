@@ -36,14 +36,7 @@
 		1AF9021618FD61EE00A5B64A /* TDTwitterAuthViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AF9021118FD61EE00A5B64A /* TDTwitterAuthViewController.m */; };
 		1AF902ED18FD665500A5B64A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1AF902EF18FD665500A5B64A /* Main.storyboard */; };
 		3084617119105693001C73BD /* TDAuthorTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3084617019105693001C73BD /* TDAuthorTableViewCell.xib */; };
-		30B8D8BC19121CD20061BB50 /* bubble.png in Resources */ = {isa = PBXBuildFile; fileRef = 30B8D8BB19121CD20061BB50 /* bubble.png */; };
 		30B8D8BE191223230061BB50 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30B8D8BD191223230061BB50 /* QuartzCore.framework */; };
-		30E5E91319118C440063922D /* LaunchImage-4.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E5E91119118C440063922D /* LaunchImage-4.png */; };
-		30E5E91419118C440063922D /* LaunchImage-3.5.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E5E91219118C440063922D /* LaunchImage-3.5.png */; };
-		30E5E91619118C740063922D /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E5E91519118C740063922D /* Default-568h@2x.png */; };
-		30E5E92019118EC30063922D /* Twiddr-Logo-80.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E5E91D19118EC30063922D /* Twiddr-Logo-80.png */; };
-		30E5E92119118EC30063922D /* Twiddr-Logo-58.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E5E91E19118EC30063922D /* Twiddr-Logo-58.png */; };
-		30E5E92219118EC30063922D /* Twiddr-Logo-120.png in Resources */ = {isa = PBXBuildFile; fileRef = 30E5E91F19118EC30063922D /* Twiddr-Logo-120.png */; };
 		879E8E3D97674AF599CE833A /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C7064A8EEFCC42B3AA62603F /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -103,14 +96,7 @@
 		1AF9021118FD61EE00A5B64A /* TDTwitterAuthViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDTwitterAuthViewController.m; sourceTree = "<group>"; };
 		1AF902EE18FD665500A5B64A /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/Main.storyboard; sourceTree = "<group>"; };
 		3084617019105693001C73BD /* TDAuthorTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TDAuthorTableViewCell.xib; path = Twiddr/TDAuthorTableViewCell.xib; sourceTree = "<group>"; };
-		30B8D8BB19121CD20061BB50 /* bubble.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bubble.png; sourceTree = "<group>"; };
 		30B8D8BD191223230061BB50 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		30E5E91119118C440063922D /* LaunchImage-4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LaunchImage-4.png"; sourceTree = "<group>"; };
-		30E5E91219118C440063922D /* LaunchImage-3.5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LaunchImage-3.5.png"; sourceTree = "<group>"; };
-		30E5E91519118C740063922D /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
-		30E5E91D19118EC30063922D /* Twiddr-Logo-80.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Twiddr-Logo-80.png"; sourceTree = "<group>"; };
-		30E5E91E19118EC30063922D /* Twiddr-Logo-58.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Twiddr-Logo-58.png"; sourceTree = "<group>"; };
-		30E5E91F19118EC30063922D /* Twiddr-Logo-120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Twiddr-Logo-120.png"; sourceTree = "<group>"; };
 		5A583C806375493BA4027BDF /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		C7064A8EEFCC42B3AA62603F /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -157,7 +143,6 @@
 		1AF901C418FD618200A5B64A = {
 			isa = PBXGroup;
 			children = (
-				30E5E91519118C740063922D /* Default-568h@2x.png */,
 				1AF901D818FD618200A5B64A /* Twiddr */,
 				1AF901F518FD618200A5B64A /* TwiddrTests */,
 				1AF901CF18FD618200A5B64A /* Frameworks */,
@@ -208,12 +193,6 @@
 		1AF901D918FD618200A5B64A /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				30B8D8BB19121CD20061BB50 /* bubble.png */,
-				30E5E91D19118EC30063922D /* Twiddr-Logo-80.png */,
-				30E5E91E19118EC30063922D /* Twiddr-Logo-58.png */,
-				30E5E91F19118EC30063922D /* Twiddr-Logo-120.png */,
-				30E5E91119118C440063922D /* LaunchImage-4.png */,
-				30E5E91219118C440063922D /* LaunchImage-3.5.png */,
 				1A745C6E19073EB8000E9B54 /* TDSingletonCoreDataManager.h */,
 				1A745C6F19073EB8000E9B54 /* TDSingletonCoreDataManager.m */,
 				1A001D1C18FDC5C800D16BC1 /* Constants.h */,
@@ -328,7 +307,7 @@
 				ORGANIZATIONNAME = "Daiwei Lu";
 				TargetAttributes = {
 					1AF901CC18FD618200A5B64A = {
-						DevelopmentTeam = 8MZGXEXG4Z;
+						DevelopmentTeam = NU8RSXM6UB;
 					};
 					1AF901EC18FD618200A5B64A = {
 						TestTargetID = 1AF901CC18FD618200A5B64A;
@@ -359,15 +338,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				3084617119105693001C73BD /* TDAuthorTableViewCell.xib in Resources */,
-				30E5E91419118C440063922D /* LaunchImage-3.5.png in Resources */,
-				30E5E91619118C740063922D /* Default-568h@2x.png in Resources */,
-				30E5E92119118EC30063922D /* Twiddr-Logo-58.png in Resources */,
 				1AF902ED18FD665500A5B64A /* Main.storyboard in Resources */,
-				30E5E91319118C440063922D /* LaunchImage-4.png in Resources */,
 				1AF901DD18FD618200A5B64A /* InfoPlist.strings in Resources */,
-				30E5E92019118EC30063922D /* Twiddr-Logo-80.png in Resources */,
-				30E5E92219118EC30063922D /* Twiddr-Logo-120.png in Resources */,
-				30B8D8BC19121CD20061BB50 /* bubble.png in Resources */,
 				1AF901E818FD618200A5B64A /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -558,9 +530,13 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5A583C806375493BA4027BDF /* Pods.xcconfig */;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Twiddr/Twiddr-Prefix.pch";
 				INFOPLIST_FILE = "Twiddr/Twiddr-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -570,9 +546,13 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5A583C806375493BA4027BDF /* Pods.xcconfig */;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Twiddr/Twiddr-Prefix.pch";
 				INFOPLIST_FILE = "Twiddr/Twiddr-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
