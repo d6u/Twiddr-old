@@ -10,6 +10,7 @@
 #import "TDAccount.h"
 #import "TDUser.h"
 #import "TDTweet.h"
+#import "TDTweetCell.h"
 
 
 @interface TDTweetsTableViewController ()
@@ -23,7 +24,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
+    [self.tableView registerNib:[UINib nibWithNibName:@"TDTweetCell" bundle:nil]
+         forCellReuseIdentifier:@"Cell"];
+
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(pullToRefresh:) forControlEvents:UIControlEventValueChanged];
     
@@ -97,37 +101,49 @@
 }
 
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    TDTweet *tweet = self.tweets[indexPath.row];
+    return [TDTweetCell heightForTweetText:tweet];
+}
+
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
+    TDTweetCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
     
     TDTweet *tweet = self.tweets[indexPath.row];
-    
-    cell.textLabel.text = tweet.text;
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@", tweet.created_at];
-    
+
+    if (tweet.retweeted_status != nil) {
+        cell.tweetText.text = tweet.retweeted_status[@"text"];
+    } else {
+        cell.tweetText.text = tweet.text;
+    }
+
+//    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@", tweet.created_at];
+
     return cell;
 }
 
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    CGSize maxSize = CGSizeMake(280, MAXFLOAT);
-    TDTweet *tweet = _tweets[indexPath.row];
-    
-    NSDictionary *stringAttributes = [NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:17]
-                                                                 forKey:NSFontAttributeName];
-    
-    CGRect labelRect = [tweet.text boundingRectWithSize:maxSize
-                                                options:NSStringDrawingUsesLineFragmentOrigin
-                                             attributes:stringAttributes
-                                                context:nil];
-    
-    NSLog(@"size %@", NSStringFromCGSize(labelRect.size));
-    
-    return labelRect.size.height + 25;
-}
+//- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    CGSize maxSize = CGSizeMake(280, MAXFLOAT);
+//    TDTweet *tweet = _tweets[indexPath.row];
+//    
+//    NSDictionary *stringAttributes = [NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:17]
+//                                                                 forKey:NSFontAttributeName];
+//    
+//    CGRect labelRect = [tweet.text boundingRectWithSize:maxSize
+//                                                options:NSStringDrawingUsesLineFragmentOrigin
+//                                             attributes:stringAttributes
+//                                                context:nil];
+//    
+//    NSLog(@"size %@", NSStringFromCGSize(labelRect.size));
+//    
+//    return labelRect.size.height + 25;
+//}
 
 
 #pragma mark - Helper

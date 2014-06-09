@@ -24,6 +24,7 @@
 @property (nonatomic, retain) NSDictionary * coordinates;
 @property (nonatomic, retain) NSDate * created_at;
 @property (nonatomic, retain) NSDictionary * entities;
+@property (nonatomic, retain) NSDictionary * extended_entities;
 @property (nonatomic, retain) NSNumber * favorite_count;
 @property (nonatomic, retain) NSNumber * favorited;
 @property (nonatomic, retain) NSDictionary * geo;
@@ -34,9 +35,11 @@
 @property (nonatomic, retain) NSString * lang;
 @property (nonatomic, retain) NSDictionary * place;
 @property (nonatomic, retain) NSNumber * possibly_sensitive;
+@property (nonatomic, retain) NSString * quoted_status_id_str;
 @property (nonatomic, retain) NSNumber * read;
 @property (nonatomic, retain) NSNumber * retweet_count;
 @property (nonatomic, retain) NSNumber * retweeted;
+@property (nonatomic, retain) NSDictionary * retweeted_status;
 @property (nonatomic, retain) NSString * source;
 @property (nonatomic, retain) NSString * text;
 @property (nonatomic, retain) NSNumber * truncated;

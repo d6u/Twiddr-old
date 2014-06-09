@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5064" systemVersion="13C1021" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5064" systemVersion="13D65" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Account" representedClassName="TDAccount" syncable="YES">
         <attribute name="id_str" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="newest_timeline_tweet_id_str" optional="YES" attributeType="String" syncable="YES"/>
@@ -21,6 +21,7 @@
         <attribute name="coordinates" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="created_at" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="entities" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <attribute name="extended_entities" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="favorite_count" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="favorited" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="geo" optional="YES" attributeType="Transformable" syncable="YES"/>
@@ -31,9 +32,11 @@
         <attribute name="lang" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="place" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="possibly_sensitive" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="quoted_status_id_str" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="read" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="retweet_count" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="retweeted" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="retweeted_status" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="source" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="truncated" optional="YES" attributeType="Boolean" syncable="YES"/>
@@ -87,7 +90,7 @@
     <elements>
         <element name="Account" positionX="-11763" positionY="-7569" width="128" height="163"/>
         <element name="TimelineGap" positionX="-11772" positionY="-7587" width="128" height="88"/>
-        <element name="Tweet" positionX="-11790" positionY="-7740" width="128" height="390"/>
+        <element name="Tweet" positionX="-11790" positionY="-7740" width="128" height="435"/>
         <element name="User" positionX="-11790" positionY="-7587" width="128" height="673"/>
     </elements>
 </model>

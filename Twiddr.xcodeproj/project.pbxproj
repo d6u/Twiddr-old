@@ -37,6 +37,8 @@
 		1AF902ED18FD665500A5B64A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1AF902EF18FD665500A5B64A /* Main.storyboard */; };
 		3084617119105693001C73BD /* TDAuthorTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3084617019105693001C73BD /* TDAuthorTableViewCell.xib */; };
 		30B8D8BE191223230061BB50 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30B8D8BD191223230061BB50 /* QuartzCore.framework */; };
+		7852637E1945384D00AC8E3C /* TDTweetCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7852637C1945384D00AC8E3C /* TDTweetCell.m */; };
+		7852637F1945384D00AC8E3C /* TDTweetCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7852637D1945384D00AC8E3C /* TDTweetCell.xib */; };
 		879E8E3D97674AF599CE833A /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C7064A8EEFCC42B3AA62603F /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -98,6 +100,9 @@
 		3084617019105693001C73BD /* TDAuthorTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TDAuthorTableViewCell.xib; path = Twiddr/TDAuthorTableViewCell.xib; sourceTree = "<group>"; };
 		30B8D8BD191223230061BB50 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		5A583C806375493BA4027BDF /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
+		7852637B1945384D00AC8E3C /* TDTweetCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TDTweetCell.h; path = Twiddr/TDTweetCell.h; sourceTree = "<group>"; };
+		7852637C1945384D00AC8E3C /* TDTweetCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TDTweetCell.m; path = Twiddr/TDTweetCell.m; sourceTree = "<group>"; };
+		7852637D1945384D00AC8E3C /* TDTweetCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TDTweetCell.xib; path = Twiddr/TDTweetCell.xib; sourceTree = "<group>"; };
 		C7064A8EEFCC42B3AA62603F /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -135,6 +140,9 @@
 				1AC0128319101FC1009B41D4 /* TDAuthorTableViewCell.h */,
 				1AC0128419101FC1009B41D4 /* TDAuthorTableViewCell.m */,
 				3084617019105693001C73BD /* TDAuthorTableViewCell.xib */,
+				7852637B1945384D00AC8E3C /* TDTweetCell.h */,
+				7852637C1945384D00AC8E3C /* TDTweetCell.m */,
+				7852637D1945384D00AC8E3C /* TDTweetCell.xib */,
 			);
 			name = View;
 			path = ..;
@@ -338,6 +346,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3084617119105693001C73BD /* TDAuthorTableViewCell.xib in Resources */,
+				7852637F1945384D00AC8E3C /* TDTweetCell.xib in Resources */,
 				1AF902ED18FD665500A5B64A /* Main.storyboard in Resources */,
 				1AF901DD18FD618200A5B64A /* InfoPlist.strings in Resources */,
 				1AF901E818FD618200A5B64A /* Images.xcassets in Resources */,
@@ -401,6 +410,7 @@
 				1AF901DF18FD618200A5B64A /* main.m in Sources */,
 				1AF9021618FD61EE00A5B64A /* TDTwitterAuthViewController.m in Sources */,
 				1AF901E618FD618200A5B64A /* Twiddr.xcdatamodeld in Sources */,
+				7852637E1945384D00AC8E3C /* TDTweetCell.m in Sources */,
 				1AC0128619101FC1009B41D4 /* TDAuthorTableViewCell.m in Sources */,
 				1AF9021518FD61EE00A5B64A /* TDDetailViewController.m in Sources */,
 				1A745C7019073EB8000E9B54 /* TDSingletonCoreDataManager.m in Sources */,
