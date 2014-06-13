@@ -15,6 +15,7 @@ describe(@"Math", ^{
         NSUInteger a = 16;
         NSUInteger b = 26;
         [[theValue(a + b) should] equal:theValue(42)];
+        [[theValue(b + b) should] equal:theValue(52)];
     });
 });
 
