@@ -28,7 +28,6 @@
 		1AF901F118FD618200A5B64A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AF901D418FD618200A5B64A /* UIKit.framework */; };
 		1AF901F218FD618200A5B64A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AF901D618FD618200A5B64A /* CoreData.framework */; };
 		1AF901FA18FD618200A5B64A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1AF901F818FD618200A5B64A /* InfoPlist.strings */; };
-		1AF901FC18FD618200A5B64A /* TwiddrTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AF901FB18FD618200A5B64A /* TwiddrTests.m */; };
 		1AF9021218FD61EE00A5B64A /* TDAccountTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AF9020918FD61EE00A5B64A /* TDAccountTableViewController.m */; };
 		1AF9021318FD61EE00A5B64A /* TDAuthorsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AF9020B18FD61EE00A5B64A /* TDAuthorsTableViewController.m */; };
 		1AF9021418FD61EE00A5B64A /* TDTweetsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AF9020D18FD61EE00A5B64A /* TDTweetsTableViewController.m */; };
@@ -39,7 +38,9 @@
 		30B8D8BE191223230061BB50 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30B8D8BD191223230061BB50 /* QuartzCore.framework */; };
 		7852637E1945384D00AC8E3C /* TDTweetCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7852637C1945384D00AC8E3C /* TDTweetCell.m */; };
 		7852637F1945384D00AC8E3C /* TDTweetCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7852637D1945384D00AC8E3C /* TDTweetCell.xib */; };
+		78DF181F194A9DCE00298E51 /* TDSampleTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 78DF181E194A9DCE00298E51 /* TDSampleTest.m */; };
 		879E8E3D97674AF599CE833A /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C7064A8EEFCC42B3AA62603F /* libPods.a */; };
+		BA0FC084A9A4464DB42F3499 /* libPods-TwiddrTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 71C5332C74F54293A3138DDD /* libPods-TwiddrTests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -85,7 +86,6 @@
 		1AF901EE18FD618200A5B64A /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		1AF901F718FD618200A5B64A /* TwiddrTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "TwiddrTests-Info.plist"; sourceTree = "<group>"; };
 		1AF901F918FD618200A5B64A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		1AF901FB18FD618200A5B64A /* TwiddrTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TwiddrTests.m; sourceTree = "<group>"; };
 		1AF9020818FD61EE00A5B64A /* TDAccountTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDAccountTableViewController.h; sourceTree = "<group>"; };
 		1AF9020918FD61EE00A5B64A /* TDAccountTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDAccountTableViewController.m; sourceTree = "<group>"; };
 		1AF9020A18FD61EE00A5B64A /* TDAuthorsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDAuthorsTableViewController.h; sourceTree = "<group>"; };
@@ -99,10 +99,13 @@
 		1AF902EE18FD665500A5B64A /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/Main.storyboard; sourceTree = "<group>"; };
 		3084617019105693001C73BD /* TDAuthorTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TDAuthorTableViewCell.xib; path = Twiddr/TDAuthorTableViewCell.xib; sourceTree = "<group>"; };
 		30B8D8BD191223230061BB50 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		38BEB9B5EFB141858BFAB277 /* Pods-TwiddrTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TwiddrTests.xcconfig"; path = "Pods/Pods-TwiddrTests.xcconfig"; sourceTree = "<group>"; };
 		5A583C806375493BA4027BDF /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
+		71C5332C74F54293A3138DDD /* libPods-TwiddrTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TwiddrTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7852637B1945384D00AC8E3C /* TDTweetCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TDTweetCell.h; path = Twiddr/TDTweetCell.h; sourceTree = "<group>"; };
 		7852637C1945384D00AC8E3C /* TDTweetCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TDTweetCell.m; path = Twiddr/TDTweetCell.m; sourceTree = "<group>"; };
 		7852637D1945384D00AC8E3C /* TDTweetCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TDTweetCell.xib; path = Twiddr/TDTweetCell.xib; sourceTree = "<group>"; };
+		78DF181E194A9DCE00298E51 /* TDSampleTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDSampleTest.m; sourceTree = "<group>"; };
 		C7064A8EEFCC42B3AA62603F /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -128,6 +131,7 @@
 				1AF901F218FD618200A5B64A /* CoreData.framework in Frameworks */,
 				1AF901F118FD618200A5B64A /* UIKit.framework in Frameworks */,
 				1AF901F018FD618200A5B64A /* Foundation.framework in Frameworks */,
+				BA0FC084A9A4464DB42F3499 /* libPods-TwiddrTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -156,6 +160,7 @@
 				1AF901CF18FD618200A5B64A /* Frameworks */,
 				1AF901CE18FD618200A5B64A /* Products */,
 				5A583C806375493BA4027BDF /* Pods.xcconfig */,
+				38BEB9B5EFB141858BFAB277 /* Pods-TwiddrTests.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
@@ -178,6 +183,7 @@
 				1AF901D618FD618200A5B64A /* CoreData.framework */,
 				1AF901EE18FD618200A5B64A /* XCTest.framework */,
 				C7064A8EEFCC42B3AA62603F /* libPods.a */,
+				71C5332C74F54293A3138DDD /* libPods-TwiddrTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -216,7 +222,7 @@
 		1AF901F518FD618200A5B64A /* TwiddrTests */ = {
 			isa = PBXGroup;
 			children = (
-				1AF901FB18FD618200A5B64A /* TwiddrTests.m */,
+				78DF181E194A9DCE00298E51 /* TDSampleTest.m */,
 				1AF901F618FD618200A5B64A /* Supporting Files */,
 			);
 			path = TwiddrTests;
@@ -290,9 +296,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1AF9020218FD618200A5B64A /* Build configuration list for PBXNativeTarget "TwiddrTests" */;
 			buildPhases = (
+				DB3C5B3B37274F8FA473F47C /* Check Pods Manifest.lock */,
 				1AF901E918FD618200A5B64A /* Sources */,
 				1AF901EA18FD618200A5B64A /* Frameworks */,
 				1AF901EB18FD618200A5B64A /* Resources */,
+				874E919E5E5546FD83913D89 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -379,6 +387,21 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
+		874E919E5E5546FD83913D89 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-TwiddrTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		AC32318CB7E9414AB8F1792D /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -392,6 +415,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		DB3C5B3B37274F8FA473F47C /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -424,7 +462,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1AF901FC18FD618200A5B64A /* TwiddrTests.m in Sources */,
+				78DF181F194A9DCE00298E51 /* TDSampleTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -570,6 +608,7 @@
 		};
 		1AF9020318FD618200A5B64A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 38BEB9B5EFB141858BFAB277 /* Pods-TwiddrTests.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Twiddr.app/Twiddr";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -592,6 +631,7 @@
 		};
 		1AF9020418FD618200A5B64A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 38BEB9B5EFB141858BFAB277 /* Pods-TwiddrTests.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Twiddr.app/Twiddr";
 				FRAMEWORK_SEARCH_PATHS = (
