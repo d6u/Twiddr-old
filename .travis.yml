@@ -1,17 +1,12 @@
-before_script:
-  - export LANG=en_US.UTF-8
-
 language: objective-c
 xcode_workspace: Twiddr.xcworkspace
 xcode_scheme: Twiddr
-xcode_sdk: iphonesimulator
+xcode_sdk: iphonesimulator7.1
 
 rvm: 2.1.1
 
 before_install:
-  - gem install cocoapods -v '0.32.1'
+  - export LANG=en_US.UTF-8
+  - gem install cocoapods '0.32.1' -N
   - brew update
   - brew upgrade xctool
-
-before_script:
-  - export LANG=en_US.UTF-8
