@@ -10,11 +10,12 @@
 #import "TDSingletonCoreDataManager.h"
 #import "TDAccount.h"
 
-@interface TDAccountsTVDelegate () <NSFetchedResultsControllerDelegate, TDAccountChangeDelegate>
+@interface TDAccountsTVDelegate () <NSFetchedResultsControllerDelegate, TDAccountChangeDelegate, UIAlertViewDelegate>
 
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) void(^cellConfigBlock)(TDAccount *, UITableViewCell *); // reusable config cell, not implemented yet
+@property (nonatomic, strong) NSIndexPath *deletingIndexPath;
 
 @end
 
@@ -37,27 +38,27 @@
 {
     NSError *error;
     [self.fetchedResultsController performFetch:&error];
-//    if (error == nil) {
-//        NSArray *accounts = _fetchedResultsController.fetchedObjects;
-//
-//        for (TDAccount *account in accounts) {
-//            [account registerSyncDelegate:self];
-//        }
-//
-//        for (TDAccount *account in accounts) {
-//            [account initTwitterApi];
-//            [account performGetAccountSettingsWithFinishBlock:^(NSError *error, NSDictionary *settings) {
-//                if (error) {
-//                    // TODO: invalidate account
-//                }
-//            }];
-//            [account pullFollowingAndTimelineWithFinishBlock:^(NSError *error) {
-//                [account assignOrphanTweetsToAuthorWithFinishBlock:nil];
-//            }];
-//        }
-//    } else {
-//        NSLog(@"--- Error: %@", error);
-//    }
+    if (error == nil) {
+        NSArray *accounts = _fetchedResultsController.fetchedObjects;
+
+        for (TDAccount *account in accounts) {
+            [account registerSyncDelegate:self];
+        }
+
+        for (TDAccount *account in accounts) {
+            [account initTwitterApi];
+            [account performGetAccountSettingsWithFinishBlock:^(NSError *error, NSDictionary *settings) {
+                if (error) {
+                    // TODO: invalidate account
+                }
+            }];
+            [account pullFollowingAndTimelineWithFinishBlock:^(NSError *error) {
+                [account assignOrphanTweetsToAuthorWithFinishBlock:nil];
+            }];
+        }
+    } else {
+        NSLog(@"--- Error: %@", error);
+    }
 }
 
 #pragma mark - API
@@ -159,8 +160,47 @@
     return cell;
 }
 
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return YES;
+}
+
+- (void)tableView:(UITableView *)tableView
+commitEditingStyle:(UITableViewCellEditingStyle)editingStyle
+forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        TDAccount *account = [self.fetchedResultsController objectAtIndexPath:indexPath];
+        _deletingIndexPath = indexPath;
+        NSString *message = [NSString stringWithFormat:@"Do you want to remove account @%@", account.screen_name];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Remove?"
+                                                        message:message
+                                                       delegate:self
+                                              cancelButtonTitle:@"Cancel"
+                                              otherButtonTitles:@"Remove", nil];
+        [alert show];
+    }
+}
+
 #pragma mark - Table View Delegate
 
+- (NSString *)tableView:(UITableView *)tableView
+titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return @"Remove";
+}
 
+#pragma mark - Alert View Delegate
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex != [alertView cancelButtonIndex]) {
+        TDAccount *account = [self.fetchedResultsController objectAtIndexPath:_deletingIndexPath];
+        [[TDSingletonCoreDataManager getManagedObjectContext] deleteObject:account];
+        [TDSingletonCoreDataManager saveContext];
+    }
+    _tableView.editing = NO;
+    _deletingIndexPath = nil;
+}
 
 @end
