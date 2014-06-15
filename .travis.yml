@@ -1,6 +1,7 @@
 language: objective-c
-xcode_project: Twiddr.xcodeproj
+xcode_workspace: Twiddr.xcworkspace
 xcode_scheme: Twiddr
+xcode_sdk: iphonesimulator
 
 rvm: 2.1.1
 
