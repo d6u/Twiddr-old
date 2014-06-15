@@ -25,25 +25,6 @@
 
 #pragma mark - Interfaces
 
-+ (NSArray *)allAccounts
-{
-    NSManagedObjectContext *context = [TDSingletonCoreDataManager getManagedObjectContext];
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Account"
-                                              inManagedObjectContext:context];
-    [fetchRequest setEntity:entity];
-
-    NSError *error;
-    NSArray *accounts = [context executeFetchRequest:fetchRequest error:&error];
-
-    if (error) {
-        NSLog(@"-- ERROR: %@", error);
-    }
-
-    return accounts;
-}
-
-
 + (instancetype)accountWithRawDictionary:(NSDictionary *)keyedValues
 {
     NSManagedObjectContext *context = [TDSingletonCoreDataManager getManagedObjectContext];

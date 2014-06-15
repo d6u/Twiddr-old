@@ -38,6 +38,7 @@
 		30B8D8BE191223230061BB50 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30B8D8BD191223230061BB50 /* QuartzCore.framework */; };
 		7852637E1945384D00AC8E3C /* TDTweetCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7852637C1945384D00AC8E3C /* TDTweetCell.m */; };
 		7852637F1945384D00AC8E3C /* TDTweetCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7852637D1945384D00AC8E3C /* TDTweetCell.xib */; };
+		78856B45194DDEA800789CBA /* TDAccountsTVDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 78856B44194DDEA800789CBA /* TDAccountsTVDelegate.m */; };
 		78DF181F194A9DCE00298E51 /* TDSampleTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 78DF181E194A9DCE00298E51 /* TDSampleTest.m */; };
 		879E8E3D97674AF599CE833A /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C7064A8EEFCC42B3AA62603F /* libPods.a */; };
 		BA0FC084A9A4464DB42F3499 /* libPods-TwiddrTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 71C5332C74F54293A3138DDD /* libPods-TwiddrTests.a */; };
@@ -105,6 +106,8 @@
 		7852637B1945384D00AC8E3C /* TDTweetCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TDTweetCell.h; path = Twiddr/TDTweetCell.h; sourceTree = "<group>"; };
 		7852637C1945384D00AC8E3C /* TDTweetCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TDTweetCell.m; path = Twiddr/TDTweetCell.m; sourceTree = "<group>"; };
 		7852637D1945384D00AC8E3C /* TDTweetCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TDTweetCell.xib; path = Twiddr/TDTweetCell.xib; sourceTree = "<group>"; };
+		78856B43194DDEA800789CBA /* TDAccountsTVDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDAccountsTVDelegate.h; sourceTree = "<group>"; };
+		78856B44194DDEA800789CBA /* TDAccountsTVDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDAccountsTVDelegate.m; sourceTree = "<group>"; };
 		78DF181E194A9DCE00298E51 /* TDSampleTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDSampleTest.m; sourceTree = "<group>"; };
 		C7064A8EEFCC42B3AA62603F /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -191,14 +194,17 @@
 		1AF901D818FD618200A5B64A /* Twiddr */ = {
 			isa = PBXGroup;
 			children = (
+				78856B43194DDEA800789CBA /* TDAccountsTVDelegate.h */,
+				78856B44194DDEA800789CBA /* TDAccountsTVDelegate.m */,
+				1AF9020718FD61D400A5B64A /* Controllers */,
+				1AC0127B190FEF11009B41D4 /* View */,
+				1AF9021718FD61FD00A5B64A /* Models */,
+				78856B3F194DD5EB00789CBA /* Helpers */,
 				1AF901E118FD618200A5B64A /* TDAppDelegate.h */,
 				1AF901E218FD618200A5B64A /* TDAppDelegate.m */,
 				1AF901E718FD618200A5B64A /* Images.xcassets */,
 				1AF901E418FD618200A5B64A /* Twiddr.xcdatamodeld */,
 				1AF902EF18FD665500A5B64A /* Main.storyboard */,
-				1AF9020718FD61D400A5B64A /* Controllers */,
-				1AF9021718FD61FD00A5B64A /* Models */,
-				1AC0127B190FEF11009B41D4 /* View */,
 				1AF901D918FD618200A5B64A /* Supporting Files */,
 			);
 			path = Twiddr;
@@ -207,10 +213,6 @@
 		1AF901D918FD618200A5B64A /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				1A745C6E19073EB8000E9B54 /* TDSingletonCoreDataManager.h */,
-				1A745C6F19073EB8000E9B54 /* TDSingletonCoreDataManager.m */,
-				1A001D1C18FDC5C800D16BC1 /* Constants.h */,
-				1A001D1D18FDC5C800D16BC1 /* Constants.m */,
 				1AF901DA18FD618200A5B64A /* Twiddr-Info.plist */,
 				1AF901DB18FD618200A5B64A /* InfoPlist.strings */,
 				1AF901DE18FD618200A5B64A /* main.m */,
@@ -268,6 +270,17 @@
 				1AEE36A4190C54710065D84A /* TDAccountChangeDelegate.h */,
 			);
 			name = Models;
+			sourceTree = "<group>";
+		};
+		78856B3F194DD5EB00789CBA /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				1A745C6E19073EB8000E9B54 /* TDSingletonCoreDataManager.h */,
+				1A745C6F19073EB8000E9B54 /* TDSingletonCoreDataManager.m */,
+				1A001D1C18FDC5C800D16BC1 /* Constants.h */,
+				1A001D1D18FDC5C800D16BC1 /* Constants.m */,
+			);
+			name = Helpers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -445,6 +458,7 @@
 				1A6ABDE8190EA493005D3C97 /* TDAccount.m in Sources */,
 				1AF9021218FD61EE00A5B64A /* TDAccountTableViewController.m in Sources */,
 				1A6ABDF1190EA493005D3C97 /* TDTweet.m in Sources */,
+				78856B45194DDEA800789CBA /* TDAccountsTVDelegate.m in Sources */,
 				1AF901DF18FD618200A5B64A /* main.m in Sources */,
 				1AF9021618FD61EE00A5B64A /* TDTwitterAuthViewController.m in Sources */,
 				1AF901E618FD618200A5B64A /* Twiddr.xcdatamodeld in Sources */,

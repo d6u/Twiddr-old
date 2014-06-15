@@ -20,9 +20,6 @@
 @property (weak, nonatomic) TDAccountTableViewController *accountTableViewController;
 @property (strong, nonatomic) TDAccount *account;
 
-
-#pragma mark - UI
-
 @property (strong, nonatomic) IBOutlet UIWebView *webView;
 
 - (IBAction)cancel:(id)sender;
