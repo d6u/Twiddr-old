@@ -10,7 +10,9 @@
 
 @class TDAccount;
 
-@interface TDAccountsTVDelegate : NSObject <UITableViewDataSource>
+@interface TDAccountsTVDelegate : NSObject <UITableViewDataSource, UITableViewDelegate>
+
+- (instancetype)initWithTableView:(UITableView *)tableView cellConfigBlock:(void(^)(TDAccount *, UITableViewCell*))cellConfigBlock;
 
 - (void)fetchAccountsFollowingAndTimeline:(void(^)())allFinish;
 - (TDAccount *)accountAtIndexPath:(NSIndexPath *)indexPath;

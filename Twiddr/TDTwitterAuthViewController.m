@@ -15,27 +15,25 @@
 #import "TDSingletonCoreDataManager.h"
 
 
-@interface TDTwitterAuthViewController () {
-    STTwitterAPI *_twitterApi;
-}
+@interface TDTwitterAuthViewController ()
+
+@property (nonatomic, strong) STTwitterAPI *twitterApi;
+@property (nonatomic, strong) void(^callbackErrorBlock)(NSError *);
+
 @end
 
-
 @implementation TDTwitterAuthViewController
-
-static void(^callbackErrorBlock)(NSError *error);
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    callbackErrorBlock = ^void(NSError *error) {
-        NSLog(@"-- error: %@", error);
+
+    _callbackErrorBlock = ^void(NSError *error) {
+        NSLog(@"-- Error: %@", error);
     };
     
     self.webView.delegate = self;
 }
-
 
 - (void)viewDidAppear:(BOOL)animated
 {
@@ -44,9 +42,8 @@ static void(^callbackErrorBlock)(NSError *error);
     [_twitterApi postTokenRequest:^(NSURL *url, NSString *oauthToken) {
         NSURLRequest *request = [NSURLRequest requestWithURL:url];
         [self.webView loadRequest:request];
-    } forceLogin:@(YES) screenName:nil oauthCallback:TWAPICallback errorBlock:callbackErrorBlock];
+    } forceLogin:@(YES) screenName:nil oauthCallback:TWAPICallback errorBlock:_callbackErrorBlock];
 }
-
 
 #pragma mark - Web View delegate
 
@@ -63,7 +60,7 @@ static void(^callbackErrorBlock)(NSError *error);
         {
             [self saveTwitterAccountScreenName:screenName idStr:userID OauthToken:oauthToken
                                    tokenSecret:oauthTokenSecret];
-        } errorBlock:callbackErrorBlock];
+        } errorBlock:_callbackErrorBlock];
         
         return NO;
     } else {
@@ -71,14 +68,12 @@ static void(^callbackErrorBlock)(NSError *error);
     }
 }
 
-
 #pragma mark - IBActions
 
 - (IBAction)cancel:(id)sender
 {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
-
 
 #pragma mark - Helpers
 
@@ -103,12 +98,9 @@ static void(^callbackErrorBlock)(NSError *error);
             
         }];
     }];
-    
-//    [self.accountTableViewController.accounts addObject:_account];
 
     [self dismissViewControllerAnimated:YES completion:nil];
 }
-
 
 - (NSDictionary *)parametersDictionaryFromQueryString:(NSString *)queryString
 {
@@ -123,6 +115,5 @@ static void(^callbackErrorBlock)(NSError *error);
     }
     return md;
 }
-
 
 @end

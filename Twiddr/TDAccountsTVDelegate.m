@@ -13,16 +13,21 @@
 @interface TDAccountsTVDelegate () <NSFetchedResultsControllerDelegate, TDAccountChangeDelegate>
 
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
-@property (nonatomic, strong) void(^configCell)(TDAccount *, UITableViewCell *); // reusable config cell, not implemented yet
+@property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong) void(^cellConfigBlock)(TDAccount *, UITableViewCell *); // reusable config cell, not implemented yet
 
 @end
 
 @implementation TDAccountsTVDelegate
 
-- (instancetype)init
+- (instancetype)initWithTableView:(UITableView *)tableView cellConfigBlock:(void(^)(TDAccount *, UITableViewCell*))cellConfigBlock
 {
     self = [super init];
     if (self) {
+        tableView.dataSource = self;
+        tableView.delegate = self;
+        _tableView = tableView;
+        _cellConfigBlock = cellConfigBlock;
         [self setup];
     }
     return self;
@@ -107,12 +112,38 @@
     return fetchRequest;
 }
 
-#pragma mark - Table View Data Source
+#pragma mark - Fetched Results Controller Delegate
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
 {
-    return 1;
+    [self.tableView beginUpdates];
 }
+
+- (void)controller:(NSFetchedResultsController *)controller
+   didChangeObject:(id)anObject
+       atIndexPath:(NSIndexPath *)indexPath
+     forChangeType:(NSFetchedResultsChangeType)type
+      newIndexPath:(NSIndexPath *)newIndexPath
+{
+    switch (type) {
+        case NSFetchedResultsChangeInsert:
+            [_tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            break;
+        case NSFetchedResultsChangeDelete:
+            [_tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            break;
+        case NSFetchedResultsChangeUpdate:
+            [_tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            break;
+    }
+}
+
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
+{
+    [self.tableView endUpdates];
+}
+
+#pragma mark - Table View Data Source
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -124,11 +155,12 @@
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
     TDAccount *account = [_fetchedResultsController objectAtIndexPath:indexPath];
-
-    cell.textLabel.text = [NSString stringWithFormat:@"@%@", account.screen_name];
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"%lu", (unsigned long)[account.timeline_tweets count]];
-
+    _cellConfigBlock(account, cell);
     return cell;
 }
+
+#pragma mark - Table View Delegate
+
+
 
 @end

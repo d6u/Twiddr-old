@@ -34,8 +34,12 @@
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(pullToRefresh:) forControlEvents:UIControlEventValueChanged];
 
-    _tableViewDelegate = [[TDAccountsTVDelegate alloc] init];
-    self.tableView.dataSource = _tableViewDelegate;
+    _tableViewDelegate = [[TDAccountsTVDelegate alloc] initWithTableView:self.tableView
+                                                         cellConfigBlock:^(TDAccount *account, UITableViewCell *cell)
+    {
+        cell.textLabel.text = [NSString stringWithFormat:@"@%@", account.screen_name];
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"%lu", (unsigned long)[account.timeline_tweets count]];
+    }];
 }
 
 - (void)viewWillAppear:(BOOL)animated
