@@ -10,12 +10,9 @@
 #import "TDAccountChangeDelegate.h"
 
 
-@interface TDAccountTableViewController : UITableViewController <UITableViewDelegate, TDAccountChangeDelegate>
+@interface TDAccountTableViewController : UITableViewController
 
-@property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic) BOOL firstLoadSinceAppLaunch;
-
-@property (strong, nonatomic) NSMutableArray *accounts;
 
 - (IBAction)addAccount:(id)sender;
 

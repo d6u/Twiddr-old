@@ -21,7 +21,6 @@
 
 #pragma mark - Interfaces
 
-+ (NSArray *)allAccounts;
 + (instancetype)accountWithRawDictionary:(NSDictionary *)keyedValues;
 - (void)setValuesForKeysWithRawDictionary:(NSDictionary *)keyedValues;
 - (void)initTwitterApi;

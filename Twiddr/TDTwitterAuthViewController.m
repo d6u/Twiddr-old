@@ -104,8 +104,8 @@ static void(^callbackErrorBlock)(NSError *error);
         }];
     }];
     
-    [self.accountTableViewController.accounts addObject:_account];
-    
+//    [self.accountTableViewController.accounts addObject:_account];
+
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
