@@ -7,6 +7,8 @@ rvm: 2.1.1
 
 before_install:
   - gem install cocoapods -v '0.32.1'
+  - brew update
+  - brew upgrade xctool
 
 before_script:
   - export LANG=en_US.UTF-8
