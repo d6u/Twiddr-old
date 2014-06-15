@@ -1,9 +1,11 @@
 language: objective-c
+xcode_project: Twiddr.xcodeproj
+xcode_scheme: Twiddr
 
 rvm: 2.1.1
 
+before_install:
+  - gem install cocoapods -v '0.32.1'
+
 before_script:
   - export LANG=en_US.UTF-8
-
-xcode_project: Twiddr.xcodeproj
-xcode_scheme: Twiddr
