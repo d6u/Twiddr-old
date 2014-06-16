@@ -1,21 +1,16 @@
 //
-//  TDMasterViewController.m
-//  Twidder-proto
+//  TDAccountTableViewController.m
+//  Twidder
 //
 //  Created by Daiwei Lu on 3/22/14.
 //  Copyright (c) 2014 Daiwei Lu. All rights reserved.
 //
 
 #import "TDAccountTableViewController.h"
-#import "TDDetailViewController.h"
 #import "TDTwitterAuthViewController.h"
-#import <STTwitter/STTwitter.h>
 #import "TDAuthorsTableViewController.h"
-#import "Constants.h"
 #import "TDAccount.h"
-#import "TDUser.h"
 #import "TDAccountsTVDelegate.h"
-
 
 @interface TDAccountTableViewController ()
 
@@ -23,9 +18,7 @@
 
 @end
 
-
 @implementation TDAccountTableViewController
-
 
 - (void)viewDidLoad
 {
@@ -42,26 +35,19 @@
     }];
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-}
-
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     if ([_tableViewDelegate countFetchedObject] == 0 && _firstLoadSinceAppLaunch == YES) {
         [self performSegueWithIdentifier:@"showTwitterAuth" sender:self];
     }
+    else if ([_tableViewDelegate countFetchedObject] == 1) {
+        TDAuthorsTableViewController *authorViewController = [[TDAuthorsTableViewController alloc] init];
+        authorViewController.account = [_tableViewDelegate accountAtIndex:0];
+        [self.navigationController pushViewController:authorViewController animated:NO];
+    }
     _firstLoadSinceAppLaunch = NO;
 }
-
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-}
-
 
 #pragma mark - UIRefreshControl
 
@@ -71,15 +57,6 @@
         [(UIRefreshControl *)sender endRefreshing];
     }];
 }
-
-
-#pragma mark - TDAccountChangeDelegate
-
-- (void)mergedTimelineFromApiWithNewTweets:(NSArray *)newTweets
-{
-    [self.tableView reloadData];
-}
-
 
 #pragma mark - UIViewController with StoreBoard
 
@@ -95,13 +72,11 @@
     }
 }
 
-
 #pragma mark - IBActions
 
 - (IBAction)addAccount:(id)sender
 {
     [self performSegueWithIdentifier:@"showTwitterAuth" sender:self];
 }
-
 
 @end

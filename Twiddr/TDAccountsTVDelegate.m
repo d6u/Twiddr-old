@@ -14,7 +14,7 @@
 
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, strong) UITableView *tableView;
-@property (nonatomic, strong) void(^cellConfigBlock)(TDAccount *, UITableViewCell *); // reusable config cell, not implemented yet
+@property (nonatomic, strong) void(^cellConfigBlock)(TDAccount *, UITableViewCell *);
 @property (nonatomic, strong) NSIndexPath *deletingIndexPath;
 
 @end
@@ -69,13 +69,13 @@
     NSArray *accounts = _fetchedResultsController.fetchedObjects;
     for (int i = 0; i < [accounts count]; i++) {
         [accounts[i] pullFollowingAndTimelineWithFinishBlock:^(NSError *error) {
-            [accounts[i] assignOrphanTweetsToAuthorWithFinishBlock:
-             ^(NSArray *unassginedTweets, NSArray *affectedUsers) {
-                 refreshFinished |= (1 << i);
-                 if (refreshFinished == (pow(2, [accounts count]) - 1)) {
-                     allFinish();
-                 }
-             }];
+            [accounts[i] assignOrphanTweetsToAuthorWithFinishBlock:^(NSArray *unassginedTweets, NSArray *affectedUsers)
+            {
+                refreshFinished |= (1 << i);
+                if (refreshFinished == (pow(2, [accounts count]) - 1)) {
+                    allFinish();
+                }
+            }];
         }];
     }
 }
@@ -83,6 +83,11 @@
 - (TDAccount *)accountAtIndexPath:(NSIndexPath *)indexPath
 {
     return [_fetchedResultsController objectAtIndexPath:indexPath];
+}
+
+- (TDAccount *)accountAtIndex:(NSInteger)index
+{
+    return [_fetchedResultsController fetchedObjects][index];
 }
 
 - (NSUInteger)countFetchedObject

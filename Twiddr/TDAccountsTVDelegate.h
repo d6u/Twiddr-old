@@ -16,6 +16,7 @@
 
 - (void)fetchAccountsFollowingAndTimeline:(void(^)())allFinish;
 - (TDAccount *)accountAtIndexPath:(NSIndexPath *)indexPath;
+- (TDAccount *)accountAtIndex:(NSInteger)index;
 - (NSUInteger)countFetchedObject;
 
 @end
