@@ -38,13 +38,15 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    if ([_tableViewDelegate countFetchedObject] == 0 && _firstLoadSinceAppLaunch == YES) {
-        [self performSegueWithIdentifier:@"showTwitterAuth" sender:self];
-    }
-    else if ([_tableViewDelegate countFetchedObject] == 1) {
-        TDAuthorsTableViewController *authorViewController = [[TDAuthorsTableViewController alloc] init];
-        authorViewController.account = [_tableViewDelegate accountAtIndex:0];
-        [self.navigationController pushViewController:authorViewController animated:NO];
+    if (_firstLoadSinceAppLaunch == YES) {
+        if ([_tableViewDelegate countFetchedObject] == 0) {
+            [self performSegueWithIdentifier:@"showTwitterAuth" sender:self];
+        }
+        else if ([_tableViewDelegate countFetchedObject] == 1) {
+            TDAuthorsTableViewController *authorViewController = [[TDAuthorsTableViewController alloc] init];
+            authorViewController.account = [_tableViewDelegate accountAtIndex:0];
+            [self.navigationController pushViewController:authorViewController animated:YES];
+        }
     }
     _firstLoadSinceAppLaunch = NO;
 }
